@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DormyAppService", "DormyAppService\DormyAppService.csproj", "{F0A4763A-3FA3-4990-8965-87848D7B8A56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DormyAppService.Tests", "DormyAppService.Tests\DormyAppService.Tests.csproj", "{B7276BD5-D3AB-4AA0-BF2E-6E335E5E55C7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F0A4763A-3FA3-4990-8965-87848D7B8A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0A4763A-3FA3-4990-8965-87848D7B8A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0A4763A-3FA3-4990-8965-87848D7B8A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0A4763A-3FA3-4990-8965-87848D7B8A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7276BD5-D3AB-4AA0-BF2E-6E335E5E55C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7276BD5-D3AB-4AA0-BF2E-6E335E5E55C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7276BD5-D3AB-4AA0-BF2E-6E335E5E55C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7276BD5-D3AB-4AA0-BF2E-6E335E5E55C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {652EBEDB-CC89-42C5-9537-D920CADE4FEF}
+	EndGlobalSection
+EndGlobal
