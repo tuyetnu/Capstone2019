@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DormyWebService.Models
+namespace DormyWebService.Entities
 {
-    public class Account
+    public class RoomType
     {
+        [Key]
         public int Id { get; set; }
-
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
-
+        [Required]
         public string Name { get; set; }
         
+
     }
 }
