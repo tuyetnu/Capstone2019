@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DormyWebService.Entities;
+using DormyWebService.Entities.Account;
 
 namespace DormyWebService.Services
 {

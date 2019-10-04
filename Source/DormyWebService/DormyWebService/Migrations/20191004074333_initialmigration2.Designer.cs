@@ -4,14 +4,16 @@ using DormyWebService.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    partial class DormyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191004074333_initialmigration2")]
+    partial class initialmigration2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +123,9 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.EquipmentType", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -213,7 +217,9 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.Room.RoomType", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("DefaultCapacity");
 

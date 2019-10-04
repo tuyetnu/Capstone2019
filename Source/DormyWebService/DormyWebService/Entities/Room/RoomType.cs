@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DormyWebService.Entities
+namespace DormyWebService.Entities.Room
 {
     public class RoomType
     {
@@ -8,7 +8,7 @@ namespace DormyWebService.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        
+        public int DefaultCapacity { get; set; }
 
     }
 }

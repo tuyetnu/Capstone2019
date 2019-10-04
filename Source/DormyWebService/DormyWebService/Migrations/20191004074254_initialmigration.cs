@@ -2,7 +2,7 @@
 
 namespace DormyWebService.Migrations
 {
-    public partial class InitialMigration2 : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

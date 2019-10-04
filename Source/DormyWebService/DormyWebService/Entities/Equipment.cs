@@ -11,6 +11,6 @@ namespace DormyWebService.Entities
         public EquipmentType EquipmentType { get; set; }
 
         [Required]
-        public Room Room { get; set; }
+        public Room.Room Room { get; set; }
     }
 }

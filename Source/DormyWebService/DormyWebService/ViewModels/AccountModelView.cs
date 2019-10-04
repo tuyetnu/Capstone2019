@@ -1,6 +1,6 @@
 ﻿namespace DormyWebService.ViewModels
 {
-    public class AccountModelViews
+    public class AccountModelView
     {
         
     }
