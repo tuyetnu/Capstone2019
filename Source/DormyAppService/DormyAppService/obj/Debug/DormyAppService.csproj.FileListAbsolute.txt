@@ -107,9 +107,10 @@ C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\M
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\System.Web.Http.Owin.xml
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csprojAssemblyReference.cache
-C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csproj.CoreCompileInputs.cache
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csproj.CopyComplete
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.dll
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.pdb
-C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csproj.GenerateResource.cache
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.InitialMigration.resources
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csproj.GenerateResource.cache
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\Swashbuckle.Core.dll
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\WebActivatorEx.dll

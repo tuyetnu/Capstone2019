@@ -13,7 +13,7 @@ namespace DormyAppService.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201909250821177_InnitialMigration"; }
+            get { return "201910050721582_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source

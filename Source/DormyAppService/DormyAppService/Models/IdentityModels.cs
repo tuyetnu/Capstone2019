@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
+using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.RoomModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -21,7 +23,7 @@ namespace DormyAppService.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("TestConnection", throwIfV1Schema: false)
         {
         }
         
@@ -29,7 +31,5 @@ namespace DormyAppService.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<DormyAppService.Models.Room> Rooms { get; set; }
     }
 }
