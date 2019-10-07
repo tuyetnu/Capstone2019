@@ -19,9 +19,6 @@ namespace DormyAppService.Models.DocumentModels
         public string ImageUrl { get; set; }
 
         [Required]
-        public Student Student { get; set; }
-
-        [Required]
         public DocumentType Type { get; set; }
 
         [Required]

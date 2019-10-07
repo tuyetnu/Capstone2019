@@ -112,12 +112,6 @@ C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\D
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.pdb
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\Swashbuckle.Core.dll
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\bin\WebActivatorEx.dll
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration1.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csproj.GenerateResource.cache
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration2.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration3.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration4.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.DatabaseV1.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.DatabaseV2.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.AddNameToDocument.resources
-C:\Users\Admin\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.AddStudentToNotification.resources
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration1.resources
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.csproj.GenerateResource.cache
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration2.resources

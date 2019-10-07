@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DormyAppService.Models.DocumentModels;
 using DormyAppService.Models.RoomModels;
 using DormyAppService.Models.TicketModels;
 
@@ -10,11 +11,15 @@ namespace DormyAppService.Models.AccountModels
     [Table("Students")]
     public class Student : ApplicationUser
     {
-        public string StudentCardPictureUrl { get; set; }
-
         //Năm nhập học
         [Required]
         public int StartedSchoolYear { get; set; }
+
+        [Required]
+        public string IdentityNumber { get; set; }
+
+        [Required]
+        public string StudentCardNumber { get; set; }
 
         //Khóa học
         public int Term { get; set; }
@@ -36,6 +41,7 @@ namespace DormyAppService.Models.AccountModels
         public decimal AccountBalance { get; set; }
 
         public Contract.Contract CurrentContract { get; set; }
+
 
     }
 }

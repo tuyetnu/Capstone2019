@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.Enums;
 
 namespace DormyAppService.Models.NotificationModels
 {
@@ -9,7 +10,7 @@ namespace DormyAppService.Models.NotificationModels
         [Required]
         public int Id { get; set; }
 
-        public Student Student { get; set; }
+        public ApplicationUser Owner { get; set; }
 
         [MaxLength(200)]
         public string Content { get; set; }
@@ -23,7 +24,7 @@ namespace DormyAppService.Models.NotificationModels
         public DateTime LastUpdated { get; set; }
 
         [Required]
-        public NotificationStatus Status { get; set; }
+        public NotificationStatusEnum Status { get; set; }
 
         [Required]
         public NotificationType Type { get; set; }

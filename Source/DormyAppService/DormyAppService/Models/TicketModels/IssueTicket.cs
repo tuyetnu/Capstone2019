@@ -32,6 +32,8 @@ namespace DormyAppService.Models.TicketModels
 
         public string Description { get; set; }
 
+        public int Point { get; set; }
+
         public string ImageUrl { get; set; }
 
         public Room Room { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.Enums;
 
 namespace DormyAppService.Models.Contract
 {
@@ -13,7 +14,7 @@ namespace DormyAppService.Models.Contract
         public Student Student { get; set; }
 
         [Required]
-        public ContractStatus Status { get; set; }
+        public ContractStatusEnum Status { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }

@@ -1,16 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 using DormyAppService.Models.AccountModels;
-using DormyAppService.Models.Enums;
-using DormyAppService.Models.RoomModels;
 
 namespace DormyAppService.Models.TicketModels
 {
-    public class RoomRequest
+    public class CancelContractRequest
     {
-        //TODO: Nhớ làm đc đăng ký trong khoảng tg, ngày nào trong tuần, và khi nào thì request hết hạn.
-        //TODO: Nhớ làm bảng cho tùy chỉnh các khoản TG là khi nào.
-
         [Key]
         public int Id { get; set; }
 
@@ -21,11 +19,7 @@ namespace DormyAppService.Models.TicketModels
         public DateTime LastUpdated { get; set; }
 
         [Required]
-        public int Month { get; set; }
-
-        //Current Status
-        [Required]
-        public RequestStatusEnum Status { get; set; }
+        public DateTime CancelationDate { get; set; }
 
         [Required]
         public Student Student { get; set; }
@@ -33,6 +27,8 @@ namespace DormyAppService.Models.TicketModels
         public Staff Staff { get; set; }
 
         [Required]
-        public RoomType TargetRoomType { get; set; }
+        [MinLength(3)]
+        [MaxLength(500)]
+        public string Reason { get; set; }
     }
 }

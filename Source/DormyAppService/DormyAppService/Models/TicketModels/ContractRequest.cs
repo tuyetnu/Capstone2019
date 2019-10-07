@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.Enums;
 
 namespace DormyAppService.Models.TicketModels
 {
@@ -18,7 +19,7 @@ namespace DormyAppService.Models.TicketModels
         public Staff Staff { get; set; }
 
         [Required]
-        public ContractRequestStatus Status { get; set; }
+        public RequestStatusEnum Status { get; set; }
 
         public int Month { get; set; }
 

@@ -33,10 +33,6 @@ namespace DormyAppService.Models.MoneyModels
 
         [Required]
         [Column(TypeName = "Money")]
-        public decimal WaterPrice { get; set; }
-
-        [Required]
-        [Column(TypeName = "Money")]
         public decimal WaterBill { get; set; }
 
         [Required]
@@ -47,15 +43,11 @@ namespace DormyAppService.Models.MoneyModels
 
         [Required]
         [Column(TypeName = "Money")]
-        public decimal ElectricityPrice { get; set; }
-
-        [Required]
-        [Column(TypeName = "Money")]
         public decimal ElectricityBill { get; set; }
 
-        [Required]
-        [Column(TypeName = "Money")]
-        public decimal RoomFee { get; set; }
+//        [Required]
+//        [Column(TypeName = "Money")]
+//        public decimal RoomFee { get; set; }
 
         [Required]
         [Column(TypeName = "Money")]

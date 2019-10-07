@@ -16,8 +16,5 @@ namespace DormyAppService.Models.EquipmentModels
 
         [MaxLength(100)]
         public string Description { get; set; }
-
-        [Column(TypeName = "Money")]
-        public decimal DefaultPrice { get; set; }
     }
 }

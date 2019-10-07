@@ -7,13 +7,13 @@ namespace DormyAppService.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddStudentToNotification : IMigrationMetadata
+    public sealed partial class Migration2 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddStudentToNotification));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Migration2));
         
         string IMigrationMetadata.Id
         {
-            get { return "201910061254237_AddStudentToNotification"; }
+            get { return "201910070632062_Migration2"; }
         }
         
         string IMigrationMetadata.Source
