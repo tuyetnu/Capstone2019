@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DormyAppService.Models.AccountModels;
-using DormyAppService.Models.DocumentModels;
 using DormyAppService.Models.MoneyModels;
 using DormyAppService.Models.NotificationModels;
 using DormyAppService.Models.RoomModels;
@@ -40,10 +39,10 @@ namespace DormyAppService.Models
 
         public DbSet<RoomRequest> RoomTransferRequests { get; set; }
         public DbSet<ContractRequest> ContractRequests { get; set; }
+        public DbSet<CancelContractRequest> CancelContractRequest { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<MoneyTransaction> MoneyTransactions { get; set; }
-        public DbSet<MonthlyBill> MonthlyBills { get; set; }
-        public DbSet<Document> Documents { get; set; }
+        public DbSet<RoomMonthlyBill> MonthlyBills { get; set; }
         public DbSet<IssueTicket> IssueTickets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

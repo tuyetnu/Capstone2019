@@ -226,22 +226,28 @@
     <Compile Include="Migrations\201910070632062_Migration2.Designer.cs">
       <DependentUpon>201910070632062_Migration2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910070748088_UpdatePayment.cs" />
+    <Compile Include="Migrations\201910070748088_UpdatePayment.Designer.cs">
+      <DependentUpon>201910070748088_UpdatePayment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910070750526_AddCancelRequest.cs" />
+    <Compile Include="Migrations\201910070750526_AddCancelRequest.Designer.cs">
+      <DependentUpon>201910070750526_AddCancelRequest.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AccountModels\Staff.cs" />
     <Compile Include="Models\AccountModels\Student.cs" />
     <Compile Include="Models\Contract\Contract.cs" />
-    <Compile Include="Models\DocumentModels\Document.cs" />
-    <Compile Include="Models\DocumentModels\DocumentType.cs" />
     <Compile Include="Models\Enums\StudentStatusEnums.cs" />
     <Compile Include="Models\EquipmentModels\Equipment.cs" />
     <Compile Include="Models\EquipmentModels\EquipmentType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\MoneyModels\Fee.cs" />
     <Compile Include="Models\MoneyModels\MoneyTransaction.cs" />
-    <Compile Include="Models\MoneyModels\MonthlyBill.cs" />
-    <Compile Include="Models\MoneyModels\Payment.cs" />
+    <Compile Include="Models\MoneyModels\RoomMonthlyBill.cs" />
+    <Compile Include="Models\MoneyModels\StudentMonthlyBill.cs" />
     <Compile Include="Models\MoneyModels\TransactionType.cs" />
     <Compile Include="Models\NotificationModels\Notification.cs" />
     <Compile Include="Models\NotificationModels\NotificationType.cs" />
@@ -250,7 +256,6 @@
     <Compile Include="Models\StudentpriorityType.cs" />
     <Compile Include="Models\TicketModels\CancelContractRequest.cs" />
     <Compile Include="Models\TicketModels\ContractRequest.cs" />
-    <Compile Include="Models\TicketModels\IssueStatus.cs" />
     <Compile Include="Models\TicketModels\IssueTicket.cs" />
     <Compile Include="Models\TicketModels\IssueType.cs" />
     <Compile Include="Models\TicketModels\RoomRequest.cs" />
@@ -318,6 +323,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\DocumentModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -354,6 +360,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910070632062_Migration2.resx">
       <DependentUpon>201910070632062_Migration2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910070748088_UpdatePayment.resx">
+      <DependentUpon>201910070748088_UpdatePayment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910070750526_AddCancelRequest.resx">
+      <DependentUpon>201910070750526_AddCancelRequest.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

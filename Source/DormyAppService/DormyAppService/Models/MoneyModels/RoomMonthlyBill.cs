@@ -8,7 +8,7 @@ using DormyAppService.Models.RoomModels;
 
 namespace DormyAppService.Models.MoneyModels
 {
-    public class MonthlyBill
+    public class RoomMonthlyBill
     {
         [Key]
         public int Id { get; set; }
@@ -18,6 +18,12 @@ namespace DormyAppService.Models.MoneyModels
 
         [Required]
         public bool IsPaid { get; set; }
+
+        [Required]
+        public int TargetMonth { get; set; }
+
+        [Required]
+        public int TargetYear { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }
@@ -45,12 +51,14 @@ namespace DormyAppService.Models.MoneyModels
         [Column(TypeName = "Money")]
         public decimal ElectricityBill { get; set; }
 
-//        [Required]
-//        [Column(TypeName = "Money")]
-//        public decimal RoomFee { get; set; }
+        [Required]
+        [Column(TypeName = "Money")]
+        public decimal TotalRoomFee { get; set; }
 
         [Required]
         [Column(TypeName = "Money")]
         public decimal TotalAmount { get; set; }
+
+        public StudentMonthlyBill StudentMonthlyBill { get; set; }
     }
 }

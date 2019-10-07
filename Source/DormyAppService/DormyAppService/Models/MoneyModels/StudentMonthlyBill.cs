@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
+using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.RoomModels;
+
+namespace DormyAppService.Models.MoneyModels
+{
+    public class StudentMonthlyBill
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public bool IsPaid { get; set; }
+
+        [Required]
+        public Student Student { get; set; }
+
+        [Required]
+        public RoomType RoomType { get; set; }
+
+        [Required]
+        public RoomMonthlyBill MonthlyBill { get; set; }
+        
+        // WaterFee + Electricity
+        [Column(TypeName = "Money")]
+        public Decimal RoomUtilityFee { get; set; }
+
+        //Phần trăm sau khi chia
+        [Required]
+        public Decimal Percentage { get; set; }
+
+        //RoomUtilityFee * Percentage
+        [Required]
+        [Column(TypeName = "Money")]
+        public Decimal UtilityFee { get; set; }
+
+        [Required]
+        [Column(TypeName = "Money")]
+        public Decimal RoomFee { get; set; }
+
+        // UtilityFee + RoomFee
+        [Required] 
+        [Column(TypeName = "Money")]
+        public Decimal Total { get; set; }
+
+    }
+}

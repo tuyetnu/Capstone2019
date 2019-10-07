@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.Enums;
 using DormyAppService.Models.EquipmentModels;
 using DormyAppService.Models.RoomModels;
 
@@ -15,7 +16,7 @@ namespace DormyAppService.Models.TicketModels
         public IssueType Type { get; set; }
 
         [Required]
-        public IssueStatus Status { get; set; }
+        public IssueStatusEnum Status { get; set; }
 
         [Required]
         public ApplicationUser Owner { get; set; }

@@ -31,6 +31,13 @@ namespace DormyAppService.Models.Enums
         Disabled,
     }
 
+    public enum IssueStatusEnum
+    {
+        Pending,
+        Rejected,
+        Resolved,
+    }
+
     public enum NotificationStatusEnum
     {
         Unseen,
