@@ -1,7 +1,12 @@
-﻿using System.Security.Claims;
+﻿using System.Data.Entity;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.DocumentModels;
+using DormyAppService.Models.MoneyModels;
+using DormyAppService.Models.NotificationModels;
 using DormyAppService.Models.RoomModels;
+using DormyAppService.Models.TicketModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -23,13 +28,36 @@ namespace DormyAppService.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("TestConnection", throwIfV1Schema: false)
+            : base("DesktopTestConnection", throwIfV1Schema: false)
         {
         }
         
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+
+        }
+
+        public DbSet<RoomRequest> RoomTransferRequests { get; set; }
+        public DbSet<ContractRequest> ContractRequests { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<MoneyTransaction> MoneyTransactions { get; set; }
+        public DbSet<MonthlyBill> MonthlyBills { get; set; }
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<IssueTicket> IssueTickets { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<IdentityUserLogin>().HasKey<string>(l => l.UserId);
+            modelBuilder.Entity<IdentityRole>().HasKey<string>(r => r.Id);
+            modelBuilder.Entity<IdentityUserRole>().HasKey(r => new { r.RoleId, r.UserId });
+
+//            modelBuilder.Entity<RoomTransferRequest>()
+//                .HasRequired(f => f.Status)
+//                .WithRequiredDependent()
+//                .WillCascadeOnDelete(false);
         }
     }
+
+
 }

@@ -215,27 +215,69 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201910050721582_InitialMigration.cs" />
-    <Compile Include="Migrations\201910050721582_InitialMigration.Designer.cs">
-      <DependentUpon>201910050721582_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201910060653003_Migration1.cs" />
+    <Compile Include="Migrations\201910060653003_Migration1.Designer.cs">
+      <DependentUpon>201910060653003_Migration1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910060913448_Migration2.cs" />
+    <Compile Include="Migrations\201910060913448_Migration2.Designer.cs">
+      <DependentUpon>201910060913448_Migration2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910060920501_Migration3.cs" />
+    <Compile Include="Migrations\201910060920501_Migration3.Designer.cs">
+      <DependentUpon>201910060920501_Migration3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910061058283_Migration4.cs" />
+    <Compile Include="Migrations\201910061058283_Migration4.Designer.cs">
+      <DependentUpon>201910061058283_Migration4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910061240533_DatabaseV1.cs" />
+    <Compile Include="Migrations\201910061240533_DatabaseV1.Designer.cs">
+      <DependentUpon>201910061240533_DatabaseV1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910061246158_DatabaseV2.cs" />
+    <Compile Include="Migrations\201910061246158_DatabaseV2.Designer.cs">
+      <DependentUpon>201910061246158_DatabaseV2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910061248117_AddNameToDocument.cs" />
+    <Compile Include="Migrations\201910061248117_AddNameToDocument.Designer.cs">
+      <DependentUpon>201910061248117_AddNameToDocument.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201910061254237_AddStudentToNotification.cs" />
+    <Compile Include="Migrations\201910061254237_AddStudentToNotification.Designer.cs">
+      <DependentUpon>201910061254237_AddStudentToNotification.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AccountModels\Staff.cs" />
     <Compile Include="Models\AccountModels\Student.cs" />
-    <Compile Include="Models\Equipment.cs" />
-    <Compile Include="Models\EquipmentType.cs" />
-    <Compile Include="Models\EvaluationScoreHistory.cs" />
+    <Compile Include="Models\Contract\Contract.cs" />
+    <Compile Include="Models\Contract\ContractStatus.cs" />
+    <Compile Include="Models\DocumentModels\Document.cs" />
+    <Compile Include="Models\DocumentModels\DocumentType.cs" />
+    <Compile Include="Models\EquipmentModels\Equipment.cs" />
+    <Compile Include="Models\EquipmentModels\EquipmentType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MoneyModels\MoneyTransaction.cs" />
+    <Compile Include="Models\MoneyModels\MonthlyBill.cs" />
+    <Compile Include="Models\MoneyModels\TransactionType.cs" />
+    <Compile Include="Models\NotificationModels\Notification.cs" />
+    <Compile Include="Models\NotificationModels\NotificationStatus.cs" />
+    <Compile Include="Models\NotificationModels\NotificationType.cs" />
     <Compile Include="Models\RoomModels\Room.cs" />
     <Compile Include="Models\RoomModels\RoomType.cs" />
-    <Compile Include="Models\RoomTransferHistory.cs" />
     <Compile Include="Models\StudentpriorityType.cs" />
+    <Compile Include="Models\TicketModels\ContractRequest.cs" />
+    <Compile Include="Models\TicketModels\ContractRequestStatus.cs" />
+    <Compile Include="Models\TicketModels\IssueStatus.cs" />
+    <Compile Include="Models\TicketModels\IssueTicket.cs" />
+    <Compile Include="Models\TicketModels\IssueType.cs" />
+    <Compile Include="Models\TicketModels\RoomRequest.cs" />
+    <Compile Include="Models\TicketModels\RoomRequestStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -330,8 +372,29 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201910050721582_InitialMigration.resx">
-      <DependentUpon>201910050721582_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201910060653003_Migration1.resx">
+      <DependentUpon>201910060653003_Migration1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910060913448_Migration2.resx">
+      <DependentUpon>201910060913448_Migration2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910060920501_Migration3.resx">
+      <DependentUpon>201910060920501_Migration3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910061058283_Migration4.resx">
+      <DependentUpon>201910061058283_Migration4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910061240533_DatabaseV1.resx">
+      <DependentUpon>201910061240533_DatabaseV1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910061246158_DatabaseV2.resx">
+      <DependentUpon>201910061246158_DatabaseV2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910061248117_AddNameToDocument.resx">
+      <DependentUpon>201910061248117_AddNameToDocument.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910061254237_AddStudentToNotification.resx">
+      <DependentUpon>201910061254237_AddStudentToNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
