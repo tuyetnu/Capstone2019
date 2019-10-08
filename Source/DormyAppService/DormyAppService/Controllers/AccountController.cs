@@ -19,7 +19,6 @@ using DormyAppService.Results;
 
 namespace DormyAppService.Controllers
 {
-    [Authorize]
     [RoutePrefix("api/Account")]
     [AllowCrossSiteJson]
     public class AccountController : ApiController

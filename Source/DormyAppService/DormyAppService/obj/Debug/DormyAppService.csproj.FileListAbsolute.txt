@@ -117,3 +117,4 @@ C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\D
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.Migration2.resources
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.UpdatePayment.resources
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations.AddCancelRequest.resources
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyAppService\DormyAppService\obj\Debug\DormyAppService.Migrations._3.resources

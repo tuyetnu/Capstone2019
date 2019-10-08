@@ -14,12 +14,14 @@ namespace DormyAppService.Models.AccountModels
         [Required]
         public int StartedSchoolYear { get; set; }
 
+        //CMND
         [Required]
         public string IdentityNumber { get; set; }
 
         //Hình CMND
         public string IdentityCardImageUrl { get; set; }
 
+        //MSSV
         [Required]
         public string StudentCardNumber { get; set; }
 
@@ -39,9 +41,16 @@ namespace DormyAppService.Models.AccountModels
         //Phòng đang ở
         public Room Room { get; set; }
 
+        public bool Gender { get; set; }
+
+        //Địa chỉ
+        [MaxLength(200)]
+        public string Address { get; set; }
+
         [Required]
         public bool IsRoomLeader { get; set; }
 
+        //Điểm đánh giá
         public int EvaluationScore { get; set; }
 
         [Required]

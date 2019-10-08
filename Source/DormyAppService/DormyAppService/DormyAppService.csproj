@@ -234,6 +234,10 @@
     <Compile Include="Migrations\201910070750526_AddCancelRequest.Designer.cs">
       <DependentUpon>201910070750526_AddCancelRequest.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910080616209_3.cs" />
+    <Compile Include="Migrations\201910080616209_3.Designer.cs">
+      <DependentUpon>201910080616209_3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -366,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910070750526_AddCancelRequest.resx">
       <DependentUpon>201910070750526_AddCancelRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910080616209_3.resx">
+      <DependentUpon>201910080616209_3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

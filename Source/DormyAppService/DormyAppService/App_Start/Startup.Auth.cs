@@ -59,11 +59,11 @@ namespace DormyAppService
             //    appId: "",
             //    appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "781637669027-3heuhie22rj1573j4j0nssai812c0dcb.apps.googleusercontent.com",
+                ClientSecret = "rRdZEdF0IppS2hWhvFcblSt7"
+            });
         }
     }
 }
