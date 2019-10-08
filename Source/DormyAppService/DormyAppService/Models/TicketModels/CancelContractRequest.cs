@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.Enums;
 
 namespace DormyAppService.Models.TicketModels
 {
@@ -30,5 +31,8 @@ namespace DormyAppService.Models.TicketModels
         [MinLength(3)]
         [MaxLength(500)]
         public string Reason { get; set; }
+
+        [Required]
+        public RequestStatusEnum Status { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace DormyAppService.Models.NotificationModels
         public ApplicationUser Owner { get; set; }
 
         [MaxLength(200)]
-        public string Content { get; set; }
+        public string Description { get; set; }
 
         public string Url { get; set; }
 

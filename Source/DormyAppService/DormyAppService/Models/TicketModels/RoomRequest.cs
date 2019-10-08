@@ -12,16 +12,16 @@ namespace DormyAppService.Models.TicketModels
         //TODO: Nhớ làm bảng cho tùy chỉnh các khoản TG là khi nào.
 
         [Key]
-        public int Id { get; set; }
+        private int Id { get; set; }
 
         [Required]
-        public DateTime CreatedDate { get; set; }
+        private DateTime CreatedDate { get; set; }
 
         [Required]
-        public DateTime LastUpdated { get; set; }
+        private DateTime LastUpdated { get; set; }
 
         [Required]
-        public int Month { get; set; }
+        private int Month { get; set; }
 
         //Current Status
         [Required]

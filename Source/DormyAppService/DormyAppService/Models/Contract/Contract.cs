@@ -20,6 +20,9 @@ namespace DormyAppService.Models.Contract
         public DateTime CreatedDate { get; set; }
 
         [Required]
+        public DateTime LastUpdate { get; set; }
+
+        [Required]
         public DateTime StartDate { get; set; }
 
         [Required]

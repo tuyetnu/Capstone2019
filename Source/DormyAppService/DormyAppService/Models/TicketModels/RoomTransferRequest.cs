@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using DormyAppService.Models.AccountModels;
+using DormyAppService.Models.Enums;
 using DormyAppService.Models.RoomModels;
 
 namespace DormyAppService.Models.TicketModels
@@ -31,5 +32,8 @@ namespace DormyAppService.Models.TicketModels
 
         [Required]
         public RoomType TargetRoomType { get; set; }
+
+        [Required]
+        public RequestStatusEnum Status { get; set; }
     }
 }

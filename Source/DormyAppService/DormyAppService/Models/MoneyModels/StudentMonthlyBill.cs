@@ -21,7 +21,7 @@ namespace DormyAppService.Models.MoneyModels
         public Student Student { get; set; }
 
         [Required]
-        public RoomType RoomType { get; set; }
+        public Room RoomType { get; set; }
 
         [Required]
         public RoomMonthlyBill MonthlyBill { get; set; }
@@ -47,6 +47,12 @@ namespace DormyAppService.Models.MoneyModels
         [Required] 
         [Column(TypeName = "Money")]
         public Decimal Total { get; set; }
+
+        [Required]
+        public DateTime TargetMonth { get; set; }
+
+        [Required]
+        public DateTime TargetYear { get; set; }
 
     }
 }
