@@ -19,148 +19,16 @@ namespace DormyWebService.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DormyWebService.Entities.Account.Account", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<string>("Email")
-                        .IsRequired();
-
-                    b.Property<bool>("Gender");
-
-                    b.Property<string>("IdPictureUrl");
-
-                    b.Property<string>("IdentityCardNumber");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<int>("RoleId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("Accounts");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.Account.Staff", b =>
-                {
-                    b.Property<int>("AccountId");
-
-                    b.Property<int?>("AccountId1");
-
-                    b.Property<bool>("Gender");
-
-                    b.Property<string>("HomeTown");
-
-                    b.Property<string>("IdentityCardId");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.HasKey("AccountId");
-
-                    b.HasIndex("AccountId1");
-
-                    b.ToTable("Staff");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.Account.Student", b =>
-                {
-                    b.Property<int>("AccountId");
-
-                    b.Property<int?>("AccountId1");
-
-                    b.Property<bool>("IsRoomLeader");
-
-                    b.Property<int?>("PriorityTypeId");
-
-                    b.Property<int?>("RoomId");
-
-                    b.Property<int>("StartedSchoolYear");
-
-                    b.Property<string>("StudentCardPictureUrl");
-
-                    b.Property<int>("Term");
-
-                    b.HasKey("AccountId");
-
-                    b.HasIndex("AccountId1");
-
-                    b.HasIndex("PriorityTypeId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("Students");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.Equipment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EquipmentTypeId");
-
-                    b.Property<int>("RoomId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EquipmentTypeId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("Equipments");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.EquipmentType", b =>
+            modelBuilder.Entity("DormyWebService.Models.AccountModels.Role", b =>
                 {
                     b.Property<int>("Id");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EquipmentTypes");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.EvaluationScoreHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("ResultedScore");
-
-                    b.Property<int>("TargetStudentAccountId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TargetStudentAccountId");
-
-                    b.ToTable("EvaluationScoreHistories");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.Role", b =>
-                {
-                    b.Property<int>("Id");
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -184,7 +52,121 @@ namespace DormyWebService.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.Room.Room", b =>
+            modelBuilder.Entity("DormyWebService.Models.AccountModels.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccessToken");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<string>("Email");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                });
+
+            modelBuilder.Entity("DormyWebService.Models.Contract.Contract", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<DateTime>("LastUpdate");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<int>("Status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Contract");
+                });
+
+            modelBuilder.Entity("DormyWebService.Models.EquipmentModels.Equipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("EquipmentTypeId");
+
+                    b.Property<DateTime>("ExpirationDate");
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<DateTime>("LastUpdated");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(50);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("Money");
+
+                    b.Property<int?>("RoomId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipmentTypeId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Equipments");
+                });
+
+            modelBuilder.Entity("DormyWebService.Models.EquipmentModels.EquipmentType", b =>
+                {
+                    b.Property<int>("Id");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EquipmentTypes");
+                });
+
+            modelBuilder.Entity("DormyWebService.Models.EvaluationScoreHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("ResultedScore");
+
+                    b.Property<int>("TargetStudentId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TargetStudentId");
+
+                    b.ToTable("EvaluationScoreHistories");
+                });
+
+            modelBuilder.Entity("DormyWebService.Models.RoomModels.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,38 +176,44 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
                     b.Property<DateTime>("LastUpdated");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<int?>("RoomLeaderAccountId");
-
-                    b.Property<int?>("RoomTypeId");
+                    b.Property<int>("RoomTypeId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoomLeaderAccountId");
 
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.Room.RoomType", b =>
+            modelBuilder.Entity("DormyWebService.Models.RoomModels.RoomType", b =>
                 {
                     b.Property<int>("Id");
 
                     b.Property<int>("DefaultCapacity");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(100);
+
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
+
+                    b.Property<decimal>("Price");
 
                     b.HasKey("Id");
 
                     b.ToTable("RoomTypes");
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.StudentPriorityType", b =>
+            modelBuilder.Entity("DormyWebService.Models.StudentPriorityType", b =>
                 {
                     b.Property<int>("Id");
 
@@ -251,66 +239,113 @@ namespace DormyWebService.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.Account.Account", b =>
+            modelBuilder.Entity("DormyWebService.Models.AccountModels.Staff", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasBaseType("DormyWebService.Models.AccountModels.User");
+
+                    b.Property<bool>("Gender");
+
+                    b.Property<string>("HomeTown");
+
+                    b.Property<string>("IdentityCardId");
+
+                    b.ToTable("Staffs");
+
+                    b.HasDiscriminator().HasValue("Staff");
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.Account.Staff", b =>
+            modelBuilder.Entity("DormyWebService.Models.AccountModels.Student", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.Account.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId1");
+                    b.HasBaseType("DormyWebService.Models.AccountModels.User");
+
+                    b.Property<decimal>("AccountBalance")
+                        .HasColumnType("Money");
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(200);
+
+                    b.Property<int?>("CurrentContractId");
+
+                    b.Property<int>("EvaluationScore");
+
+                    b.Property<bool>("Gender")
+                        .HasColumnName("Student_Gender");
+
+                    b.Property<string>("IdentityCardImageUrl");
+
+                    b.Property<string>("IdentityNumber")
+                        .IsRequired();
+
+                    b.Property<bool>("IsRoomLeader");
+
+                    b.Property<string>("PriorityImageUrl");
+
+                    b.Property<int>("PriorityTypeId");
+
+                    b.Property<int?>("RoomId");
+
+                    b.Property<int>("StartedSchoolYear");
+
+                    b.Property<string>("StudentCardImageUrl");
+
+                    b.Property<string>("StudentCardNumber")
+                        .IsRequired();
+
+                    b.Property<int>("Term");
+
+                    b.HasIndex("CurrentContractId");
+
+                    b.HasIndex("PriorityTypeId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Students");
+
+                    b.HasDiscriminator().HasValue("Student");
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.Account.Student", b =>
+            modelBuilder.Entity("DormyWebService.Models.EquipmentModels.Equipment", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.Account.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId1");
-
-                    b.HasOne("DormyWebService.Entities.StudentPriorityType", "PriorityType")
-                        .WithMany()
-                        .HasForeignKey("PriorityTypeId");
-
-                    b.HasOne("DormyWebService.Entities.Room.Room", "Room")
-                        .WithMany("Students")
-                        .HasForeignKey("RoomId");
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.Equipment", b =>
-                {
-                    b.HasOne("DormyWebService.Entities.EquipmentType", "EquipmentType")
+                    b.HasOne("DormyWebService.Models.EquipmentModels.EquipmentType", "EquipmentType")
                         .WithMany()
                         .HasForeignKey("EquipmentTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DormyWebService.Entities.Room.Room", "Room")
+                    b.HasOne("DormyWebService.Models.RoomModels.Room")
                         .WithMany("Equipments")
-                        .HasForeignKey("RoomId")
+                        .HasForeignKey("RoomId");
+                });
+
+            modelBuilder.Entity("DormyWebService.Models.EvaluationScoreHistory", b =>
+                {
+                    b.HasOne("DormyWebService.Models.AccountModels.Student", "TargetStudent")
+                        .WithMany()
+                        .HasForeignKey("TargetStudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.EvaluationScoreHistory", b =>
+            modelBuilder.Entity("DormyWebService.Models.RoomModels.Room", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.Account.Student", "TargetStudent")
+                    b.HasOne("DormyWebService.Models.RoomModels.RoomType", "RoomType")
                         .WithMany()
-                        .HasForeignKey("TargetStudentAccountId")
+                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.Room.Room", b =>
+            modelBuilder.Entity("DormyWebService.Models.AccountModels.Student", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.Account.Student", "RoomLeader")
+                    b.HasOne("DormyWebService.Models.Contract.Contract", "CurrentContract")
                         .WithMany()
-                        .HasForeignKey("RoomLeaderAccountId");
+                        .HasForeignKey("CurrentContractId");
 
-                    b.HasOne("DormyWebService.Entities.Room.RoomType", "RoomType")
+                    b.HasOne("DormyWebService.Models.StudentPriorityType", "PriorityType")
                         .WithMany()
-                        .HasForeignKey("RoomTypeId");
+                        .HasForeignKey("PriorityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DormyWebService.Models.RoomModels.Room", "Room")
+                        .WithMany("Students")
+                        .HasForeignKey("RoomId");
                 });
 #pragma warning restore 612, 618
         }
