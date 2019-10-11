@@ -1,25 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace DormyWebService.Models.AccountModels
 {
-    public class Role
+    public class Role : IdentityRole<int>
     {
-        [Key]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public Role() { }
 
-        [Required]
-        [MinLength(3)]
-        [MaxLength(20)]
-        public string Name { get; set; }
-
-        [MaxLength(100)]
-        public string Description { get; set; }
+        public Role(string name)
+        {
+            Name = name;
+        }
     }
 }

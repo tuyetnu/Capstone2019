@@ -5,8 +5,14 @@ using DormyWebService.Models.RoomModels;
 namespace DormyWebService.Models.AccountModels
 {
     [Table("Students")]
-    public class Student : User
+    public class Student
     {
+        [Key]
+        [ForeignKey("User")]
+        public int Id { get; set; }
+
+        public virtual User User { get; set; }
+
         //Năm nhập học
         [Required]
         public int StartedSchoolYear { get; set; }

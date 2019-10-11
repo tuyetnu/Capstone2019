@@ -1,13 +1,12 @@
-﻿using DormyAppService.Models;
-using DormyWebService.Models;
-using DormyWebService.Models.AccountModels;
+﻿using DormyWebService.Models.AccountModels;
 using DormyWebService.Models.EquipmentModels;
 using DormyWebService.Models.RoomModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DormyWebService.Entities
+namespace DormyWebService.Models
 {
-    public sealed class DormyDbContext:DbContext
+    public sealed class DormyDbContext:IdentityDbContext<User,Role,int>
     {
         public DormyDbContext(DbContextOptions options) : base(options)
         {
@@ -15,11 +14,9 @@ namespace DormyWebService.Entities
         }
 
         //Register the tables in database
-        public DbSet<User> Users { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<StudentPriorityType> StudentPriorityTypes { get; set; }
         public DbSet<Staff> Staff { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
@@ -28,18 +25,12 @@ namespace DormyWebService.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //Set not identity keys
-            modelBuilder.Entity<Role>().Property(r => r.Id).ValueGeneratedNever();
             modelBuilder.Entity<RoomType>().Property(r => r.Id).ValueGeneratedNever();
             modelBuilder.Entity<EquipmentType>().Property(e => e.Id).ValueGeneratedNever();
             modelBuilder.Entity<StudentPriorityType>().Property(e => e.Id).ValueGeneratedNever();
-
-            //Seed Role Table
-            modelBuilder.Entity<Role>().HasData(
-                new Role{Id = 1, Name = "Admin"},
-                new Role { Id = 2, Name = "Staff" },
-                new Role { Id = 3, Name = "Student" }
-            );
 
             //Seed Student Priority Type Table
             modelBuilder.Entity<StudentPriorityType>().HasData(

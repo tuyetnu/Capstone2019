@@ -4,10 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace DormyWebService.Models.AccountModels
 {
     [Table("Staffs")]
-    public class Staff : User
+    public class Staff
     {
+        [Key]
+        [ForeignKey("User")]
+        public int Id { get; set; }
+
+        public virtual User User { get; set; }
+
         //Số CMND
-        public string IdentityCardId { get; set; }
+        public string IdentityNumber { get; set; }
 
         //Quê Quán
         public string HomeTown { get; set; }

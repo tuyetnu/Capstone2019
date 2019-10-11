@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
+using DormyWebService.Models;
+using DormyWebService.Models.AccountModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +36,22 @@ namespace DormyWebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Apply custom identity
+            services.AddIdentity<User, Role>()
+                .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddEntityFrameworkStores<DormyDbContext>().AddDefaultTokenProviders();
+
+            //Add Google Authentication
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    IConfigurationSection googleAuthNSection =
+                        Configuration.GetSection("Authentication:Google");
+
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
+
             //Allow Cross Origins
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -39,41 +59,10 @@ namespace DormyWebService
             //Configure AutoMapper
             services.AddAutoMapper(typeof(Startup));
 
-            //Commented because currently not needed because of using google login instead
-            // configure strongly typed settings objects
-            //            var appSettingsSection = Configuration.GetSection("AppSettings");
-            //            services.Configure<AppSettings>(appSettingsSection);
-
-            //Commented because currently not needed because of using google login instead
-            // configure jwt authentication
-            //            var appSettings = appSettingsSection.Get<AppSettings>();
-            //            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            //            services.AddAuthentication(x =>
-            //                {
-            //                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //                })
-            //                .AddJwtBearer(x =>
-            //                {
-            //                    x.RequireHttpsMetadata = false;
-            //                    x.SaveToken = true;
-            //                    x.TokenValidationParameters = new TokenValidationParameters
-            //                    {
-            //                        ValidateIssuerSigningKey = true,
-            //                        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //                        ValidateIssuer = false,
-            //                        ValidateAudience = false
-            //                    };
-            //                });
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            // Not sure if gonna do this yet
-            // configure DI for application services
-            // services.AddScoped<IAccountService, UserService>();
-
             //Register DBContext and database connection string
-            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:DormyDB"]));
+            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:TestDB"]));
 
             // Register the Swagger generator, defining 1 or more Swagger documents, v1 is for version 
             services.AddSwaggerGen(c =>
