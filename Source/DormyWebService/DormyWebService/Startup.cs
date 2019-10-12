@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
-using DormyWebService.Models;
-using DormyWebService.Models.AccountModels;
+using DormyWebService.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -62,7 +61,10 @@ namespace DormyWebService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Register DBContext and database connection string
-            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:TestDB"]));
+            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:LaptopTestDB"]));
+
+            //Inject Repository
+            services.AddScoped<IRepository, Repository<DormyDbContext>>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents, v1 is for version 
             services.AddSwaggerGen(c =>
