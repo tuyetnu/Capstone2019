@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Models.RoomModels;
 
@@ -9,8 +10,9 @@ namespace DormyWebService.Models.AccountModels
     {
         [Key]
         [ForeignKey("User")]
-        public int Id { get; set; }
+        public int StudentId { get; set; }
 
+        //One-to-one user
         public virtual User User { get; set; }
 
         //Năm nhập học
@@ -60,6 +62,6 @@ namespace DormyWebService.Models.AccountModels
         [Column(TypeName = "Money")]
         public decimal AccountBalance { get; set; }
 
-        public Contract.Contract CurrentContract { get; set; }
+        public virtual ICollection<Contract.Contract> Contracts { get; set; }
     }
 }

@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DormyWebService.Models.AccountModels
 {
-    [Table("Staffs")]
     public class Staff
     {
         [Key]
         [ForeignKey("User")]
         public int Id { get; set; }
 
+        //One-to-one with User
         public virtual User User { get; set; }
 
         //Số CMND

@@ -37,9 +37,9 @@ namespace DormyWebService
         public void ConfigureServices(IServiceCollection services)
         {
             //Apply custom identity
-            services.AddIdentity<User, Role>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<DormyDbContext>().AddDefaultTokenProviders();
+//            services.AddIdentity<User, Role>()
+//                .AddDefaultUI(UIFramework.Bootstrap4)
+//                .AddEntityFrameworkStores<DormyDbContext>().AddDefaultTokenProviders();
 
             //Add Google Authentication
 //            services.AddAuthentication()
