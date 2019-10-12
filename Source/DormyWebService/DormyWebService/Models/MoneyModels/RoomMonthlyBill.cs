@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Models.RoomModels;
@@ -8,7 +9,7 @@ namespace DormyWebService.Models.MoneyModels
     public class RoomMonthlyBill
     {
         [Key]
-        public int Id { get; set; }
+        public int RoomMonthlyBillId { get; set; }
 
         [Required]
         public Room Room { get; set; }
@@ -56,6 +57,6 @@ namespace DormyWebService.Models.MoneyModels
         [Column(TypeName = "Money")]
         public decimal TotalAmount { get; set; }
 
-        public StudentMonthlyBill StudentMonthlyBill { get; set; }
+        public virtual ICollection<StudentMonthlyBill>  StudentMonthlyBill { get; set; }
     }
 }

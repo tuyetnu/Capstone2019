@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DormyWebService.Models.MoneyModels
 {
-    public class Fee
+    public class PricePerUnit
     {
         [Key]
-        public int Id { get; set; }
+        public int PricePerUnitId { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }

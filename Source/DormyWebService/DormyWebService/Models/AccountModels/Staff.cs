@@ -7,7 +7,7 @@ namespace DormyWebService.Models.AccountModels
     {
         [Key]
         [ForeignKey("User")]
-        public int Id { get; set; }
+        public int StaffId { get; set; }
 
         //One-to-one with User
         public virtual User User { get; set; }

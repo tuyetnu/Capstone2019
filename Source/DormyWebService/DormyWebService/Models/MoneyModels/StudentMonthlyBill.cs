@@ -9,7 +9,7 @@ namespace DormyWebService.Models.MoneyModels
     public class StudentMonthlyBill
     {
         [Key]
-        public int Id { get; set; }
+        public int StudentMonthlyBillId { get; set; }
 
         [Required]
         public bool IsPaid { get; set; }
@@ -20,8 +20,11 @@ namespace DormyWebService.Models.MoneyModels
         [Required]
         public Room RoomType { get; set; }
 
+        [ForeignKey("RoomMonthlyBill")]
+        public int RoomMonthlyBillId { get; set; }
+
         [Required]
-        public RoomMonthlyBill MonthlyBill { get; set; }
+        public RoomMonthlyBill RoomMonthlyBill { get; set; }
         
         // WaterFee + Electricity
         [Column(TypeName = "Money")]

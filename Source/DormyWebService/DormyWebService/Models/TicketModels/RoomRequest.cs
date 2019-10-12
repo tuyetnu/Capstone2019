@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Models.AccountModels;
-using DormyWebService.Models.Enums;
+using DormyWebService.Models.ParamModels;
 using DormyWebService.Models.RoomModels;
 
 namespace DormyAppService.Models.TicketModels
@@ -25,7 +25,7 @@ namespace DormyAppService.Models.TicketModels
 
         //Current Status
         [Required]
-        public RequestStatusEnum Status { get; set; }
+        public Param Status { get; set; }
 
         [Required]
         public Student Student { get; set; }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DormyWebService.Models.ParamModels;
 
 namespace DormyWebService.Models.EquipmentModels
 {
     public class Equipment
     {
         [Key]
-        public int Id { get; set; }
+        public int EquipmentId { get; set; }
 
         [MaxLength(50)]
         public string Name { get; set; }
@@ -15,7 +16,10 @@ namespace DormyWebService.Models.EquipmentModels
         public string ImageUrl { get; set; }
 
         [Required] 
-        public EquipmentType EquipmentType { get; set; }
+        public int Type { get; set; }
+
+        [Required]
+        public int Status { get; set; }
 
         [Column(TypeName = "Money")]
         public decimal Price { get; set; }

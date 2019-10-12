@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Models.AccountModels;
-using DormyWebService.Models.Enums;
+using DormyWebService.Models.ParamModels;
 
 namespace DormyWebService.Models.TicketModels
 {
@@ -16,7 +16,7 @@ namespace DormyWebService.Models.TicketModels
         public Staff Staff { get; set; }
 
         [Required]
-        public RequestStatusEnum Status { get; set; }
+        public Param Status { get; set; }
 
         public int Month { get; set; }
 

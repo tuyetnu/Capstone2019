@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DormyWebService.Models.ParamModels;
 using DormyWebService.Models.RoomModels;
 
 namespace DormyWebService.Models.AccountModels
@@ -38,7 +39,7 @@ namespace DormyWebService.Models.AccountModels
 
         [Required]
         //Viện ưu tiên
-        public StudentPriorityType PriorityType { get; set; }
+        public Param PriorityType { get; set; }
 
         //Hình đối tượng ưu tiên
         public string PriorityImageUrl { get; set; }

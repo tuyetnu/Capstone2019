@@ -7,7 +7,7 @@ namespace DormyWebService.Models.RoomModels
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public int RoomTypeId { get; set; }
 
         [Required]
         [MinLength(3)]

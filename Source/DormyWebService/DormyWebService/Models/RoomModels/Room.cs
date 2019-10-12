@@ -9,7 +9,7 @@ namespace DormyWebService.Models.RoomModels
     public class Room
     {
         [Key]
-        public int Id { get; set; }
+        public int RoomId { get; set; }
 
         [Required]
         public string Name { get; set; }

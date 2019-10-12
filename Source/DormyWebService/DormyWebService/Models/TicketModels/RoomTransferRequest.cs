@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using DormyWebService.Models.AccountModels;
-using DormyWebService.Models.Enums;
+using DormyWebService.Models.ParamModels;
 using DormyWebService.Models.RoomModels;
 
-namespace DormyAppService.Models.TicketModels
+namespace DormyWebService.Models.TicketModels
 {
     public class RoomTransferRequest
     {
@@ -34,6 +31,6 @@ namespace DormyAppService.Models.TicketModels
         public RoomType TargetRoomType { get; set; }
 
         [Required]
-        public RequestStatusEnum Status { get; set; }
+        public Param Status { get; set; }
     }
 }

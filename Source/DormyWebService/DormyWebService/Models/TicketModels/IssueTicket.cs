@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using DormyAppService.Models;
 using DormyAppService.Models.TicketModels;
 using DormyWebService.Models.AccountModels;
-using DormyWebService.Models.Enums;
 using DormyWebService.Models.EquipmentModels;
+using DormyWebService.Models.ParamModels;
 using DormyWebService.Models.RoomModels;
 
 namespace DormyWebService.Entities.TicketModels
@@ -12,13 +12,13 @@ namespace DormyWebService.Entities.TicketModels
     public class IssueTicket
     {
         [Key]
-        public int Id { get; set; }
+        public int IssueTicketId { get; set; }
 
         [Required]
-        public IssueType Type { get; set; }
+        public Param Type { get; set; }
 
         [Required]
-        public IssueStatusEnum Status { get; set; }
+        public Param Status { get; set; }
 
         [Required]
         public User Owner { get; set; }

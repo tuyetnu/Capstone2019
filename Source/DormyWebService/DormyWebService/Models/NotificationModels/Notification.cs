@@ -2,14 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using DormyAppService.Models;
 using DormyWebService.Models.AccountModels;
-using DormyWebService.Models.Enums;
+using DormyWebService.Models.ParamModels;
 
 namespace DormyWebService.Models.NotificationModels
 {
     public class Notification
     {
         [Required]
-        public int Id { get; set; }
+        public int NotificationId { get; set; }
 
         public User Owner { get; set; }
 
@@ -25,9 +25,9 @@ namespace DormyWebService.Models.NotificationModels
         public DateTime LastUpdated { get; set; }
 
         [Required]
-        public NotificationStatusEnum Status { get; set; }
+        public Param Status { get; set; }
 
         [Required]
-        public NotificationType Type { get; set; }
+        public Param Type { get; set; }
     }
 }

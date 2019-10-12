@@ -7,7 +7,7 @@ namespace DormyWebService.Models.ParamModels
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
+        public int ParamTypeId { get; set; }
 
         [Required]
         [MinLength(3)]
