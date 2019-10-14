@@ -5,13 +5,13 @@ using DormyWebService.Entities.RoomEntities;
 
 namespace DormyWebService.Entities.TicketEntities
 {
-    public class DormitoryReservationForm
+    public class RoomBookingRequestForm
     {
         //TODO: Nhớ làm đc đăng ký trong khoảng tg, ngày nào trong tuần, và khi nào thì request hết hạn.
         //TODO: Nhớ làm bảng cho tùy chỉnh các khoản TG là khi nào.
 
         [Key]
-        public int DormitoryReservationFormId { get; set; }
+        public int RoomBookingRequestFormId { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }

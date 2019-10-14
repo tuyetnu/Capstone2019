@@ -36,7 +36,7 @@ namespace DormyWebService.Entities
         public DbSet<ParamType> ParamTypes { get; set; }
         public DbSet<CancelContractForm> CancelContractForms { get; set; }
         public DbSet<ContractRenewalForm> ContractRenewalForms { get; set; }
-        public DbSet<DormitoryReservationForm> DormitoryReservationForms { get; set; }
+        public DbSet<RoomBookingRequestForm> RoomBookingRequestForm { get; set; }
         public DbSet<IssueTicket> IssueTickets { get; set; }
         public DbSet<RoomTransferRequestForm> RoomTransferRequestForms { get; set; }
         public DbSet<News> News { get; set; }
