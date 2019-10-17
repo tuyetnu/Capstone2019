@@ -23,7 +23,6 @@ namespace DormyWebService.Entities
         public DbSet<Student> Students { get; set; }
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
@@ -51,24 +50,18 @@ namespace DormyWebService.Entities
             modelBuilder.Entity<StudentMonthlyBill>().HasOne(c => c.Room).WithMany(r => r.StudentMonthlyBills)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            //Seed Student Priority Type Table
-            modelBuilder.Entity<Role>().HasData(
-                new Role {RoleId = 0, Name = "Admin"},
-                new Role { RoleId = 1, Name = "Staff" },
-                new Role { RoleId = 2, Name = "Student" }
-            );
-
             //Seed ParamType Table
             modelBuilder.Entity<ParamType>().HasData(
-                new ParamType() { ParamTypeId = 0, Name = "Contract Status"},
-                new ParamType() { ParamTypeId = 1, Name = "EquipmentType" },
-                new ParamType() { ParamTypeId = 2, Name = "EquipmentStatus" },
-                new ParamType() { ParamTypeId = 3, Name = "MoneyTransactionType" },
-                new ParamType() { ParamTypeId = 4, Name = "NotificationType" },
-                new ParamType() { ParamTypeId = 5, Name = "NotificationStatus" },
-                new ParamType() { ParamTypeId = 6, Name = "RequestStatus" },
-                new ParamType() { ParamTypeId = 7, Name = "StudentPriorityType" },
-                new ParamType() { ParamTypeId = 8, Name = "NewsStatus" }
+                new ParamType() { ParamTypeId = 0, Name = "EquipmentType" },
+                new ParamType() { ParamTypeId = 1, Name = "MoneyTransactionType" },
+                new ParamType() { ParamTypeId = 2, Name = "NotificationType" },
+                new ParamType() { ParamTypeId = 3, Name = "StudentPriorityType" },
+                new ParamType() { ParamTypeId = 4, Name = "AcceptedEmailHost" }
+            );
+
+            //Seed Param Table
+            modelBuilder.Entity<Param>().HasData(
+                new Param() { ParamId = 10, ParamTypeId = 4, TextValue = "fpt.edu.vn" }
             );
 
         }

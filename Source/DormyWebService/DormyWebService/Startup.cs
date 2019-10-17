@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
+using DormyWebService.Repositories;
 using DormyWebService.Services;
 using DormyWebService.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,7 +46,7 @@ namespace DormyWebService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Register DBContext and database connection string
-            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:TestDB"]));
+            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:DormyDB"]));
 
             // Register the Swagger generator, defining 1 or more Swagger documents, v1 is for version 
             services.AddSwaggerGen(c =>
@@ -82,6 +83,8 @@ namespace DormyWebService
 
             // Configure Dependency Injection
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -35,36 +35,6 @@ namespace DormyWebService.Migrations
                     b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.AccountEntities.Role", b =>
-                {
-                    b.Property<int>("RoleId");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(20);
-
-                    b.HasKey("RoleId");
-
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 0,
-                            Name = "Admin"
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            Name = "Staff"
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            Name = "Student"
-                        });
-                });
-
             modelBuilder.Entity("DormyWebService.Entities.AccountEntities.Staff", b =>
                 {
                     b.Property<int>("StaffId");
@@ -139,13 +109,15 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("AccessToken");
 
-                    b.Property<int>("RoleId");
+                    b.Property<string>("Email");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Role")
+                        .IsRequired();
+
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -164,7 +136,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("StartDate");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<int>("StudentId");
 
@@ -417,6 +390,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("ParamTypeId");
 
+                    b.Property<string>("TextValue");
+
                     b.Property<DateTime>("TimeValue");
 
                     b.Property<int>("Value");
@@ -426,6 +401,16 @@ namespace DormyWebService.Migrations
                     b.HasIndex("ParamTypeId");
 
                     b.ToTable("Params");
+
+                    b.HasData(
+                        new
+                        {
+                            ParamId = 10,
+                            ParamTypeId = 4,
+                            TextValue = "fpt.edu.vn",
+                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = 0
+                        });
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.ParamEntities.ParamType", b =>
@@ -444,47 +429,27 @@ namespace DormyWebService.Migrations
                         new
                         {
                             ParamTypeId = 0,
-                            Name = "Contract Status"
-                        },
-                        new
-                        {
-                            ParamTypeId = 1,
                             Name = "EquipmentType"
                         },
                         new
                         {
-                            ParamTypeId = 2,
-                            Name = "EquipmentStatus"
-                        },
-                        new
-                        {
-                            ParamTypeId = 3,
+                            ParamTypeId = 1,
                             Name = "MoneyTransactionType"
                         },
                         new
                         {
-                            ParamTypeId = 4,
+                            ParamTypeId = 2,
                             Name = "NotificationType"
                         },
                         new
                         {
-                            ParamTypeId = 5,
-                            Name = "NotificationStatus"
-                        },
-                        new
-                        {
-                            ParamTypeId = 6,
-                            Name = "RequestStatus"
-                        },
-                        new
-                        {
-                            ParamTypeId = 7,
+                            ParamTypeId = 3,
                             Name = "StudentPriorityType"
                         },
                         new
                         {
-                            ParamTypeId = 8,
-                            Name = "NewsStatus"
+                            ParamTypeId = 4,
+                            Name = "AcceptedEmailHost"
                         });
                 });
 
@@ -729,14 +694,6 @@ namespace DormyWebService.Migrations
                     b.HasOne("DormyWebService.Entities.AccountEntities.User", "User")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("DormyWebService.Entities.AccountEntities.User", b =>
-                {
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

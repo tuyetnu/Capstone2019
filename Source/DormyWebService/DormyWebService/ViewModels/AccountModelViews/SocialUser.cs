@@ -1,4 +1,6 @@
-﻿namespace DormyWebService.ViewModels.AccountModelViews
+﻿using System.Net.Mail;
+
+namespace DormyWebService.ViewModels.AccountModelViews
 {
     public class SocialUser
     {

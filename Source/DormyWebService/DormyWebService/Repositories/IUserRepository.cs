@@ -1,6 +1,6 @@
 ﻿using DormyWebService.Entities.AccountEntities;
 
-namespace DormyWebService.Repository
+namespace DormyWebService.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {

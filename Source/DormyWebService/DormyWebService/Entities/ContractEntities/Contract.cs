@@ -14,7 +14,7 @@ namespace DormyWebService.Entities.ContractEntities
 
         //Param
         [Required]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }

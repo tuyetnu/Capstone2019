@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using DormyWebService.Entities;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services;
+using DormyWebService.ViewModels.AccountModelViews;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DormyWebService.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -22,98 +25,21 @@ namespace DormyWebService.Controllers
             _userService = userService;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-        {
-            //            return await _context.Users.ToListAsync();
-
-            throw new NotImplementedException();
-        }
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            //            var user = await _context.Users.FindAsync(id);
-            //
-            //            if (user == null)
-            //            {
-            //                return NotFound();
-            //            }
-            //
-            //            return user;
-
-            throw new NotImplementedException();
-        }
-
         // PUT: api/Users/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPut("ChangeStatus/{id}")]
+        public async Task<ActionResult<User>> ChangeStatus(int id, string status)
         {
-            //            if (id != user.UserId)
-            //            {
-            //                return BadRequest();
-            //            }
-            //
-            //            _context.Entry(user).State = EntityState.Modified;
-            //
-            //            try
-            //            {
-            //                await _context.SaveChangesAsync();
-            //            }
-            //            catch (DbUpdateConcurrencyException)
-            //            {
-            //                if (!UserExists(id))
-            //                {
-            //                    return NotFound();
-            //                }
-            //                else
-            //                {
-            //                    throw;
-            //                }
-            //            }
-            //
-            //            return NoContent();
-
-            throw new NotImplementedException();
+            return await _userService.ChangeStatus(id, status);
         }
 
-        // POST: api/Users
+        // POST: api/Users/Login[HttpPost]
+        //Don't need access token to use this'
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [Route("Login")]
+        public async Task<ActionResult<LoginSuccessUser>> Login(SocialUser socialUser)
         {
-            //            _context.Users.Add(user);
-            //            await _context.SaveChangesAsync();
-            //
-            //            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-
-            throw new NotImplementedException();
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
-        {
-            //            var user = await _context.Users.FindAsync(id);
-            //            if (user == null)
-            //            {
-            //                return NotFound();
-            //            }
-            //
-            //            _context.Users.Remove(user);
-            //            await _context.SaveChangesAsync();
-            //
-            //            return user;
-
-            throw new NotImplementedException();
-        }
-
-        private bool UserExists(int id)
-        {
-            //            return _context.Users.Any(e => e.UserId == id
-
-            throw new NotImplementedException();
+            return await _userService.Authenticate(socialUser);
         }
     }
 }

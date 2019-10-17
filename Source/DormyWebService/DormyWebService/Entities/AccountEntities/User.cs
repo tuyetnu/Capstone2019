@@ -9,12 +9,16 @@ namespace DormyWebService.Entities.AccountEntities
         [Key]
         public int UserId { get; set; }
 
-        [ForeignKey("Role")]
-        public int RoleId { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
+
         //Param
         [Required]
-        public int Status { get; set; }
-        public virtual Role Role { get; set; }
+        public string Status { get; set; }
+
+        [Required]
+        public string Role { get; set; }
+
         public string AccessToken { get; set; }
     }
 }

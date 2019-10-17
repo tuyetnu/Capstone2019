@@ -4,17 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DormyWebService.Entities.AccountEntities
 {
-    public class Role
+    public static class Role
     {
-        //Not generated
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int RoleId { get; set; }
+        public const string Admin = "Admin";
+        public const string Staff = "Staff";
+        public const string Student = "Student";
+        public const string User = "User";
 
-        [Required]
-        [MaxLength(20)]
-        public string Name { get; set; }
-
-        public virtual ICollection<User> Users { get; set; }
+        public static List<string> GetAllRole()
+        {
+            return new List<string>()
+            {
+                Admin,
+                Staff,
+                Student, 
+                User
+            };
+        }
     }
 }

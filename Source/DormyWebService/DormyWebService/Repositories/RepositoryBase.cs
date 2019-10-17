@@ -22,9 +22,14 @@ namespace DormyWebService.Repositories
             return await Context.Set<T>().ToListAsync();
         }
 
-        public virtual Task<T> FindByIdAsync(int id)
+        public virtual async Task<T> FindByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            return await Context.Set<T>().FindAsync(id);
+        }
+
+        public virtual async Task<T> FindAsync(Expression<Func<T, bool>> match)
+        {
+            return await Context.Set<T>().SingleOrDefaultAsync(match);
         }
 
         public virtual async Task<ICollection<T>> FindAllAsyncWithCondition(Expression<Func<T, bool>> match)
@@ -32,14 +37,22 @@ namespace DormyWebService.Repositories
             return await Context.Set<T>().Where(match).ToListAsync();
         }
 
-        public virtual Task CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
-            throw new System.NotImplementedException();
+            Context.Set<T>().Add(entity);
+            await Context.SaveChangesAsync();
+            return entity;
         }
 
-        public virtual Task UpdateAsync(T entity)
+        public virtual async Task<T> UpdateAsync(T entity, object key)
         {
-            throw new System.NotImplementedException();
+            if (entity == null)
+                return null;
+            T exist = await Context.Set<T>().FindAsync(key);
+            if (exist == null) return null;
+            Context.Entry(exist).CurrentValues.SetValues(entity);
+            await Context.SaveChangesAsync();
+            return exist;
         }
 
         public virtual async Task<int> DeleteAsync(T entity)
