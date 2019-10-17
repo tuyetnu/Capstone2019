@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
-using DormyWebService.Repository;
+using DormyWebService.Services;
+using DormyWebService.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,25 +36,8 @@ namespace DormyWebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //Apply custom identity
-//            services.AddIdentity<User, Role>()
-//                .AddDefaultUI(UIFramework.Bootstrap4)
-//                .AddEntityFrameworkStores<DormyDbContext>().AddDefaultTokenProviders();
-
-            //Add Google Authentication
-//            services.AddAuthentication()
-//                .AddGoogle(options =>
-//                {
-//                    IConfigurationSection googleAuthNSection =
-//                        Configuration.GetSection("Authentication:Google");
-//
-//                    options.ClientId = googleAuthNSection["ClientId"];
-//                    options.ClientSecret = googleAuthNSection["ClientSecret"];
-//                });
-
             //Allow Cross Origins
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Configure AutoMapper
             services.AddAutoMapper(typeof(Startup));
@@ -61,10 +45,7 @@ namespace DormyWebService
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Register DBContext and database connection string
-            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:LaptopTestDB"]));
-
-            //Inject Repository
-            services.AddScoped<IRepository, Repository<DormyDbContext>>();
+            services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:TestDB"]));
 
             // Register the Swagger generator, defining 1 or more Swagger documents, v1 is for version 
             services.AddSwaggerGen(c =>
@@ -75,20 +56,42 @@ namespace DormyWebService
                     Description = "This API helps manage a dormitory"}
                 );
             });
+
+            //Setup JWT
+            var authenticationSettingSection = Configuration.GetSection("AuthenticationSetting");
+            services.Configure<AuthenticationSetting>(authenticationSettingSection);
+            var appSettings = authenticationSettingSection.Get<AuthenticationSetting>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+            // Configure Dependency Injection
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+            // Global cross origins policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -99,6 +102,9 @@ namespace DormyWebService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            //For JWT
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseMvc();
