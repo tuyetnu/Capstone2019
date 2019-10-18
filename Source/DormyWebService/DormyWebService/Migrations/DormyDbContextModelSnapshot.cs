@@ -107,8 +107,6 @@ namespace DormyWebService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AccessToken");
-
                     b.Property<string>("Email");
 
                     b.Property<string>("Role")

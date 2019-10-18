@@ -18,7 +18,5 @@ namespace DormyWebService.Entities.AccountEntities
 
         [Required]
         public string Role { get; set; }
-
-        public string AccessToken { get; set; }
     }
 }

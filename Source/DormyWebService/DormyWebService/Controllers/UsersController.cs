@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DormyWebService.Entities;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services;
+using DormyWebService.Services.UserServices;
 using DormyWebService.ViewModels.AccountModelViews;
 using Microsoft.AspNetCore.Authorization;
 
@@ -39,6 +40,11 @@ namespace DormyWebService.Controllers
         [Route("Login")]
         public async Task<ActionResult<LoginSuccessUser>> Login(SocialUser socialUser)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             return await _userService.Authenticate(socialUser);
         }
     }
