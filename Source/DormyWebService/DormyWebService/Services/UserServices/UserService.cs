@@ -8,6 +8,7 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -75,7 +76,7 @@ namespace DormyWebService.Services.UserServices
                             Email = email,
                             //Active
                             Status = UserStatus.Active,
-                            Role = Role.UnAuthorizedUser,
+                            Role = Role.AuthorizedUser,
                         });
                     }
 

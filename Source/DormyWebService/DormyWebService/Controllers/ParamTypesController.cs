@@ -29,10 +29,10 @@ namespace DormyWebService.Controllers
         /// <summary>
         /// See how many Param Types there are, have to be logged in to see
         /// </summary>
-        /// <remarks>
+        /// <remarks>authorization disabled for debug purposes</remarks>
         /// See how many Param Types there are, have to be logged in to see
         /// </remarks>
-        [Authorize(Roles = Role.Admin)]
+//        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         public async Task<ActionResult<List<ParamType>>> GetAllParamTypes()
         {
@@ -49,6 +49,8 @@ namespace DormyWebService.Controllers
         /// <summary>
         /// Find Param Type by Id, have to be logged in to see
         /// </summary>
+        /// <remarks>authorization disabled for debug purposes</remarks>
+        /// //        [Authorize(Roles = Role.Admin)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ParamType>> FindById(int id)
         {

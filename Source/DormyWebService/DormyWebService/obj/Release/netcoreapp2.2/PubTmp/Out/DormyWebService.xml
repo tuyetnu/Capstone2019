@@ -4,25 +4,66 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
-        <member name="M:DormyWebService.Controllers.ParamTypesController.GetAllParamTypes">
+        <member name="M:DormyWebService.Controllers.ParamsController.GetAllParams">
             <summary>
-            See how many Param Types there are, have to be logged in to see
+            Get All Params in database
             </summary>
-            <remarks>
-            See how many Param Types there are, have to be logged in to see
-            </remarks>
+            <remarks>authorization disabled for debug purposes</remarks>
+            <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.ParamsController.FindById(System.Int32)">
+            <summary>
+            Find a param by id
+            </summary>
+            <remarks>authorization disabled for debug purposes</remarks>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.ParamsController.GetUserStatus">
+            <summary>
+            Get all user status stored in server
+            </summary>
+            <remarks>authorization disabled for debug purposes</remarks>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:DormyWebService.Controllers.ParamTypesController.GetAllParamTypes" -->
         <member name="M:DormyWebService.Controllers.ParamTypesController.FindById(System.Int32)">
             <summary>
             Find Param Type by Id, have to be logged in to see
             </summary>
+            <remarks>authorization disabled for debug purposes</remarks>
+            //        [Authorize(Roles = Role.Admin)]
+        </member>
+        <member name="M:DormyWebService.Controllers.StudentController.FindById(System.Int32)">
+            <summary>
+            Find a student by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(DormyWebService.ViewModels.UserModelViews.UpdateStudent.UpdateStudentRequestForm)">
+            <summary>
+            Update profile for students and authorized users
+            </summary>
+            <param name="requestModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.StudentController.AdminChangeStudentStatus(System.Int32,System.String)">
+            <summary>
+            Activate/Disable Student for admin
+            </summary>
+            <param name="studentId"></param>
+            /// <param name="status">Target Status</param>
+            <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.UsersController.ChangeStatus(System.Int32,System.String)">
             <summary>
-            Activate or disable user
+            Activate or disable user, for debug only, use this function in Student control instead
             </summary>
+            <param name="id"></param>
+            /// <param name="status">Target status</param>
         </member>
-        <member name="M:DormyWebService.Controllers.UsersController.Login(DormyWebService.ViewModels.UserModelViews.SocialUser)">
+        <member name="M:DormyWebService.Controllers.UsersController.Login(DormyWebService.ViewModels.UserModelViews.Login.SocialUser)">
             <summary>
             For Login
             </summary>

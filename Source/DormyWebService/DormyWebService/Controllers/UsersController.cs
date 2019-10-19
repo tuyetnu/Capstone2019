@@ -11,6 +11,7 @@ using DormyWebService.Services;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DormyWebService.Controllers
@@ -28,8 +29,10 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
-        /// Activate or disable user
+        /// Activate or disable user, for debug only, use this function in Student control instead
         /// </summary>
+        /// <param name="id"></param>
+        /// /// <param name="status">Target status</param>
         // PUT: api/Users/5
         [HttpPut("ChangeStatus/{id}")]
         public async Task<ActionResult<User>> ChangeStatus(int id, string status)

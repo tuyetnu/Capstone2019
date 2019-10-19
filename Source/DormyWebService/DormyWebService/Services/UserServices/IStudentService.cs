@@ -2,13 +2,17 @@
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
+using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
+using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 
 namespace DormyWebService.Services.UserServices
 {
     public interface IStudentService
     {
-        Task<ICollection<Student>> GetAllStudent();
-        Task<Student> FindById(int id);
-        Task<Student> UpdateSelf(UpdateStudentForm requestModel);
+        Task<List<GetAllStudentResponse>> GetAllStudent();
+        Task<FindByIdStudentResponse> FindById(int id);
+        Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequestForm requestModel);
+        Task<ChangeStudentStatusResponse> ChangeStudentStatus(int id, string status);
     }
 }

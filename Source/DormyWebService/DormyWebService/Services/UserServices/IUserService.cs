@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.UserServices
