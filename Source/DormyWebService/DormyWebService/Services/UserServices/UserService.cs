@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
-using DormyWebService.ViewModels.AccountModelViews;
+using DormyWebService.ViewModels.UserModelViews;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -29,108 +29,120 @@ namespace DormyWebService.Services.UserServices
             _repoWrapper = repoWrapper;
         }
         
-        public async Task<ActionResult<LoginSuccessUser>> Authenticate(SocialUser socialUser)
+        public async Task<LoginSuccessUser> Authenticate(string idToken, string email)
         {
-            IdToken idToken;
+            //TODO:Nhớ bắt phải tài khoản FPT ko
 
             //Call Google API with Id Token
                 using (var httpClient = new HttpClient())
                 {
-                    using (var response = await httpClient.GetAsync(GoogleApiTokenInfoUrl + socialUser.IdToken))
+                    using (var response = await httpClient.GetAsync(GoogleApiTokenInfoUrl + idToken))
                     {
                         string test = await response.Content.ReadAsStringAsync();
                         try
                         {
                             //Covert Json to IdToken
-                            idToken = JsonConvert.DeserializeObject<IdToken>(test);
+                            IdTokenResponse idTokenResponse = JsonConvert.DeserializeObject<IdTokenResponse>(test);
+
+                            //Log for debug
+                            System.Diagnostics.Debug.WriteLine("idToken.Email: " + idTokenResponse.Email);
+                            System.Diagnostics.Debug.WriteLine("Sent Email: " + email);
+
+                            //Check if email sent and email form Google API are the same
+                            if (idTokenResponse.Email != email || string.IsNullOrEmpty(idTokenResponse.Email))
+                            {
+                                throw new HttpStatusCodeException(404);
+                            }
                         }
                         
                         catch (JsonSerializationException)
                         {
-                            return new StatusCodeResult(StatusCodes.Status400BadRequest);
+                            throw new HttpStatusCodeException(400);
                         }
                     }
                 }
 
-                System.Diagnostics.Debug.WriteLine("idToken.Email: " + idToken.Email);
-                System.Diagnostics.Debug.WriteLine("socialUser.Email: " + socialUser.Email);
-
-            if (idToken.Email != socialUser.Email || string.IsNullOrEmpty(idToken.Email))
+                try
                 {
-                    return new StatusCodeResult(StatusCodes.Status404NotFound);
+                    //Find User with the same email in database
+                    var user = await _repoWrapper.User.FindAsync(u => u.Email == email);
+
+                    //If user is null, create new user
+                    if (user == null)
+                    {
+                        user = await _repoWrapper.User.CreateAsync(new User()
+                        {
+                            Email = email,
+                            //Active
+                            Status = UserStatus.Active,
+                            Role = Role.UnAuthorizedUser,
+                        });
+                    }
+
+                    // authentication successful so generate jwt token
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(_authSettings.Secret);
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                            new Claim(ClaimTypes.Role, user.Role),
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(7),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    
+
+                    return new LoginSuccessUser()
+                    {
+                        Role = user.Role,
+                        AccessToken = tokenHandler.WriteToken(token),
+                        Id = user.UserId,
+                        Status = user.Status
+                    };
+                }
+                catch (Exception)
+                {
+                    throw new HttpStatusCodeException(500);
                 }
 
-                //Find User with the same email in database
-                var user = await _repoWrapper.User.FindAsync(u => u.Email == socialUser.Email);
-
-                //If user is null, create new user
-                if (user == null)
-                {
-                    user = await _repoWrapper.User.CreateAsync(new User()
-                    {
-                        Email = idToken.Email,
-                        //Active
-                        Status = UserStatus.Active,
-                        Role = Role.User,
-                    });
-                }
-
-                // authentication successful so generate jwt token
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_authSettings.Secret);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Role, Role.Admin),
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-//                user.AccessToken = tokenHandler.WriteToken(token);
-
-                return new LoginSuccessUser()
-                {
-                    Role = user.Role,
-                    Id = user.UserId,
-                    Status = user.Status
-                };
+                
         }
 
-        public async Task<ActionResult<User>> ChangeStatus(int id, string status)
+        public async Task<User> ChangeStatus(int id, string status)
         {
             var user = await _repoWrapper.User.FindByIdAsync(id);
 
             if(user == null)
             {
-                return new StatusCodeResult(StatusCodes.Status404NotFound);
+                throw new HttpStatusCodeException(404);
             }
             user.Status = status;
             user = await _repoWrapper.User.UpdateAsync(user, id);
 
             if (user == null)
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                throw new HttpStatusCodeException(500);
             }
 
             return user;
         }
 
-        public async Task<ActionResult<User>> ChangeRole(int id, string role)
+        public async Task<User> ChangeRole(int id, string role)
         {
             var user = await _repoWrapper.User.FindByIdAsync(id);
 
             if (user == null)
             {
-                return new StatusCodeResult(StatusCodes.Status404NotFound);
+                throw new HttpStatusCodeException(404); ;
             }
             user.Role = role;
             user = await _repoWrapper.User.UpdateAsync(user, id);
 
             if (user == null)
             {
-                return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                throw new HttpStatusCodeException(500);
             }
 
             return user;

@@ -1,4 +1,4 @@
-﻿namespace DormyWebService.ViewModels.AccountModelViews
+﻿namespace DormyWebService.ViewModels.UserModelViews
 {
     //Used for returning access token and information after successfully authenticated
     public class LoginSuccessUser

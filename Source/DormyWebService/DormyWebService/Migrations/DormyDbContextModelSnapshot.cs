@@ -62,7 +62,7 @@ namespace DormyWebService.Migrations
                         .HasColumnType("Money");
 
                     b.Property<string>("Address")
-                        .HasMaxLength(200);
+                        .HasMaxLength(100);
 
                     b.Property<int>("EvaluationScore");
 

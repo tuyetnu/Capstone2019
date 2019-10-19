@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
 
-namespace DormyWebService.ViewModels.AccountModelViews
+namespace DormyWebService.ViewModels.UserModelViews
 {
     public class SocialUser
     {

@@ -6,6 +6,9 @@ namespace DormyWebService.Repositories
     public interface IRepositoryWrapper
     {
         IUserRepository User { get; }
+
+        IStudentRepository Student { get; }
+
         IParamRepository Param { get; }
 
         IParamTypeRepository ParamType { get;}

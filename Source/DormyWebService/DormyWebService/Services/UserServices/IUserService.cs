@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
-using DormyWebService.ViewModels.AccountModelViews;
+using DormyWebService.ViewModels.UserModelViews;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.UserServices
@@ -8,8 +8,8 @@ namespace DormyWebService.Services.UserServices
     //Implemented by UserService
     public interface IUserService
     {
-        Task<ActionResult<LoginSuccessUser>> Authenticate(SocialUser socialUser);
-        Task<ActionResult<User>> ChangeStatus(int id,string status);
-        Task<ActionResult<User>> ChangeRole(int id, string role);
+        Task<LoginSuccessUser> Authenticate(string idToken, string email);
+        Task<User> ChangeStatus(int id,string status);
+        Task<User> ChangeRole(int id, string role);
     }
 }

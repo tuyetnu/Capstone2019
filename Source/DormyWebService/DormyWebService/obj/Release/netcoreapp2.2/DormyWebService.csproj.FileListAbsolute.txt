@@ -14,3 +14,5 @@ C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyWebService\DormyWebService\obj\R
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyWebService\DormyWebService\obj\Release\netcoreapp2.2\DormyWebService.RazorTargetAssemblyInfo.cache
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyWebService\DormyWebService\obj\Release\netcoreapp2.2\DormyWebService.dll
 C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyWebService\DormyWebService\obj\Release\netcoreapp2.2\DormyWebService.pdb
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyWebService\DormyWebService\bin\Release\netcoreapp2.2\DormyWebService.xml
+C:\Users\ADMIN\Desktop\Capstone2019\Source\DormyWebService\DormyWebService\obj\Release\netcoreapp2.2\DormyWebService.xml

@@ -8,6 +8,7 @@ using DormyWebService.Entities;
 using DormyWebService.Repositories;
 using DormyWebService.Repositories.UserRepositories;
 using DormyWebService.Services;
+using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -85,6 +86,8 @@ namespace DormyWebService
 
             // Configure Dependency Injection
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IParamService, ParamService>();
+            services.AddScoped<IParamTypeService, ParamTypeService>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<IUserRepository, UserRepository>();
         }
@@ -110,6 +113,9 @@ namespace DormyWebService
 
             //For JWT
             app.UseAuthentication();
+
+            //Middleware for exception handling
+            app.UseHttpStatusCodeExceptionMiddleware();
 
             app.UseHttpsRedirection();
             app.UseMvc();

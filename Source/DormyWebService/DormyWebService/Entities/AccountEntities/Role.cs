@@ -9,7 +9,8 @@ namespace DormyWebService.Entities.AccountEntities
         public const string Admin = "Admin";
         public const string Staff = "Staff";
         public const string Student = "Student";
-        public const string User = "User";
+        public const string AuthorizedUser = "AuthorizedUser";
+        public const string UnAuthorizedUser = "UnAuthorizedUser";
 
         public static List<string> GetAllRole()
         {
@@ -17,8 +18,9 @@ namespace DormyWebService.Entities.AccountEntities
             {
                 Admin,
                 Staff,
-                Student, 
-                User
+                Student,
+                AuthorizedUser,
+                UnAuthorizedUser
             };
         }
     }

@@ -9,7 +9,8 @@ using DormyWebService.Entities;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services;
 using DormyWebService.Services.UserServices;
-using DormyWebService.ViewModels.AccountModelViews;
+using DormyWebService.Utilities;
+using DormyWebService.ViewModels.UserModelViews;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DormyWebService.Controllers
@@ -19,13 +20,16 @@ namespace DormyWebService.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
 
         public UsersController(IUserService userService)
         {
             _userService = userService;
         }
 
+        /// <summary>
+        /// Activate or disable user
+        /// </summary>
         // PUT: api/Users/5
         [HttpPut("ChangeStatus/{id}")]
         public async Task<ActionResult<User>> ChangeStatus(int id, string status)
@@ -33,19 +37,36 @@ namespace DormyWebService.Controllers
             return await _userService.ChangeStatus(id, status);
         }
 
+        /// <summary>
+        /// For Login
+        /// </summary>
         // POST: api/Users/Login[HttpPost]
         //Don't need access token to use this'
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult<LoginSuccessUser>> Login(SocialUser socialUser)
+        public async Task<ActionResult<LoginSuccessUser>> Login( [FromBody] SocialUser socialUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            return await _userService.Authenticate(socialUser);
+            try
+            {
+                return await _userService.Authenticate(socialUser.IdToken, socialUser.Email);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                switch (e.StatusCode)
+                {
+                    case 400: return BadRequest("Request is invalid");
+                    case 404: return NotFound("Could not find email in Google API");
+                    default: return StatusCode(500, "Internal server error");
+                }
+
+            }
+            
         }
     }
 }

@@ -18,6 +18,7 @@ namespace DormyWebService.Entities.AccountEntities
         public virtual User User { get; set; }
 
         [Required]
+        [MinLength(3)]
         [MaxLength(50)]
         public string Name { get; set; }
 
@@ -57,7 +58,8 @@ namespace DormyWebService.Entities.AccountEntities
         public bool Gender { get; set; }
 
         //Địa chỉ
-        [MaxLength(200)]
+        [MinLength(3)]
+        [MaxLength(100)]
         public string Address { get; set; }
 
         [Required]

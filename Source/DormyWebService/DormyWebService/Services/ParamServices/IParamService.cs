@@ -8,5 +8,6 @@ namespace DormyWebService.Services.ParamServices
     public interface IParamService
     {
         Task<ICollection<Param>> FindAllAsync();
+        Task<Param> FindById(int id);
     }
 }

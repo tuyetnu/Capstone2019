@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DormyWebService</name>
+    </assembly>
+    <members>
+        <member name="M:DormyWebService.Controllers.ParamTypesController.GetAllParamTypes">
+            <summary>
+            See how many Param Types there are, have to be logged in to see
+            </summary>
+            <remarks>
+            See how many Param Types there are, have to be logged in to see
+            </remarks>
+        </member>
+        <member name="M:DormyWebService.Controllers.ParamTypesController.FindById(System.Int32)">
+            <summary>
+            Find Param Type by Id, have to be logged in to see
+            </summary>
+        </member>
+        <member name="M:DormyWebService.Controllers.UsersController.ChangeStatus(System.Int32,System.String)">
+            <summary>
+            Activate or disable user
+            </summary>
+        </member>
+        <member name="M:DormyWebService.Controllers.UsersController.Login(DormyWebService.ViewModels.UserModelViews.SocialUser)">
+            <summary>
+            For Login
+            </summary>
+        </member>
+    </members>
+</doc>
