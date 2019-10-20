@@ -2,6 +2,8 @@
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.NewsEntities;
 using DormyWebService.ViewModels.NewsViewModels;
+using DormyWebService.ViewModels.NewsViewModels.CreateNews;
+using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
@@ -20,6 +22,7 @@ namespace DormyWebService.Utilities
             CreateMap<Student, FindByIdStudentResponse>();
             CreateMap<CreateNewsRequest, News>();
             CreateMap<News, CreateNewsResponse>();
+            CreateMap<News, GetNewsHeadlinesResponse>();
         }
     }
 }

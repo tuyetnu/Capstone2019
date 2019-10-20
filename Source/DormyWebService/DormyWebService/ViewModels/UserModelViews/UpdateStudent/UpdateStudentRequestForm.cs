@@ -32,11 +32,6 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
         public int Term { get; set; }
 
         [Required]
-        //Viện ưu tiên
-        //Param
-        public int PriorityType { get; set; }
-
-        [Required]
         public bool Gender { get; set; }
 
         //Địa chỉ
@@ -55,7 +50,6 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
             student.Term = Term;
             student.IdentityNumber = IdentityNumber;
             student.StudentCardNumber = StudentCardNumber;
-            student.PriorityType = PriorityType;
             student.Gender = Gender;
             student.PhoneNumber = PhoneNumber;
 

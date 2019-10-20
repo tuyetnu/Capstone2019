@@ -4,7 +4,13 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
-        <member name="M:DormyWebService.Controllers.NewsController.CreateNews(DormyWebService.ViewModels.NewsViewModels.CreateNewsRequest)">
+        <member name="M:DormyWebService.Controllers.NewsController.GetNewsHeadlines">
+            <summary>
+            Get list of news headlines for authorized users
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.NewsController.CreateNews(DormyWebService.ViewModels.NewsViewModels.CreateNews.CreateNewsRequest)">
             <summary>
             Create new news, done by admin
             </summary>
