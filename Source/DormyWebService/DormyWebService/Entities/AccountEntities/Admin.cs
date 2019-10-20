@@ -8,7 +8,7 @@ namespace DormyWebService.Entities.AccountEntities
         //One-to-One relationship with User
         [Key]
         [ForeignKey("User")]
-        public int StudentId { get; set; }
+        public int AdminId { get; set; }
 
         //One-to-one user
         public virtual User User { get; set; }

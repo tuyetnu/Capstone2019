@@ -21,7 +21,7 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.AccountEntities.Admin", b =>
                 {
-                    b.Property<int>("StudentId");
+                    b.Property<int>("AdminId");
 
                     b.Property<string>("IdentityNumber")
                         .IsRequired();
@@ -30,7 +30,7 @@ namespace DormyWebService.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.HasKey("StudentId");
+                    b.HasKey("AdminId");
 
                     b.ToTable("Admins");
                 });
@@ -71,13 +71,16 @@ namespace DormyWebService.Migrations
                     b.Property<string>("IdentityCardImageUrl");
 
                     b.Property<string>("IdentityNumber")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(12);
 
                     b.Property<bool>("IsRoomLeader");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("PhoneNumber");
 
                     b.Property<string>("PriorityImageUrl");
 
@@ -330,16 +333,19 @@ namespace DormyWebService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AuthorAdminStudentId");
+                    b.Property<string>("AttachedFileUrl");
+
+                    b.Property<int>("AuthorAdminId");
 
                     b.Property<string>("Content")
                         .IsRequired();
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<DateTime>("LastUpdateDate");
+                    b.Property<DateTime>("LastUpdate");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -347,7 +353,7 @@ namespace DormyWebService.Migrations
 
                     b.HasKey("NewsId");
 
-                    b.HasIndex("AuthorAdminStudentId");
+                    b.HasIndex("AuthorAdminId");
 
                     b.ToTable("News");
                 });
@@ -671,7 +677,7 @@ namespace DormyWebService.Migrations
                 {
                     b.HasOne("DormyWebService.Entities.AccountEntities.User", "User")
                         .WithMany()
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -751,9 +757,9 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.NewsEntities.News", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Admin", "AuthorAdmin")
+                    b.HasOne("DormyWebService.Entities.AccountEntities.Admin", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorAdminStudentId")
+                        .HasForeignKey("AuthorAdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

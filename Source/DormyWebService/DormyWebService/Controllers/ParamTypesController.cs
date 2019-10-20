@@ -31,7 +31,6 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <remarks>authorization disabled for debug purposes</remarks>
         /// See how many Param Types there are, have to be logged in to see
-        /// </remarks>
 //        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         public async Task<ActionResult<List<ParamType>>> GetAllParamTypes()

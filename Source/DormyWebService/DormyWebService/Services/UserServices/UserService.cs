@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Security.Claims;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.Debug.ChangeUserRole;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Http;
@@ -29,7 +31,33 @@ namespace DormyWebService.Services.UserServices
             _authSettings = authSettings.Value;
             _repoWrapper = repoWrapper;
         }
-        
+
+        public async Task<List<User>> DebugFindAll()
+        {
+            return (List<User>) await _repoWrapper.User.FindAllAsync();
+        }
+
+        public async Task<User> FindById(int id)
+        {
+            User user;
+            try
+            {
+                user = await _repoWrapper.User.FindByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "Internal Server Error Occured when finding user");
+            }
+
+            //Check if there's this user in database
+            if (user == null)
+            {
+                throw new HttpStatusCodeException(404, "User is not found");
+            }
+
+            return user;
+        }
+
         public async Task<LoginSuccessUser> Authenticate(string idToken, string email)
         {
             //TODO:Nhớ bắt phải tài khoản FPT ko
@@ -100,7 +128,8 @@ namespace DormyWebService.Services.UserServices
                         Role = user.Role,
                         AccessToken = tokenHandler.WriteToken(token),
                         Id = user.UserId,
-                        Status = user.Status
+                        Status = user.Status,
+                        Email = user.Email
                     };
                 }
                 catch (Exception)
@@ -130,23 +159,30 @@ namespace DormyWebService.Services.UserServices
             return user;
         }
 
-        public async Task<User> ChangeRole(int id, string role)
+        public async Task<DebugChangeUserRoleResponse> ChangeUserRole(int id, string role)
         {
             var user = await _repoWrapper.User.FindByIdAsync(id);
 
             if (user == null)
             {
-                throw new HttpStatusCodeException(404); ;
+                throw new HttpStatusCodeException(404, "User not found"); ;
             }
             user.Role = role;
-            user = await _repoWrapper.User.UpdateAsync(user, id);
 
-            if (user == null)
+            try
             {
-                throw new HttpStatusCodeException(500);
+                user = await _repoWrapper.User.UpdateAsync(user, id);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "Could not update user role");
             }
 
-            return user;
+            return new DebugChangeUserRoleResponse()
+            {
+                Role = user.Role,
+                UserId = user.UserId
+            };
         }
     }
 }

@@ -28,6 +28,8 @@ namespace DormyWebService.Entities.AccountEntities
 
         //CMND
         [Required]
+        [MinLength(9)]
+        [MaxLength(12)]
         public string IdentityNumber { get; set; }
 
         //Hình CMND
@@ -61,6 +63,9 @@ namespace DormyWebService.Entities.AccountEntities
         [MinLength(3)]
         [MaxLength(100)]
         public string Address { get; set; }
+
+        //SĐT
+        public string PhoneNumber { get; set; }
 
         [Required]
         public bool IsRoomLeader { get; set; }

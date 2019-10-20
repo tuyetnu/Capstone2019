@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj": {}
+    "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj": {
+    "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
+        "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
         "projectName": "DormyWebService",
-        "projectPath": "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\obj\\",
+        "projectPath": "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
+        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

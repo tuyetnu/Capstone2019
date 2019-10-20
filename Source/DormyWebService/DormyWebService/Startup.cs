@@ -10,6 +10,7 @@ using DormyWebService.Entities;
 using DormyWebService.Repositories;
 using DormyWebService.Repositories.UserRepositories;
 using DormyWebService.Services;
+using DormyWebService.Services.NewsServices;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
@@ -95,8 +96,10 @@ namespace DormyWebService
 
             // Configure Dependency Injection
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IParamService, ParamService>();
             services.AddScoped<IStudentService, StudentService>();
+            services.AddScoped<INewsServices, NewsService>();
             services.AddScoped<IParamTypeService, ParamTypeService>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<IUserRepository, UserRepository>();

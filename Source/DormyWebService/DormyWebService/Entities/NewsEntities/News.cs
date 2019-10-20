@@ -10,7 +10,7 @@ namespace DormyWebService.Entities.NewsEntities
         public int NewsId { get; set; }
 
         [Required]
-        public Admin AuthorAdmin { get; set; }
+        public Admin Author { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -19,13 +19,15 @@ namespace DormyWebService.Entities.NewsEntities
         [Required]
         public string Content { get; set; }
 
+        public string AttachedFileUrl { get; set; }
+
         [Required]
         public DateTime CreatedDate { get; set; }
 
         [Required]
-        public DateTime LastUpdateDate { get; set; }
+        public DateTime LastUpdate { get; set; }
 
         [Required]
-        public int Status { get; set; }
+        public string Status { get; set; }
     }
 }

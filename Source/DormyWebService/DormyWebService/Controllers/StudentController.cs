@@ -7,6 +7,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
+using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,25 @@ namespace DormyWebService.Controllers
             try
             {
                 return await _studentService.FindById(id);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get Profile of student, for student 
+        /// </summary>
+        /// <param name="id">Student's id</param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Student)]
+        [HttpGet("GetProfile/{id}")]
+        public async Task<ActionResult<GetStudentProfileResponse>> GetProfile(int id)
+        {
+            try
+            {
+                return await _studentService.GetProfile(id);
             }
             catch (HttpStatusCodeException e)
             {

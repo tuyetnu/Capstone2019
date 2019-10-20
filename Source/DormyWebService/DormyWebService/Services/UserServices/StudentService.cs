@@ -9,6 +9,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
+using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 
 namespace DormyWebService.Services.UserServices
@@ -56,25 +57,34 @@ namespace DormyWebService.Services.UserServices
             return _mapper.Map<FindByIdStudentResponse>(student);
         }
 
-        public async Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequestForm requestModel)
+        public async Task<GetStudentProfileResponse> GetProfile(int id)
         {
-            System.Diagnostics.Debug.WriteLine("Went to service");
-            var user = await _repoWrapper.User.FindByIdAsync(requestModel.StudentId);
+            var student = await _repoWrapper.Student.FindByIdAsync(id);
 
-            //Check if there's this user in database
-            if (user == null)
+            if (student == null)
             {
-                throw new HttpStatusCodeException(404, "User Profile is not found");
+                throw new HttpStatusCodeException(404, "No Student is found");
             }
 
+            return GetStudentProfileResponse.MapFromStudent(student);
+        }
+
+        public async Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequestForm requestModel)
+        {
+//            System.Diagnostics.Debug.WriteLine("Went to service");
+
+            //Find User with the same id in database
+            var user = await _userService.FindById(requestModel.StudentId);
+
+            //Check if student already existed in database
             var student = await _repoWrapper.Student.FindByIdAsync(requestModel.StudentId);
 
             //If there isn't a student with this id, create new
             if (student == null)
             {
                 student = _mapper.Map<Student>(requestModel);
-                System.Diagnostics.Debug.WriteLine("student.Id:" + student.StudentId);
-                System.Diagnostics.Debug.WriteLine("student.Name:" + student.Name);
+//                System.Diagnostics.Debug.WriteLine("student.Id:" + student.StudentId);
+//                System.Diagnostics.Debug.WriteLine("student.Name:" + student.Name);
                 student.IsRoomLeader = false;
                 student.AccountBalance = 0;
 
@@ -84,7 +94,7 @@ namespace DormyWebService.Services.UserServices
                 {
                     student = await _repoWrapper.Student.CreateAsync(student);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new HttpStatusCodeException(500, "Could not create new student");
                 }
@@ -94,14 +104,7 @@ namespace DormyWebService.Services.UserServices
             }
             else
             {
-                student.Name = requestModel.Name;
-                student.Address = requestModel.Address;
-                student.StartedSchoolYear = requestModel.StartedSchoolYear;
-                student.Term = requestModel.Term;
-                student.IdentityNumber = requestModel.IdentityNumber;
-                student.StudentCardNumber = requestModel.StudentCardNumber;
-                student.PriorityType = requestModel.PriorityType;
-                student.Gender = requestModel.Gender;
+                student = requestModel.MapToStudent(student);
 
                 try
                 {
@@ -138,17 +141,7 @@ namespace DormyWebService.Services.UserServices
 //            System.Diagnostics.Debug.WriteLine("ChangeStudentStatus: Found Student ");
 
             //Declare User
-            User user;
-
-            //Find User related to student
-            try
-            { 
-                user = await _repoWrapper.User.FindByIdAsync(student.StudentId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(404, "Could not find user related to student in database");
-            }
+            var user = await _userService.FindById(id);
 
             //Change to new status
             user.Status = status;

@@ -4,6 +4,11 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.NewsController.CreateNews(DormyWebService.ViewModels.NewsViewModels.CreateNewsRequest)">
+            <summary>
+            Create new news, done by admin
+            </summary>
+        </member>
         <member name="M:DormyWebService.Controllers.ParamsController.GetAllParams">
             <summary>
             Get All Params in database
@@ -26,7 +31,13 @@
             <remarks>authorization disabled for debug purposes</remarks>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:DormyWebService.Controllers.ParamTypesController.GetAllParamTypes" -->
+        <member name="M:DormyWebService.Controllers.ParamTypesController.GetAllParamTypes">
+            <summary>
+            See how many Param Types there are, have to be logged in to see
+            </summary>
+            <remarks>authorization disabled for debug purposes</remarks>
+            See how many Param Types there are, have to be logged in to see
+        </member>
         <member name="M:DormyWebService.Controllers.ParamTypesController.FindById(System.Int32)">
             <summary>
             Find Param Type by Id, have to be logged in to see
@@ -39,6 +50,13 @@
             Find a student by id
             </summary>
             <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.StudentController.GetProfile(System.Int32)">
+            <summary>
+            Get Profile of student, for student 
+            </summary>
+            <param name="id">Student's id</param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(DormyWebService.ViewModels.UserModelViews.UpdateStudent.UpdateStudentRequestForm)">
@@ -66,6 +84,17 @@
         <member name="M:DormyWebService.Controllers.UsersController.Login(DormyWebService.ViewModels.UserModelViews.Login.SocialUser)">
             <summary>
             For Login
+            </summary>
+        </member>
+        <member name="M:DormyWebService.Controllers.UsersController.FindAll">
+            <summary>
+            Find all user for debug
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.UsersController.ChangeUserRole(System.Int32,System.String)">
+            <summary>
+            Change user role for debug
             </summary>
         </member>
     </members>

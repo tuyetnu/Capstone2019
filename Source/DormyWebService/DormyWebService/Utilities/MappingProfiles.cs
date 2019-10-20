@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.NewsEntities;
+using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
@@ -16,6 +18,8 @@ namespace DormyWebService.Utilities
             CreateMap<Student, UpdateStudentResponse>();
             CreateMap<Student, GetAllStudentResponse>();
             CreateMap<Student, FindByIdStudentResponse>();
+            CreateMap<CreateNewsRequest, News>();
+            CreateMap<News, CreateNewsResponse>();
         }
     }
 }

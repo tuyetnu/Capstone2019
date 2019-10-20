@@ -10,6 +10,7 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.Debug.ChangeUserRole;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace DormyWebService.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -70,6 +70,37 @@ namespace DormyWebService.Controllers
 
             }
             
+        }
+
+        /// <summary>
+        /// Find all user for debug
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Debug/GetAllUser")]
+        public async Task<ActionResult<List<User>>> FindAll()
+        {
+            return await _userService.DebugFindAll();
+        }
+
+        /// <summary>
+        /// Change user role for debug
+        /// </summary>
+        [HttpPut("Debug/ChangeUserRole")]
+        public async Task<ActionResult<DebugChangeUserRoleResponse>> ChangeUserRole(int userId, string role)
+        {
+            if (!Role.IsRole(role))
+            {
+                return BadRequest("Role is not valid,");
+            }
+
+            try
+            {
+                return await _userService.ChangeUserRole(userId, role);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
         }
     }
 }
