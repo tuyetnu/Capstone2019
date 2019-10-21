@@ -12,10 +12,9 @@ namespace DormyWebService.Entities.ParamEntities
         public int ParamId { get; set; }
 
         [Required]
+        [ForeignKey("ParamType")]
         public int ParamTypeId { get; set; }
-
-        [Required]
-        [ForeignKey("ParamTypeId")]
+        
         public ParamType ParamType { get; set; }
 
         public string Name { get; set; }

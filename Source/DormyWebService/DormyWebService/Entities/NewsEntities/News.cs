@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
 
 namespace DormyWebService.Entities.NewsEntities
@@ -9,7 +10,9 @@ namespace DormyWebService.Entities.NewsEntities
         [Key]
         public int NewsId { get; set; }
 
-        [Required]
+        [ForeignKey("Author")]
+        public int AuthorId { get; set; }
+        
         public Admin Author { get; set; }
 
         [Required]

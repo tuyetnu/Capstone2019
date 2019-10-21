@@ -10,6 +10,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.NewsController.GetNewsDetail(System.Int32)">
+            <summary>
+            Get Detail of news,  for authorized users
+            </summary>
+            <param name="id">news id</param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.NewsController.CreateNews(DormyWebService.ViewModels.NewsViewModels.CreateNews.CreateNewsRequest)">
             <summary>
             Create new news, done by admin
@@ -20,6 +27,13 @@
             Get All Params in database
             </summary>
             <remarks>authorization disabled for debug purposes</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.ParamsController.GetAllByParamType(System.Int32)">
+            <summary>
+            Get all Param of a Param Type
+            </summary>
+            <param name="paramTypeId"></param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.ParamsController.FindById(System.Int32)">
@@ -51,13 +65,6 @@
             <remarks>authorization disabled for debug purposes</remarks>
             //        [Authorize(Roles = Role.Admin)]
         </member>
-        <member name="M:DormyWebService.Controllers.StudentController.FindById(System.Int32)">
-            <summary>
-            Find a student by id
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-        </member>
         <member name="M:DormyWebService.Controllers.StudentController.GetProfile(System.Int32)">
             <summary>
             Get Profile of student, for student 
@@ -65,7 +72,7 @@
             <param name="id">Student's id</param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(DormyWebService.ViewModels.UserModelViews.UpdateStudent.UpdateStudentRequestForm)">
+        <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(DormyWebService.ViewModels.UserModelViews.UpdateStudent.UpdateStudentRequest)">
             <summary>
             Update profile for students and authorized users
             </summary>

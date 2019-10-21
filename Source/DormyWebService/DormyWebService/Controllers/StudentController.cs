@@ -40,24 +40,18 @@ namespace DormyWebService.Controllers
             }
         }
 
-        /// <summary>
-        /// Find a student by id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        //TODO: Determine Authorization
-        [HttpGet("{id}")]
-        public async Task<ActionResult<FindByIdStudentResponse>> FindById(int id)
-        {
-            try
-            {
-                return await _studentService.FindById(id);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
-        }
+//        [HttpGet("{id}")]
+//        public async Task<ActionResult<FindByIdStudentResponse>> FindById(int id)
+//        {
+//            try
+//            {
+//                return await _studentService.FindById(id);
+//            }
+//            catch (HttpStatusCodeException e)
+//            {
+//                return StatusCode(e.StatusCode, e.Message);
+//            }
+//        }
 
         /// <summary>
         /// Get Profile of student, for student 
@@ -85,7 +79,7 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.AuthorizedUser + "," + Role.Student)]
         [HttpPut]
-        public async Task<ActionResult<UpdateStudentResponse>> UpdateStudent(UpdateStudentRequestForm requestModel)
+        public async Task<ActionResult<UpdateStudentResponse>> UpdateStudent(UpdateStudentRequest requestModel)
         {
             //Check form
             if(!ModelState.IsValid)

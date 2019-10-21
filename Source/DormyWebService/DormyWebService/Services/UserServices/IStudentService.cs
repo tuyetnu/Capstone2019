@@ -14,7 +14,7 @@ namespace DormyWebService.Services.UserServices
         Task<List<GetAllStudentResponse>> GetAllStudent();
         Task<FindByIdStudentResponse> FindById(int id);
         Task<GetStudentProfileResponse> GetProfile(int id);
-        Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequestForm requestModel);
+        Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel);
         Task<ChangeStudentStatusResponse> ChangeStudentStatus(int id, string status);
     }
 }

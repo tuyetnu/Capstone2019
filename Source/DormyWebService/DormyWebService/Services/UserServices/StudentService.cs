@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Repositories;
+using DormyWebService.Services.ParamServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
@@ -18,13 +19,15 @@ namespace DormyWebService.Services.UserServices
     {
         private IRepositoryWrapper _repoWrapper;
         private IUserService _userService;
+        private IParamService _paramService;
         private IMapper _mapper;
 
-        public StudentService(IRepositoryWrapper repoWrapper, IMapper mapper, IUserService userService)
+        public StudentService(IRepositoryWrapper repoWrapper, IMapper mapper, IUserService userService, IParamService paramService)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
             _userService = userService;
+            _paramService = paramService;
         }
 
         public async Task<List<GetAllStudentResponse>> GetAllStudent()
@@ -66,10 +69,12 @@ namespace DormyWebService.Services.UserServices
                 throw new HttpStatusCodeException(404, "No Student is found");
             }
 
-            return GetStudentProfileResponse.MapFromStudent(student);
+            var priorityType = await _paramService.FindById(student.PriorityType);
+
+            return GetStudentProfileResponse.MapFromStudent(student, priorityType);
         }
 
-        public async Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequestForm requestModel)
+        public async Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel)
         {
 //            System.Diagnostics.Debug.WriteLine("Went to service");
 

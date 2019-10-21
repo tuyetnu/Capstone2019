@@ -64,6 +64,8 @@ namespace DormyWebService.Migrations
                     b.Property<string>("Address")
                         .HasMaxLength(100);
 
+                    b.Property<DateTime>("BirthDay");
+
                     b.Property<int>("EvaluationScore");
 
                     b.Property<bool>("Gender");
@@ -335,7 +337,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("AttachedFileUrl");
 
-                    b.Property<int>("AuthorAdminId");
+                    b.Property<int>("AuthorId");
 
                     b.Property<string>("Content")
                         .IsRequired();
@@ -353,7 +355,7 @@ namespace DormyWebService.Migrations
 
                     b.HasKey("NewsId");
 
-                    b.HasIndex("AuthorAdminId");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("News");
                 });
@@ -409,7 +411,32 @@ namespace DormyWebService.Migrations
                     b.HasData(
                         new
                         {
+                            ParamId = 0,
+                            Name = "Priority Type 1",
+                            ParamTypeId = 3,
+                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = 0
+                        },
+                        new
+                        {
+                            ParamId = 1,
+                            Name = "Priority Type 2",
+                            ParamTypeId = 3,
+                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = 0
+                        },
+                        new
+                        {
+                            ParamId = 2,
+                            Name = "None",
+                            ParamTypeId = 3,
+                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Value = 0
+                        },
+                        new
+                        {
                             ParamId = 10,
+                            Name = "Fpt email host",
                             ParamTypeId = 4,
                             TextValue = "fpt.edu.vn",
                             TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -759,7 +786,7 @@ namespace DormyWebService.Migrations
                 {
                     b.HasOne("DormyWebService.Entities.AccountEntities.Admin", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorAdminId")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

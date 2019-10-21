@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Services.NewsServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
+using DormyWebService.ViewModels.NewsViewModels.GetNewsDetail;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
+using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,7 @@ namespace DormyWebService.Controllers
     [ApiController]
     public class NewsController : ControllerBase
     {
-        private INewsServices _newsServices;
+        private readonly INewsServices _newsServices;
 
         public NewsController(INewsServices newsServices)
         {
@@ -36,6 +39,25 @@ namespace DormyWebService.Controllers
             try
             {
                 return await _newsServices.GetNewsHeadLines();
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get Detail of news,  for authorized users
+        /// </summary>
+        /// <param name="id">news id</param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetNewsDetailResponse>> GetNewsDetail(int id)
+        {
+            try
+            {
+                return await _newsServices.GetNewsDetail(id);
             }
             catch (HttpStatusCodeException e)
             {
@@ -64,5 +86,38 @@ namespace DormyWebService.Controllers
                 return StatusCode(e.StatusCode, e.Message);
             }
         }
+
+        /// <summary>
+        /// Update News for admin
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin)]
+        [HttpPut]
+        public async Task<ActionResult<UpdateNewsResponse>> UpdateNews(UpdateNewsRequest request)
+        {
+            //Check Model State
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //Check News Status
+            if (!NewsStatus.IsNewsStatus(request.Status))
+            {
+                return BadRequest("News status is not valid");
+            }
+
+            //Call Service
+            try
+            {
+                return await _newsServices.UpdateNews(request);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
     }
 }

@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.NewsEntities;
+using DormyWebService.Entities.ParamEntities;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
+using DormyWebService.ViewModels.UserModelViews.Param;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
 
@@ -16,13 +18,14 @@ namespace DormyWebService.Utilities
     {
         public MappingProfiles()
         {
-            CreateMap<UpdateStudentRequestForm, Student>();
+            CreateMap<UpdateStudentRequest, Student>();
             CreateMap<Student, UpdateStudentResponse>();
             CreateMap<Student, GetAllStudentResponse>();
             CreateMap<Student, FindByIdStudentResponse>();
             CreateMap<CreateNewsRequest, News>();
             CreateMap<News, CreateNewsResponse>();
             CreateMap<News, GetNewsHeadlinesResponse>();
+            CreateMap<Param, ParamModelView>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.ContractEntities;
@@ -24,12 +25,13 @@ namespace DormyWebService.Entities.AccountEntities
 
         //Năm nhập học
         [Required]
+        [RegularExpression(@"^[0-9]*$")]
         public int StartedSchoolYear { get; set; }
 
         //CMND
         [Required]
-        [MinLength(9)]
         [MaxLength(12)]
+        [RegularExpression(@"^(?:[0-9]{9}|[0-9]{12})$")]
         public string IdentityNumber { get; set; }
 
         //Hình CMND
@@ -65,6 +67,8 @@ namespace DormyWebService.Entities.AccountEntities
         public string Address { get; set; }
 
         //SĐT
+        //Check if number only
+        [RegularExpression(@"^[0-9]*$")]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -76,6 +80,9 @@ namespace DormyWebService.Entities.AccountEntities
         [Required]
         [Column(TypeName = "Money")]
         public decimal AccountBalance { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime BirthDay { get; set; }
 
         public virtual ICollection<Contract> Contracts { get; set; }
     }

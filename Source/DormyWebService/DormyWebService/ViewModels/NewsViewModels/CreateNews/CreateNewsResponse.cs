@@ -22,7 +22,7 @@ namespace DormyWebService.ViewModels.NewsViewModels.CreateNews
                 NewsId = news.NewsId,
                 Content = news.Content,
                 AttachedFileUrl = news.AttachedFileUrl,
-                LastUpdateDate = news.CreatedDate,
+                LastUpdateDate = news.LastUpdate,
                 CreatedDate = news.CreatedDate,
                 Title = news.Title,
                 Status = news.Status

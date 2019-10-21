@@ -61,7 +61,10 @@ namespace DormyWebService.Entities
 
             //Seed Param Table
             modelBuilder.Entity<Param>().HasData(
-                new Param() { ParamId = 10, ParamTypeId = 4, TextValue = "fpt.edu.vn" }
+                new Param() { ParamId = 0, Name = "Priority Type 1", ParamTypeId = 3},
+                new Param() { ParamId = 1, Name = "Priority Type 2", ParamTypeId = 3 },
+                new Param() { ParamId = 2, Name = "None", ParamTypeId = 3 },
+                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 4, TextValue = "fpt.edu.vn" }
             );
 
         }

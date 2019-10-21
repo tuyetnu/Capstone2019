@@ -10,7 +10,9 @@ using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
+using DormyWebService.ViewModels.NewsViewModels.GetNewsDetail;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
+using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
 
 namespace DormyWebService.Services.NewsServices
 {
@@ -49,9 +51,32 @@ namespace DormyWebService.Services.NewsServices
             return result;
         }
 
-        public async Task<News> GetNewsById()
+        public async Task<News> FindById(int id)
         {
-            throw new NotImplementedException();
+            News news;
+            try
+            {
+                news = await _repoWrapper.News.FindByIdAsync(id);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "Internal Server Error Occured when finding news");
+            }
+
+            //Check if there's this user in database
+            if (news == null)
+            {
+                throw new HttpStatusCodeException(404, "News is not found");
+            }
+
+            return news;
+        }
+
+        public async Task<GetNewsDetailResponse> GetNewsDetail(int id)
+        {
+            var news = await FindById(id);
+            var author = await _admin.FindById(news.AuthorId);
+            return GetNewsDetailResponse.CreateFromNews(news, author);
         }
 
         public async Task<CreateNewsResponse> CreateNews(CreateNewsRequest requestModel)
@@ -64,20 +89,45 @@ namespace DormyWebService.Services.NewsServices
             }
             catch (Exception)
             {
-                throw new HttpStatusCodeException(500, "Failed to create new News");
+                throw new HttpStatusCodeException(500, "Internal Server Error. Failed to create new News");
             }
 
             return CreateNewsResponse.CreateFromNews(news);
         }
 
-        public async Task<News> UpdateNews(int id)
+        public async Task<UpdateNewsResponse> UpdateNews(UpdateNewsRequest requestModel)
         {
-            throw new NotImplementedException();
+            var news = await FindById(requestModel.NewsId);
+
+            news = UpdateNewsRequest.UpdateToNews(requestModel, news);
+
+            try
+            {
+                news = await _repoWrapper.News.UpdateAsync(news, news.NewsId);
+            }
+            catch (Exception )
+            {
+                throw new HttpStatusCodeException(500, "Internal Server Error. Failed to update News to Database");
+            }
+
+            return UpdateNewsResponse.CreateFromNews(news);
         }
 
-        public async Task<News> ChangeNewsStatus(int id, string newsStatus)
+        public async Task<UpdateNewsResponse> ChangeNewsStatus(int id, string newsStatus)
         {
-            throw new NotImplementedException();
+            var news = await FindById(id);
+            news.Status = newsStatus;
+
+            try
+            {
+                news = await _repoWrapper.News.UpdateAsync(news, news.NewsId);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "Internal Server Error. Failed to update News to Database");
+            }
+
+            return UpdateNewsResponse.CreateFromNews(news);
         }
     }
 }

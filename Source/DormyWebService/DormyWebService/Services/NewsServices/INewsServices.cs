@@ -3,17 +3,20 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.NewsEntities;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
+using DormyWebService.ViewModels.NewsViewModels.GetNewsDetail;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
+using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
 
 namespace DormyWebService.Services.NewsServices
 {
     public interface INewsServices
     {
         Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines();
-        Task<News> GetNewsById();
+        Task<News> FindById(int id);
+        Task<GetNewsDetailResponse> GetNewsDetail(int id);
         Task<CreateNewsResponse> CreateNews(CreateNewsRequest requestModel);
-        Task<News> UpdateNews(int id);
-        Task<News> ChangeNewsStatus(int id, string newsStatus);
+        Task<UpdateNewsResponse> UpdateNews(UpdateNewsRequest requestModel);
+        Task<UpdateNewsResponse> ChangeNewsStatus(int id, string newsStatus);
 
     }
 }
