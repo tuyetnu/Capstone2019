@@ -14,7 +14,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
         public bool Gender { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-        public DateTime BirthDay { get; set; }
+        public string BirthDay { get; set; }
         public string IdentityNumber { get; set; }
         public string IdentityCardImageIrl { get; set; }
         public GetStudentProfileResponsePriorityType PriorityType { get; set; }
@@ -49,7 +49,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
                 PriorityType = priorityType,
                 Gender = student.Gender,
                 Address = student.Address,
-                BirthDay = student.BirthDay,
+                BirthDay = student.BirthDay.ToString("dd/MM/yyyy"),
                 EvaluationScore = student.EvaluationScore,
                 IdentityCardImageIrl = student.IdentityCardImageUrl,
                 IdentityNumber = student.IdentityNumber,

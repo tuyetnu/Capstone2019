@@ -12,15 +12,15 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment
         public string ImageUrl { get; set; }
         public string Status { get; set; }
         public decimal Price { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public string CreatedDate { get; set; }
+        public string LastUpdated { get; set; }
 
         public static UpdateEquipmentResponse CreateFromEquipment(Equipment equipment, Room room)
         {
             var result = new UpdateEquipmentResponse()
             {
-                CreatedDate = equipment.CreatedDate,
-                LastUpdated = equipment.LastUpdated,
+                CreatedDate = equipment.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                LastUpdated = equipment.LastUpdated.ToString("dd/MM/yyyy HH:mm:ss"),
                 EquipmentId = equipment.EquipmentId,
                 ImageUrl = equipment.ImageUrl,
                 Name = equipment.Name,

@@ -10,8 +10,8 @@ namespace DormyWebService.ViewModels.NewsViewModels.CreateNews
         public string Title { get; set; }
         public string Content { get; set; }
         public string AttachedFileUrl { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastUpdateDate { get; set; }
+        public string CreatedDate { get; set; }
+        public string LastUpdateDate { get; set; }
         public string Status { get; set; }
 
         public static CreateNewsResponse CreateFromNews(News news)
@@ -22,8 +22,8 @@ namespace DormyWebService.ViewModels.NewsViewModels.CreateNews
                 NewsId = news.NewsId,
                 Content = news.Content,
                 AttachedFileUrl = news.AttachedFileUrl,
-                LastUpdateDate = news.LastUpdate,
-                CreatedDate = news.CreatedDate,
+                LastUpdateDate = news.LastUpdate.ToString("dd/MM/yyyy HH:mm:ss"),
+                CreatedDate = news.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
                 Title = news.Title,
                 Status = news.Status
             };

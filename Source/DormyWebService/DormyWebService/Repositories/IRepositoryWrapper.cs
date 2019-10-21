@@ -9,6 +9,11 @@ namespace DormyWebService.Repositories
 {
     public interface IRepositoryWrapper
     {
+        //For saving multiple changes
+        void Save();
+
+        void DeleteChanges();
+
         IUserRepository User { get; }
 
         IStudentRepository Student { get; }

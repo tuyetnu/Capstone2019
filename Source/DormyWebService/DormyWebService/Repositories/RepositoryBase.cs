@@ -55,6 +55,16 @@ namespace DormyWebService.Repositories
             return exist;
         }
 
+        public virtual async Task<T> UpdateAsyncWithoutSave(T entity, object key)
+        {
+            if (entity == null)
+                return null;
+            T exist = await Context.Set<T>().FindAsync(key);
+            if (exist == null) return null;
+            Context.Entry(exist).CurrentValues.SetValues(entity);
+            return exist;
+        }
+
         public virtual async Task<int> DeleteAsync(T entity)
         {
             Context.Set<T>().Remove(entity);

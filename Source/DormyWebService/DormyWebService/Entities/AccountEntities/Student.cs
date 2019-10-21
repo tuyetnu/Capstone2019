@@ -80,7 +80,6 @@ namespace DormyWebService.Entities.AccountEntities
         [Required]
         public decimal AccountBalance { get; set; }
 
-        [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
 
         public virtual ICollection<Contract> Contracts { get; set; }

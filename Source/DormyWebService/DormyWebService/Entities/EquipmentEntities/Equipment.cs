@@ -13,6 +13,9 @@ namespace DormyWebService.Entities.EquipmentEntities
         [MaxLength(50)]
         public string Name { get; set; }
 
+        [ForeignKey("Room")]
+        public int? RoomId { get; set; }
+
         public virtual Room Room { get; set; }
 
         public string ImageUrl { get; set; }

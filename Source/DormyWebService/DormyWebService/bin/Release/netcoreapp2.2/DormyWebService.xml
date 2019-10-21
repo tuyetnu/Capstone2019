@@ -102,6 +102,13 @@
             <remarks>authorization disabled for debug purposes</remarks>
             //        [Authorize(Roles = Role.Admin)]
         </member>
+        <member name="M:DormyWebService.Controllers.RoomsController.CreateRoom(DormyWebService.ViewModels.RoomViewModels.CreateRoomRequest)">
+            <summary>
+            Create Room with multiple existing equipments, For Admin
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.StudentController.GetProfile(System.Int32)">
             <summary>
             Get Profile of student, for student 

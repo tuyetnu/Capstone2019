@@ -123,8 +123,7 @@ namespace DormyWebService.Services.UserServices
 
             }
 
-            var result = _mapper.Map<UpdateStudentResponse>(student);
-            return result;
+            return UpdateStudentResponse.CreateFromStudent(student);
         }
 
         public async Task<ChangeStudentStatusResponse> ChangeStudentStatus(int id, string status)

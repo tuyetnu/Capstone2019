@@ -8,30 +8,26 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
     {
         public int EquipmentId { get; set; }
         public string Name { get; set; }
-        public string RoomId { get; set; }
+        public int? RoomId { get; set; }
         public string ImageUrl { get; set; }
         public string Status { get; set; }
         public decimal Price { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime LastUpdated { get; set; }
+        public string CreatedDate { get; set; }
+        public string LastUpdated { get; set; }
 
-        public static CreateEquipmentResponse CreateFromEquipment(Equipment equipment, Room room)
+        public static CreateEquipmentResponse CreateFromEquipment(Equipment equipment)
         {
             var result = new CreateEquipmentResponse()
             {
-                CreatedDate = equipment.CreatedDate,
-                LastUpdated = equipment.LastUpdated,
+                CreatedDate = equipment.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                LastUpdated = equipment.LastUpdated.ToString("dd/MM/yyyy HH:mm:ss"),
                 EquipmentId = equipment.EquipmentId,
                 ImageUrl = equipment.ImageUrl,
                 Name = equipment.Name,
                 Price = equipment.Price,
                 Status = equipment.Status,
+                RoomId = equipment.RoomId
             };
-
-            if (room != null)
-            {
-                result.RoomId = room.RoomId.ToString();
-            }
 
             return result;
         }

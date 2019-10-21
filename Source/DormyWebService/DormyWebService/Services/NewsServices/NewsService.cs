@@ -46,7 +46,7 @@ namespace DormyWebService.Services.NewsServices
                 throw new HttpStatusCodeException(404, "No news headlines were found");
             }
 
-            var result = newsList.Select(headline => _mapper.Map<GetNewsHeadlinesResponse>(headline)).ToList();
+            var result = newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
 
             return result;
         }
@@ -68,7 +68,7 @@ namespace DormyWebService.Services.NewsServices
                 throw new HttpStatusCodeException(404, "No news headlines were found");
             }
 
-            var result = newsList.Select(headline => _mapper.Map<GetNewsHeadlinesResponse>(headline)).ToList();
+            var result = newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
 
             return result;
         }

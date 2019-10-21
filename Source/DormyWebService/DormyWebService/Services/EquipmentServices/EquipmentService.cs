@@ -54,11 +54,10 @@ namespace DormyWebService.Services.EquipmentServices
 
         public async Task<CreateEquipmentResponse> CreateEquipment(CreateEquipmentRequest requestModel)
         {
-            Room room = null;
             //If there's a room, check if the room exists 
             if (requestModel.RoomId != null)
             {
-                room = await _room.FindById(int.Parse(requestModel.RoomId));
+                var room = await _room.FindById(requestModel.RoomId.Value);
             }
 
             Equipment equipment;
@@ -66,14 +65,14 @@ namespace DormyWebService.Services.EquipmentServices
             {   
                 equipment =
                     await _repoWrapper.Equipment.CreateAsync(
-                        CreateEquipmentRequest.NewEquipmentFromRequest(requestModel, room));
+                        CreateEquipmentRequest.NewEquipmentFromRequest(requestModel));
             }
             catch (Exception)
             {
                 throw new HttpStatusCodeException(500, "EquipmentService: Internal Server Error Occured when creating new equipment");
             }
 
-            return CreateEquipmentResponse.CreateFromEquipment(equipment, room);
+            return CreateEquipmentResponse.CreateFromEquipment(equipment);
         }
 
         public async Task<UpdateEquipmentResponse> UpdateEquipment(UpdateEquipmentRequest requestModel)

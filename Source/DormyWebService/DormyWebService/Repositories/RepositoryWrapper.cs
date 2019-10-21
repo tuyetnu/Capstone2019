@@ -1,9 +1,11 @@
-﻿using DormyWebService.Entities;
+﻿using System.Linq;
+using DormyWebService.Entities;
 using DormyWebService.Repositories.EquipmentRepository;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
 using DormyWebService.Repositories.UserRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace DormyWebService.Repositories
 {
@@ -22,6 +24,24 @@ namespace DormyWebService.Repositories
         public RepositoryWrapper(DormyDbContext context)
         {
             _context = context;
+        }
+
+        //For saving multiple changes
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+        public void DeleteChanges()
+        {
+            var changedEntriesCopy = _context.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added ||
+                            e.State == EntityState.Modified ||
+                            e.State == EntityState.Deleted)
+                .ToList();
+
+            foreach (var entry in changedEntriesCopy)
+                entry.State = EntityState.Detached;
         }
 
         //Create concrete repositories if there aren't
