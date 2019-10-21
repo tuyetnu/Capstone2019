@@ -29,16 +29,34 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
-        /// Get list of news headlines for authorized users
+        /// Get list of active news headlines for authorized users
         /// </summary>
         /// <returns></returns>
         [Authorize]
         [HttpGet("Headlines")]
+        public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> GetActiveNewsHeadlines()
+        {
+            try
+            {
+                return await _newsServices.GetActiveNewsHeadLines();
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get list of news headlines for Staff and Admin
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet]
         public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> GetNewsHeadlines()
         {
             try
             {
-                return await _newsServices.GetNewsHeadLines();
+                return await _newsServices.GetActiveNewsHeadLines();
             }
             catch (HttpStatusCodeException e)
             {
@@ -105,7 +123,7 @@ namespace DormyWebService.Controllers
             //Check News Status
             if (!NewsStatus.IsNewsStatus(request.Status))
             {
-                return BadRequest("News status is not valid");
+                return BadRequest("News status is not valid, must be: " + string.Join(", ", NewsStatus.NewsStatusList));
             }
 
             //Call Service
@@ -119,5 +137,30 @@ namespace DormyWebService.Controllers
             }
         }
 
+        /// <summary>
+        /// Change News Status for Admin
+        /// </summary>
+        /// <param name="id">NewsId</param>
+        /// <param name="status">Status you want to change to</param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin)]
+        [HttpPut("ChangeStatus/{id}")]
+        public async Task<ActionResult<UpdateNewsResponse>> ChangeNewsStatus(int id, string status)
+        {
+            if (!NewsStatus.IsNewsStatus(status))
+            {
+                return BadRequest("News status is not valid");
+            }
+
+            //Call Service
+            try
+            {
+                return await _newsServices.ChangeNewsStatus(id, status);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
     }
 }

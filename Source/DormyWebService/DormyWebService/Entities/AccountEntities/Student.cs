@@ -78,7 +78,6 @@ namespace DormyWebService.Entities.AccountEntities
         public int EvaluationScore { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal AccountBalance { get; set; }
 
         [DataType(DataType.Date)]

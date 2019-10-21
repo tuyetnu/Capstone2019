@@ -33,6 +33,6 @@ namespace DormyWebService.Entities.TicketEntities
         public Staff Staff { get; set; }
 
         [Required]
-        public RoomType TargetRoomType { get; set; }
+        public int TargetRoomType { get; set; }
     }
 }

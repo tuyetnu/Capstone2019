@@ -4,9 +4,31 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.EquipmentsController.CreateEquipment(DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment.CreateEquipmentRequest)">
+            <summary>
+            Create new Equipment for Admin
+            </summary>
+            <remarks>RoomId can be null</remarks>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.EquipmentsController.UpdateEquipment(DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment.UpdateEquipmentRequest)">
+            <summary>
+            Update Equipment for Admin
+            </summary>
+            <remarks>RoomId can be null</remarks>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.NewsController.GetActiveNewsHeadlines">
+            <summary>
+            Get list of active news headlines for authorized users
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.NewsController.GetNewsHeadlines">
             <summary>
-            Get list of news headlines for authorized users
+            Get list of news headlines for Staff and Admin
             </summary>
             <returns></returns>
         </member>
@@ -27,6 +49,14 @@
             Update News for admin
             </summary>
             <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.NewsController.ChangeNewsStatus(System.Int32,System.String)">
+            <summary>
+            Change News Status for Admin
+            </summary>
+            <param name="id">NewsId</param>
+            <param name="status">Status you want to change to</param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.ParamsController.GetAllParams">

@@ -25,7 +25,6 @@ namespace DormyWebService.Entities
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<PricePerUnit> PricePerUnits { get; set; }
         public DbSet<MoneyTransaction> MoneyTransactions { get; set; }
@@ -52,19 +51,21 @@ namespace DormyWebService.Entities
 
             //Seed ParamType Table
             modelBuilder.Entity<ParamType>().HasData(
-                new ParamType() { ParamTypeId = 0, Name = "EquipmentType" },
-                new ParamType() { ParamTypeId = 1, Name = "MoneyTransactionType" },
-                new ParamType() { ParamTypeId = 2, Name = "NotificationType" },
-                new ParamType() { ParamTypeId = 3, Name = "StudentPriorityType" },
-                new ParamType() { ParamTypeId = 4, Name = "AcceptedEmailHost" }
+                new ParamType() { ParamTypeId = 0, Name = "MoneyTransactionType" },
+                new ParamType() { ParamTypeId = 1, Name = "NotificationType" },
+                new ParamType() { ParamTypeId = 2, Name = "StudentPriorityType" },
+                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
+                new ParamType() { ParamTypeId = 4, Name = "RoomType" }
             );
 
             //Seed Param Table
             modelBuilder.Entity<Param>().HasData(
-                new Param() { ParamId = 0, Name = "Priority Type 1", ParamTypeId = 3},
-                new Param() { ParamId = 1, Name = "Priority Type 2", ParamTypeId = 3 },
-                new Param() { ParamId = 2, Name = "None", ParamTypeId = 3 },
-                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 4, TextValue = "fpt.edu.vn" }
+                new Param() { ParamId = 0, Name = "Priority Type 1", ParamTypeId = 2},
+                new Param() { ParamId = 1, Name = "Priority Type 2", ParamTypeId = 2 },
+                new Param() { ParamId = 2, Name = "None", ParamTypeId = 2 },
+                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 4, TextValue = "fpt.edu.vn" },
+                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 5 },
+                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 5 }
             );
 
         }

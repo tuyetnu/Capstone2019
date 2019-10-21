@@ -13,17 +13,14 @@ namespace DormyWebService.Entities.EquipmentEntities
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public Room Room { get; set; }
+        public virtual Room Room { get; set; }
 
         public string ImageUrl { get; set; }
 
-        [Required] 
-        public int Type { get; set; }
+        [Required]
+        public string Status { get; set; }
 
         [Required]
-        public int Status { get; set; }
-
-        [Column(TypeName = "Money")]
         public decimal Price { get; set; }
 
         [Required]
@@ -31,8 +28,5 @@ namespace DormyWebService.Entities.EquipmentEntities
 
         [Required]
         public DateTime LastUpdated { get; set; }
-
-        [Required]
-        public DateTime ExpirationDate { get; set; }
     }
 }

@@ -10,8 +10,10 @@ using DormyWebService.Entities;
 using DormyWebService.Repositories;
 using DormyWebService.Repositories.UserRepositories;
 using DormyWebService.Services;
+using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Services.NewsServices;
 using DormyWebService.Services.ParamServices;
+using DormyWebService.Services.RoomServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -100,9 +102,10 @@ namespace DormyWebService
             services.AddScoped<IParamService, ParamService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<INewsServices, NewsService>();
+            services.AddScoped<IEquipmentService, EquipmentService>();
+            services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IParamTypeService, ParamTypeService>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

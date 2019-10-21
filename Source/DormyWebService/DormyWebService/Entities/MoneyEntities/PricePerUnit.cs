@@ -22,11 +22,9 @@ namespace DormyWebService.Entities.MoneyEntities
         public int TargetYear { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public Decimal WaterPricePerUnit { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public Decimal ElectricityPricePerUnit { get; set; }
     }
 }

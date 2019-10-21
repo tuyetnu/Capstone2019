@@ -19,10 +19,10 @@ namespace DormyWebService.Utilities
         public MappingProfiles()
         {
             CreateMap<UpdateStudentRequest, Student>();
+            CreateMap<CreateNewsRequest, News>();
             CreateMap<Student, UpdateStudentResponse>();
             CreateMap<Student, GetAllStudentResponse>();
             CreateMap<Student, FindByIdStudentResponse>();
-            CreateMap<CreateNewsRequest, News>();
             CreateMap<News, CreateNewsResponse>();
             CreateMap<News, GetNewsHeadlinesResponse>();
             CreateMap<Param, ParamModelView>();

@@ -1,6 +1,8 @@
 ﻿using DormyWebService.Entities.NewsEntities;
+using DormyWebService.Repositories.EquipmentRepository;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
+using DormyWebService.Repositories.RoomRepositories;
 using DormyWebService.Repositories.UserRepositories;
 
 namespace DormyWebService.Repositories
@@ -18,5 +20,9 @@ namespace DormyWebService.Repositories
         IParamRepository Param { get; }
 
         IParamTypeRepository ParamType { get;}
+
+        IEquipmentRepository Equipment { get; }
+
+        IRoomRepository Room { get; }
     }
 }

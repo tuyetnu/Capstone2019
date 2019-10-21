@@ -7,7 +7,7 @@ namespace DormyWebService.Entities.NewsEntities
         public const string Active = "Active";
         public const string InActive = "InActive";
 
-        private static readonly List<string> NewsStatusList = new List<string>()
+        public static readonly List<string> NewsStatusList = new List<string>()
         {
             Active,
             InActive

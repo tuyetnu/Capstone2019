@@ -28,7 +28,10 @@ namespace DormyWebService.Entities.RoomEntities
         public int Capacity { get; set; }
 
         [Required]
-        public RoomType RoomType { get; set; }
+        public int RoomType { get; set; }
+
+        [Required]
+        public decimal Price { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
 

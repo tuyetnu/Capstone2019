@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using DormyWebService.Entities.AccountEntities;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
 {
@@ -21,7 +24,7 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
         //CMND
         [Required]
         [MaxLength(12)]
-        [RegularExpression(@"^(?:[0-9]{9}|[0-9]{12})$")]
+        [RegularExpression(@"^(?:[0-9]{9}|[0-9]{12})$", ErrorMessage = "IdentityNumber can have 9 or 12 numeric characters")]
         public string IdentityNumber { get; set; }
 
         //MSSV
@@ -44,6 +47,10 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
         [RegularExpression(@"^[0-9]*$")]
         public string PhoneNumber { get; set; }
 
+        [Required]
+        [RegularExpression(@"^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$", ErrorMessage = "dd/mm/yyyy")]
+        public string BirthDay { get; set; }
+
         public Student MapToStudent(Student student)
         {
             student.Name = Name;
@@ -54,6 +61,7 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
             student.StudentCardNumber = StudentCardNumber;
             student.Gender = Gender;
             student.PhoneNumber = PhoneNumber;
+            student.BirthDay = DateTime.ParseExact(BirthDay, "dd/MM/yyyy", CultureInfo.InvariantCulture); ;
 
             return student;
         }

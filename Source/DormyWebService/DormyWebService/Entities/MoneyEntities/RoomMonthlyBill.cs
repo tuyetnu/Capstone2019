@@ -36,7 +36,6 @@ namespace DormyWebService.Entities.MoneyEntities
         public int NewWaterNumber { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal WaterBill { get; set; }
 
         [Required]
@@ -46,15 +45,12 @@ namespace DormyWebService.Entities.MoneyEntities
         public int NewElectricityNumber { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal ElectricityBill { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal TotalRoomFee { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal TotalAmount { get; set; }
 
         public virtual ICollection<StudentMonthlyBill>  StudentMonthlyBill { get; set; }

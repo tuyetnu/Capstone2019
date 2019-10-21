@@ -21,15 +21,12 @@ namespace DormyWebService.Entities.MoneyEntities
         public Room Room { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal OriginalBalance { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal MoneyAmount { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public decimal ResultBalance { get; set; }
 
         [Required]

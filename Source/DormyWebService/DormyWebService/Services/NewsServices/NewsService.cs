@@ -29,12 +29,34 @@ namespace DormyWebService.Services.NewsServices
             _admin = admin;
         }
 
-        public async Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines()
+        public async Task<List<GetNewsHeadlinesResponse>> GetActiveNewsHeadLines()
         {
             List<News> newsList;
             try
             {
                 newsList = (List<News>) await _repoWrapper.News.FindAllAsyncWithCondition(n => n.Status == NewsStatus.Active);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "Failed to get news headlines");
+            }
+
+            if (!newsList.Any())
+            {
+                throw new HttpStatusCodeException(404, "No news headlines were found");
+            }
+
+            var result = newsList.Select(headline => _mapper.Map<GetNewsHeadlinesResponse>(headline)).ToList();
+
+            return result;
+        }
+
+        public async Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines()
+        {
+            List<News> newsList;
+            try
+            {
+                newsList = (List<News>)await _repoWrapper.News.FindAllAsync();
             }
             catch (Exception)
             {

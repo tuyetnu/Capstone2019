@@ -11,6 +11,7 @@ namespace DormyWebService.Services.NewsServices
 {
     public interface INewsServices
     {
+        Task<List<GetNewsHeadlinesResponse>> GetActiveNewsHeadLines();
         Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines();
         Task<News> FindById(int id);
         Task<GetNewsDetailResponse> GetNewsDetail(int id);

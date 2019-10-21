@@ -27,7 +27,6 @@ namespace DormyWebService.Entities.MoneyEntities
         public RoomMonthlyBill RoomMonthlyBill { get; set; }
         
         // WaterFee + Electricity
-        [Column(TypeName = "Money")]
         public Decimal RoomUtilityFee { get; set; }
 
         //Phần trăm sau khi chia
@@ -36,16 +35,13 @@ namespace DormyWebService.Entities.MoneyEntities
 
         //RoomUtilityFee * Percentage
         [Required]
-        [Column(TypeName = "Money")]
         public Decimal UtilityFee { get; set; }
 
         [Required]
-        [Column(TypeName = "Money")]
         public Decimal RoomFee { get; set; }
 
         // UtilityFee + RoomFee
         [Required] 
-        [Column(TypeName = "Money")]
         public Decimal Total { get; set; }
 
         [Required]
