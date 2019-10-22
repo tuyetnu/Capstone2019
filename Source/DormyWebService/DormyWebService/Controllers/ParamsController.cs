@@ -6,7 +6,7 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Utilities;
-using DormyWebService.ViewModels.UserModelViews.Param;
+using DormyWebService.ViewModels.Param;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

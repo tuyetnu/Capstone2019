@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Entities.RoomEntities;
 
-namespace DormyWebService.ViewModels.RoomViewModels
+namespace DormyWebService.ViewModels.RoomViewModels.CreateRoom
 {
     public class CreateRoomRequest
     {
@@ -23,6 +23,9 @@ namespace DormyWebService.ViewModels.RoomViewModels
         [Required]
         public decimal Price { get; set; }
 
+        [Required]
+        public string RoomStatus { get; set; }
+
         public static Room NewRoomFromRequest(CreateRoomRequest request)
         {
             return new Room()
@@ -34,6 +37,7 @@ namespace DormyWebService.ViewModels.RoomViewModels
                 Price = request.Price,
                 Name = request.Name,
                 RoomType = request.RoomType,
+                RoomStatus = request.RoomStatus
             };
         }
     }

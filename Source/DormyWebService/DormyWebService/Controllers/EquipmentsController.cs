@@ -43,7 +43,7 @@ namespace DormyWebService.Controllers
             if (!EquipmentStatus.IsEquipmentStatus(request.Status))
             {
                 
-                return BadRequest("Status is not valid. Must be: " + string.Join(", ", EquipmentStatus.EquipmentStatusList));
+                return BadRequest("Status is not valid. Must be: " + string.Join(", ", EquipmentStatus.ListAllStatuses()));
             }
 
             try
@@ -74,7 +74,7 @@ namespace DormyWebService.Controllers
             if (!EquipmentStatus.IsEquipmentStatus(request.Status))
             {
 
-                return BadRequest("Status is not valid. Must be: " + string.Join(", ", EquipmentStatus.EquipmentStatusList));
+                return BadRequest("Status is not valid. Must be: " + string.Join(", ", EquipmentStatus.ListAllStatuses()));
             }
 
             try

@@ -1,6 +1,7 @@
 ﻿using System;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
 {
@@ -49,7 +50,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
                 PriorityType = priorityType,
                 Gender = student.Gender,
                 Address = student.Address,
-                BirthDay = student.BirthDay.ToString("dd/MM/yyyy"),
+                BirthDay = student.BirthDay.ToString(GlobalParams.BirthDayFormat),
                 EvaluationScore = student.EvaluationScore,
                 IdentityCardImageIrl = student.IdentityCardImageUrl,
                 IdentityNumber = student.IdentityNumber,

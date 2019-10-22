@@ -13,6 +13,7 @@ namespace DormyWebService.Services.NewsServices
     {
         Task<List<GetNewsHeadlinesResponse>> GetActiveNewsHeadLines();
         Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines();
+        Task<List<GetNewsHeadlinesResponse>> AdvancedGetNewsHeadLines(string sorts, string filters, int? page, int? pageSize);
         Task<News> FindById(int id);
         Task<GetNewsDetailResponse> GetNewsDetail(int id);
         Task<CreateNewsResponse> CreateNews(CreateNewsRequest requestModel);

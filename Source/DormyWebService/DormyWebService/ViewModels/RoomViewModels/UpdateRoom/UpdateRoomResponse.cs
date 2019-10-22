@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Utilities;
 
-namespace DormyWebService.ViewModels.RoomViewModels
+namespace DormyWebService.ViewModels.RoomViewModels.UpdateRoom
 {
-    public class CreateRoomResponse
+    public class UpdateRoomResponse
     {
         public int RoomId { get; set; }
         public string Name { get; set; }
@@ -15,10 +15,11 @@ namespace DormyWebService.ViewModels.RoomViewModels
         public decimal Price { get; set; }
         public string CreatedDate { get; set; }
         public string LastUpdated { get; set; }
+        public string RoomStatus { get; set; }
 
-        public static CreateRoomResponse ResponseFromRoom(Room room, List<int> equipmentIds)
+        public static UpdateRoomResponse ResponseFromRoom(Room room, List<int> equipmentIds)
         {
-            return new CreateRoomResponse()
+            return new UpdateRoomResponse()
             {
                 RoomId = room.RoomId,
                 Name = room.Name,
@@ -27,8 +28,9 @@ namespace DormyWebService.ViewModels.RoomViewModels
                 EquipmentIds = equipmentIds,
                 Description = room.Description,
                 Capacity = room.Capacity,
-                CreatedDate = room.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                LastUpdated = room.LastUpdated.ToString("dd/MM/yyyy HH:mm:ss"),
+                CreatedDate = room.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdated = room.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
+                RoomStatus = room.RoomStatus
             };
         }
     }

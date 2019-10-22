@@ -12,6 +12,7 @@ using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.Debug.ChangeUserRole;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Authorization;
 
@@ -26,6 +27,28 @@ namespace DormyWebService.Controllers
         public UsersController(IUserService userService)
         {
             _userService = userService;
+        }
+
+        /// <summary>
+        /// Get user with condition, for admin and staff
+        /// </summary>
+        /// <param name="sorts">See GET /api/Rooms for examples</param>
+        /// <param name="filters">See GET /api/Rooms for examples</param>
+        /// <param name="page">See GET /api/Rooms for examples</param>
+        /// <param name="pageSize">See GET /api/Rooms for examples</param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("AdvancedGet")]
+        public async Task<ActionResult<List<GetUserResponse>>> AdvancedGetUser(string sorts, string filters, int? page, int? pageSize)
+        {
+            try
+            {
+                return await _userService.AdvancedGetUser(sorts, filters, page, pageSize);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
         }
 
         /// <summary>

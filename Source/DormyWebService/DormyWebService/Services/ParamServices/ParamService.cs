@@ -6,7 +6,7 @@ using AutoMapper;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
-using DormyWebService.ViewModels.UserModelViews.Param;
+using DormyWebService.ViewModels.Param;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.ParamServices
@@ -83,6 +83,23 @@ namespace DormyWebService.Services.ParamServices
             }
 
             return paramList.Select(param => _mapper.Map<ParamModelView>(param)).ToList();
+        }
+
+        public async Task<bool> IsOfParamType(int paramId, int paramTypeId)
+        {
+            List<Param> tmpParams;
+            try
+            {
+                tmpParams = (List<Param>)await _repoWrapper.Param.FindAllAsyncWithCondition(p =>
+                    p.ParamId == paramId && p.ParamTypeId == paramTypeId);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "ParamService: Internal Server Error when attempting to get Param from Database");
+            }
+            
+            //Check if room type exists
+            return tmpParams.Any();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DormyWebService.ViewModels.UserModelViews.Param
+namespace DormyWebService.ViewModels.Param
 {
     public class ParamModelView
     {

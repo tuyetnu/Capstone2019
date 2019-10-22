@@ -1,35 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.Debug.ChangeUserRole;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
+using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace DormyWebService.Services.UserServices
 {
     public class UserService : IUserService
     {
-        private IRepositoryWrapper _repoWrapper;
+        private readonly IRepositoryWrapper _repoWrapper;
+        private readonly IMapper _mapper;
+        private readonly ISieveProcessor _sieveProcessor;
         // used to get secret from appsettings
         private readonly AuthenticationSetting _authSettings;
         private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=";
 
-        public UserService(IOptions<AuthenticationSetting> authSettings, IRepositoryWrapper repoWrapper)
+        public UserService(IOptions<AuthenticationSetting> authSettings, IRepositoryWrapper repoWrapper, ISieveProcessor sieveProcessor, IMapper mapper)
         {
             _authSettings = authSettings.Value;
             _repoWrapper = repoWrapper;
+            _sieveProcessor = sieveProcessor;
+            _mapper = mapper;
+        }
+
+        public async Task<List<GetUserResponse>> AdvancedGetUser(string sorts, string filters, int? page, int? pageSize)
+        {
+            var sieveModel = new SieveModel()
+            {
+                Sorts = sorts,
+                Page = page,
+                PageSize = pageSize,
+                Filters = filters,
+            };
+
+            ICollection<User> users;
+
+            try
+            {
+                users = await _repoWrapper.User.FindAllAsync();
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "UserService: Internal Server Error Occured Searching for user");
+            }
+
+            if (users == null || users.Any() == false)
+            {
+                throw new HttpStatusCodeException(404, "UserService: No user is found");
+            }
+
+            var sortedUsers = _sieveProcessor.Apply(sieveModel, users.AsQueryable()).ToList();
+
+            return sortedUsers.Select(user => _mapper.Map<GetUserResponse>(user)).ToList();
         }
 
         public async Task<List<User>> DebugFindAll()

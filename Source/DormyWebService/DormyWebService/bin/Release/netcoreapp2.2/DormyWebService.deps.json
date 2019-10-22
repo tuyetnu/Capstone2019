@@ -31,6 +31,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.4",
+          "Sieve": "2.3.2",
           "Swashbuckle.AspNetCore": "4.0.1"
         },
         "runtime": {
@@ -359,6 +360,22 @@
             "assetType": "native",
             "fileVersion": "4.6.25512.1"
           }
+        }
+      },
+      "Sieve/2.3.2": {
+        "dependencies": {
+          "Microsoft.CSharp": "4.5.0",
+          "Microsoft.Extensions.Options": "2.2.0",
+          "System.ComponentModel.Annotations": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Sieve.dll": {
+            "assemblyVersion": "2.3.2.0",
+            "fileVersion": "2.3.2.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Sieve.dll": {}
         }
       },
       "Swashbuckle.AspNetCore/4.0.1": {
@@ -3877,6 +3894,13 @@
       "sha512": "sha512-YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA==",
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
+    },
+    "Sieve/2.3.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZuTQpJD6pZ1XGllMHjLSj1d59kuG/HmMk8g8XXOsRjCGihxZFuwlPuXOa+h0qROdQufgfZ/fhNJFdxlYaH48/Q==",
+      "path": "sieve/2.3.2",
+      "hashPath": "sieve.2.3.2.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/4.0.1": {
       "type": "package",

@@ -380,9 +380,9 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("TextValue");
 
-                    b.Property<DateTime>("TimeValue");
+                    b.Property<DateTime?>("TimeValue");
 
-                    b.Property<int>("Value");
+                    b.Property<int?>("Value");
 
                     b.HasKey("ParamId");
 
@@ -395,50 +395,38 @@ namespace DormyWebService.Migrations
                         {
                             ParamId = 0,
                             Name = "Priority Type 1",
-                            ParamTypeId = 2,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 2
                         },
                         new
                         {
                             ParamId = 1,
                             Name = "Priority Type 2",
-                            ParamTypeId = 2,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 2
                         },
                         new
                         {
                             ParamId = 2,
                             Name = "None",
-                            ParamTypeId = 2,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 2
                         },
                         new
                         {
                             ParamId = 10,
                             Name = "Fpt email host",
-                            ParamTypeId = 4,
-                            TextValue = "fpt.edu.vn",
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 3,
+                            TextValue = "fpt.edu.vn"
                         },
                         new
                         {
                             ParamId = 11,
                             Name = "Standard Room",
-                            ParamTypeId = 5,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 4
                         },
                         new
                         {
                             ParamId = 12,
                             Name = "Service Room",
-                            ParamTypeId = 5,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 4
                         });
                 });
 
@@ -501,6 +489,9 @@ namespace DormyWebService.Migrations
                         .IsRequired();
 
                     b.Property<decimal>("Price");
+
+                    b.Property<string>("RoomStatus")
+                        .IsRequired();
 
                     b.Property<int>("RoomType");
 

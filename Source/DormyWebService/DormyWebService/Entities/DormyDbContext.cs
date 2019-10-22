@@ -63,9 +63,9 @@ namespace DormyWebService.Entities
                 new Param() { ParamId = 0, Name = "Priority Type 1", ParamTypeId = 2},
                 new Param() { ParamId = 1, Name = "Priority Type 2", ParamTypeId = 2 },
                 new Param() { ParamId = 2, Name = "None", ParamTypeId = 2 },
-                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 4, TextValue = "fpt.edu.vn" },
-                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 5 },
-                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 5 }
+                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 3, TextValue = "fpt.edu.vn" },
+                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 4 },
+                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 4 }
             );
 
         }

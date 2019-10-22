@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using DormyWebService.Entities;
 using DormyWebService.Repositories.EquipmentRepository;
 using DormyWebService.Repositories.NewsRepositories;
@@ -27,9 +28,9 @@ namespace DormyWebService.Repositories
         }
 
         //For saving multiple changes
-        public void Save()
-        {
-            _context.SaveChanges();
+        public async Task Save()
+        { 
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteChanges()

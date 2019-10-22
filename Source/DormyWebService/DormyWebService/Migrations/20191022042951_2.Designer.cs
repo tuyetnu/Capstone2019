@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    [Migration("20191021091358_30")]
-    partial class _30
+    [Migration("20191022042951_2")]
+    partial class _2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,8 +60,7 @@ namespace DormyWebService.Migrations
                 {
                     b.Property<int>("StudentId");
 
-                    b.Property<decimal>("AccountBalance")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("AccountBalance");
 
                     b.Property<string>("Address")
                         .HasMaxLength(100);
@@ -168,8 +167,7 @@ namespace DormyWebService.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(50);
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("Price");
 
                     b.Property<int?>("RoomId");
 
@@ -191,14 +189,11 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<decimal>("MoneyAmount")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("MoneyAmount");
 
-                    b.Property<decimal>("OriginalBalance")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("OriginalBalance");
 
-                    b.Property<decimal>("ResultBalance")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("ResultBalance");
 
                     b.Property<int>("RoomId");
 
@@ -223,8 +218,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<decimal>("ElectricityPricePerUnit")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("ElectricityPricePerUnit");
 
                     b.Property<DateTime>("LastUpdated");
 
@@ -232,8 +226,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("TargetYear");
 
-                    b.Property<decimal>("WaterPricePerUnit")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("WaterPricePerUnit");
 
                     b.HasKey("PricePerUnitId");
 
@@ -248,8 +241,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<decimal>("ElectricityBill")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("ElectricityBill");
 
                     b.Property<bool>("IsPaid");
 
@@ -269,14 +261,11 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("TargetYear");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("TotalAmount");
 
-                    b.Property<decimal>("TotalRoomFee")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("TotalRoomFee");
 
-                    b.Property<decimal>("WaterBill")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("WaterBill");
 
                     b.HasKey("RoomMonthlyBillId");
 
@@ -295,15 +284,13 @@ namespace DormyWebService.Migrations
 
                     b.Property<decimal>("Percentage");
 
-                    b.Property<decimal>("RoomFee")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("RoomFee");
 
                     b.Property<int>("RoomId");
 
                     b.Property<int>("RoomMonthlyBillId");
 
-                    b.Property<decimal>("RoomUtilityFee")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("RoomUtilityFee");
 
                     b.Property<int>("StudentId");
 
@@ -311,11 +298,9 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("TargetYear");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("Total");
 
-                    b.Property<decimal>("UtilityFee")
-                        .HasColumnType("Money");
+                    b.Property<decimal>("UtilityFee");
 
                     b.HasKey("StudentMonthlyBillId");
 
@@ -397,9 +382,9 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("TextValue");
 
-                    b.Property<DateTime>("TimeValue");
+                    b.Property<DateTime?>("TimeValue");
 
-                    b.Property<int>("Value");
+                    b.Property<int?>("Value");
 
                     b.HasKey("ParamId");
 
@@ -412,50 +397,38 @@ namespace DormyWebService.Migrations
                         {
                             ParamId = 0,
                             Name = "Priority Type 1",
-                            ParamTypeId = 2,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 2
                         },
                         new
                         {
                             ParamId = 1,
                             Name = "Priority Type 2",
-                            ParamTypeId = 2,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 2
                         },
                         new
                         {
                             ParamId = 2,
                             Name = "None",
-                            ParamTypeId = 2,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 2
                         },
                         new
                         {
                             ParamId = 10,
                             Name = "Fpt email host",
-                            ParamTypeId = 4,
-                            TextValue = "fpt.edu.vn",
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 3,
+                            TextValue = "fpt.edu.vn"
                         },
                         new
                         {
                             ParamId = 11,
                             Name = "Standard Room",
-                            ParamTypeId = 5,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 4
                         },
                         new
                         {
                             ParamId = 12,
                             Name = "Service Room",
-                            ParamTypeId = 5,
-                            TimeValue = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = 0
+                            ParamTypeId = 4
                         });
                 });
 
@@ -515,6 +488,11 @@ namespace DormyWebService.Migrations
                     b.Property<DateTime>("LastUpdated");
 
                     b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<string>("RoomStatus")
                         .IsRequired();
 
                     b.Property<int>("RoomType");

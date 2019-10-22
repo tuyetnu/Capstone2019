@@ -1,5 +1,6 @@
 ﻿using System;
 using DormyWebService.Entities.NewsEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.NewsViewModels.CreateNews
 {
@@ -22,8 +23,8 @@ namespace DormyWebService.ViewModels.NewsViewModels.CreateNews
                 NewsId = news.NewsId,
                 Content = news.Content,
                 AttachedFileUrl = news.AttachedFileUrl,
-                LastUpdateDate = news.LastUpdate.ToString("dd/MM/yyyy HH:mm:ss"),
-                CreatedDate = news.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
+                LastUpdateDate = news.LastUpdate.ToString(GlobalParams.DateTimeResponseFormat),
+                CreatedDate = news.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 Title = news.Title,
                 Status = news.Status
             };

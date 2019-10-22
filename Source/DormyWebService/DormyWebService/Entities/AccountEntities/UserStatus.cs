@@ -21,5 +21,10 @@ namespace DormyWebService.Entities.AccountEntities
         {
             return StatusList.Contains(status);
         }
+
+        public static string ListAllStatuses()
+        {
+            return string.Join(", ", StatusList);
+        }
     }
 }

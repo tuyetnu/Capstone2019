@@ -8,6 +8,7 @@ using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
+using DormyWebService.ViewModels.UserModelViews.ImportStudent;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace DormyWebService.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private IStudentService _studentService;
+        private readonly IStudentService _studentService;
 
         public StudentController(IStudentService studentService)
         {
@@ -40,18 +41,40 @@ namespace DormyWebService.Controllers
             }
         }
 
-//        [HttpGet("{id}")]
-//        public async Task<ActionResult<FindByIdStudentResponse>> FindById(int id)
-//        {
-//            try
-//            {
-//                return await _studentService.FindById(id);
-//            }
-//            catch (HttpStatusCodeException e)
-//            {
-//                return StatusCode(e.StatusCode, e.Message);
-//            }
-//        }
+        /// <summary>
+        /// Get student with condition, for admin and staff
+        /// </summary>
+        /// <param name="sorts">See GET /api/Rooms for examples</param>
+        /// <param name="filters">See GET /api/Rooms for examples</param>
+        /// <param name="page">See GET /api/Rooms for examples</param>
+        /// <param name="pageSize">See GET /api/Rooms for examples</param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("AdvancedGet")]
+        public async Task<ActionResult<List<GetAllStudentResponse>>> AdvancedGetStudent(string sorts, string filters, int? page, int? pageSize)
+        {
+            try
+            {
+                return await _studentService.AdvancedGetStudent(sorts,filters,page,pageSize);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        //        [HttpGet("{id}")]
+        //        public async Task<ActionResult<FindByIdStudentResponse>> FindById(int id)
+        //        {
+        //            try
+        //            {
+        //                return await _studentService.FindById(id);
+        //            }
+        //            catch (HttpStatusCodeException e)
+        //            {
+        //                return StatusCode(e.StatusCode, e.Message);
+        //            }
+        //        }
 
         /// <summary>
         /// Get Profile of student, for student 
@@ -65,6 +88,31 @@ namespace DormyWebService.Controllers
             try
             {
                 return await _studentService.GetProfile(id);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Import List of Student, for admin
+        /// </summary>
+        /// <param name="requestModel"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin)]
+        [HttpPost]
+        public async Task<ActionResult<List<ImportStudentResponse>>> UpdateStudent(List<ImportStudentRequest> requestModel)
+        {
+            //Check form
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                return await _studentService.ImportStudent(requestModel);
             }
             catch (HttpStatusCodeException e)
             {

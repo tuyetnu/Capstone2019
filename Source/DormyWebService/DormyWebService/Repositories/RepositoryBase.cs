@@ -44,6 +44,12 @@ namespace DormyWebService.Repositories
             return entity;
         }
 
+        public T CreateWithoutSave(T t)
+        {
+            Context.Set<T>().Add(t);
+            return t;
+        }
+
         public virtual async Task<T> UpdateAsync(T entity, object key)
         {
             if (entity == null)

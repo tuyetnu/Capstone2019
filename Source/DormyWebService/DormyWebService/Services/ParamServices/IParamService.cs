@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DormyWebService.Entities.ParamEntities;
-using DormyWebService.ViewModels.UserModelViews.Param;
+using DormyWebService.ViewModels.Param;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.ParamServices
@@ -12,5 +12,7 @@ namespace DormyWebService.Services.ParamServices
         Task<Param> FindById(int id);
 
         Task<List<ParamModelView>> FindAllByParamType(int paramTypeId);
+
+        Task<bool> IsOfParamType(int paramId, int paramTypeId);
     }
 }

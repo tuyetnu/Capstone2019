@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.NewsEntities;
+using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
@@ -13,6 +14,9 @@ using DormyWebService.ViewModels.NewsViewModels.CreateNews;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsDetail;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
 using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
+using Microsoft.EntityFrameworkCore.Internal;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace DormyWebService.Services.NewsServices
 {
@@ -21,12 +25,14 @@ namespace DormyWebService.Services.NewsServices
         private IRepositoryWrapper _repoWrapper;
         private IMapper _mapper;
         private IAdminService _admin;
+        private ISieveProcessor _sieveProcessor;
 
-        public NewsService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin)
+        public NewsService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, ISieveProcessor sieveProcessor)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
             _admin = admin;
+            _sieveProcessor = sieveProcessor;
         }
 
         public async Task<List<GetNewsHeadlinesResponse>> GetActiveNewsHeadLines()
@@ -46,9 +52,7 @@ namespace DormyWebService.Services.NewsServices
                 throw new HttpStatusCodeException(404, "No news headlines were found");
             }
 
-            var result = newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
-
-            return result;
+            return newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
         }
 
         public async Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines()
@@ -68,9 +72,37 @@ namespace DormyWebService.Services.NewsServices
                 throw new HttpStatusCodeException(404, "No news headlines were found");
             }
 
-            var result = newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
+            return newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
+        }
 
-            return result;
+        public async Task<List<GetNewsHeadlinesResponse>> AdvancedGetNewsHeadLines(string sorts, string filters, int? page, int? pageSize)
+        {
+            var sieveModel = new SieveModel()
+            {
+                PageSize = pageSize,
+                Sorts = sorts,
+                Page = page,
+                Filters = filters
+            };
+
+            ICollection<News> newsHeadLines;
+
+            try
+            {
+                newsHeadLines = await _repoWrapper.News.FindAllAsync();
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured Searching for room");
+            }
+
+            if (newsHeadLines == null || newsHeadLines.Any() == false)
+            {
+                throw new HttpStatusCodeException(404, "RoomService: No room is found");
+            }
+
+            var result = _sieveProcessor.Apply(sieveModel, newsHeadLines.AsQueryable()).ToList();
+            return result.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList(); ;
         }
 
         public async Task<News> FindById(int id)

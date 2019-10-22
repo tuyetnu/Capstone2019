@@ -29,6 +29,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Sieve.Services;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace DormyWebService
@@ -95,6 +96,9 @@ namespace DormyWebService
                         ValidateAudience = false
                     };
                 });
+
+            //Dependency Injection for Sieve for pagination, sorting, filtering
+            services.AddScoped<ISieveProcessor,SieveProcessor>();
 
             // Configure Dependency Injection
             services.AddScoped<IUserService, UserService>();

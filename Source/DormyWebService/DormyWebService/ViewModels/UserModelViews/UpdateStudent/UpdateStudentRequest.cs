@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Utilities;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
@@ -61,7 +62,9 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
             student.StudentCardNumber = StudentCardNumber;
             student.Gender = Gender;
             student.PhoneNumber = PhoneNumber;
-            student.BirthDay = DateTime.ParseExact(BirthDay, "dd/MM/yyyy", CultureInfo.InvariantCulture); ;
+            student.BirthDay = DateTime.ParseExact(BirthDay, GlobalParams.BirthDayFormat, CultureInfo.InvariantCulture);
+            student.EvaluationScore = 0;
+            student.AccountBalance = 0;
 
             return student;
         }

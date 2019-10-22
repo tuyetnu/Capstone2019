@@ -1,4 +1,5 @@
-﻿using DormyWebService.Entities.NewsEntities;
+﻿using System.Threading.Tasks;
+using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Repositories.EquipmentRepository;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
@@ -10,7 +11,7 @@ namespace DormyWebService.Repositories
     public interface IRepositoryWrapper
     {
         //For saving multiple changes
-        void Save();
+        Task Save();
 
         void DeleteChanges();
 

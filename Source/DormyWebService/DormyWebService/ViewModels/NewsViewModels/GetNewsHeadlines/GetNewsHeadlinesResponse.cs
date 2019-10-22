@@ -1,5 +1,6 @@
 ﻿using System;
 using DormyWebService.Entities.NewsEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines
 {
@@ -20,8 +21,8 @@ namespace DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines
                 Title = news.Title,
                 Status = news.Status,
                 Content = news.Content,
-                CreatedDate = news.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                LastUpdate = news.LastUpdate.ToString("dd/MM/yyyy HH:mm:ss"),
+                CreatedDate = news.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdate = news.LastUpdate.ToString(GlobalParams.DateTimeResponseFormat),
                 NewsId = news.NewsId,
             };
         }

@@ -47,6 +47,29 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
+        /// Get list of news headlines with conditions, for authorized user
+        /// </summary>
+        /// <remarks></remarks>
+        /// <param name="sorts">See GET /api/Rooms for examples</param>
+        /// <param name="filters">See GET /api/Rooms for examples</param>
+        /// <param name="page">See GET /api/Rooms for examples</param>
+        /// <param name="pageSize">See GET /api/Rooms for examples</param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("AdvancedGet")]
+        public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> AdvancedGetNewsHeadlines(string sorts, string filters, int? page, int? pageSize)
+        {
+            try
+            {
+                return await _newsServices.AdvancedGetNewsHeadLines(sorts,filters,page,pageSize);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        /// <summary>
         /// Get list of news headlines for Staff and Admin
         /// </summary>
         /// <returns></returns>

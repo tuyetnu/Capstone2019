@@ -26,6 +26,17 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.NewsController.AdvancedGetNewsHeadlines(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get list of news headlines with conditions, for authorized user
+            </summary>
+            <remarks></remarks>
+            <param name="sorts">See GET /api/Rooms for examples</param>
+            <param name="filters">See GET /api/Rooms for examples</param>
+            <param name="page">See GET /api/Rooms for examples</param>
+            <param name="pageSize">See GET /api/Rooms for examples</param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.NewsController.GetNewsHeadlines">
             <summary>
             Get list of news headlines for Staff and Admin
@@ -102,11 +113,38 @@
             <remarks>authorization disabled for debug purposes</remarks>
             //        [Authorize(Roles = Role.Admin)]
         </member>
-        <member name="M:DormyWebService.Controllers.RoomsController.CreateRoom(DormyWebService.ViewModels.RoomViewModels.CreateRoomRequest)">
+        <member name="M:DormyWebService.Controllers.RoomsController.AdvancedGetRooms(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get list of room with pagination and condition, Authorization is not determined yet
+            </summary>
+            <param name="sorts">Ex:"Name,Description,-CreatedDate" sort by Name, then Description, then descendingly by CreatedDate</param>
+            <param name="filters">Ex:"Price>10, Name@=roomName" filter to room with price more than 10, and a name that contains roomName</param>
+            <param name="page">Ex: 1 get the first page...</param>
+            <param name="pageSize">Ex: 10 ...which contains 10 room</param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomsController.CreateRoom(DormyWebService.ViewModels.RoomViewModels.CreateRoom.CreateRoomRequest)">
             <summary>
             Create Room with multiple existing equipments, For Admin
             </summary>
             <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomsController.UpdateRoom(DormyWebService.ViewModels.RoomViewModels.UpdateRoom.UpdateRoomRequest)">
+            <summary>
+            Update Room information, for admin, equipment is updated separately
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.StudentController.AdvancedGetStudent(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get student with condition, for admin and staff
+            </summary>
+            <param name="sorts">See GET /api/Rooms for examples</param>
+            <param name="filters">See GET /api/Rooms for examples</param>
+            <param name="page">See GET /api/Rooms for examples</param>
+            <param name="pageSize">See GET /api/Rooms for examples</param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.StudentController.GetProfile(System.Int32)">
@@ -114,6 +152,13 @@
             Get Profile of student, for student 
             </summary>
             <param name="id">Student's id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(System.Collections.Generic.List{DormyWebService.ViewModels.UserModelViews.ImportStudent.ImportStudentRequest})">
+            <summary>
+            Import List of Student, for admin
+            </summary>
+            <param name="requestModel"></param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(DormyWebService.ViewModels.UserModelViews.UpdateStudent.UpdateStudentRequest)">
@@ -129,6 +174,16 @@
             </summary>
             <param name="studentId"></param>
             /// <param name="status">Target Status</param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.UsersController.AdvancedGetUser(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get user with condition, for admin and staff
+            </summary>
+            <param name="sorts">See GET /api/Rooms for examples</param>
+            <param name="filters">See GET /api/Rooms for examples</param>
+            <param name="page">See GET /api/Rooms for examples</param>
+            <param name="pageSize">See GET /api/Rooms for examples</param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.UsersController.ChangeStatus(System.Int32,System.String)">

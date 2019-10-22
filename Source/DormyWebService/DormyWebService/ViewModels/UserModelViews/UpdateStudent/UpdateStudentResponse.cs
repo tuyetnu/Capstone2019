@@ -1,11 +1,11 @@
 ﻿using System;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
 {
     public class UpdateStudentResponse
     {
-        public int StudentId { get; set; }
         public string Name { get; set; }
         public int StartedSchoolYear { get; set; }
         public string IdentityNumber { get; set; }
@@ -21,8 +21,7 @@ namespace DormyWebService.ViewModels.UserModelViews.UpdateStudent
             return new UpdateStudentResponse()
             {
                 Name = student.Name,
-                StudentId = student.StudentId,
-                BirthDay = student.BirthDay.ToString("dd/MM/yyyy HH:mm:ss"),
+                BirthDay = student.BirthDay.ToString(GlobalParams.BirthDayFormat),
                 StudentCardNumber = student.StudentCardNumber,
                 Term = student.Term,
                 StartedSchoolYear = student.StartedSchoolYear,

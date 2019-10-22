@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.NewsEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.NewsViewModels.GetNewsDetail
 {
@@ -31,8 +32,8 @@ namespace DormyWebService.ViewModels.NewsViewModels.GetNewsDetail
                 Status = news.Status,
                 AttachedFileUrl = news.AttachedFileUrl,
                 Content = news.Content,
-                CreatedDate = news.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                LastUpdate = news.LastUpdate.ToString("dd/MM/yyyy HH:mm:ss"),
+                CreatedDate = news.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdate = news.LastUpdate.ToString(GlobalParams.DateTimeResponseFormat),
                 NewsId = news.NewsId,
                 Author = author,
             };

@@ -3147,6 +3147,20 @@
           }
         }
       },
+      "Sieve/2.3.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.4.1",
+          "Microsoft.Extensions.Options": "2.0.0",
+          "System.ComponentModel.Annotations": "4.4.1"
+        },
+        "compile": {
+          "lib/netstandard2.0/Sieve.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Sieve.dll": {}
+        }
+      },
       "Swashbuckle.AspNetCore/4.0.1": {
         "type": "package",
         "dependencies": {
@@ -8506,6 +8520,18 @@
         "version.txt"
       ]
     },
+    "Sieve/2.3.2": {
+      "sha512": "ZuTQpJD6pZ1XGllMHjLSj1d59kuG/HmMk8g8XXOsRjCGihxZFuwlPuXOa+h0qROdQufgfZ/fhNJFdxlYaH48/Q==",
+      "type": "package",
+      "path": "sieve/2.3.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Sieve.dll",
+        "sieve.2.3.2.nupkg.sha512",
+        "sieve.nuspec"
+      ]
+    },
     "Swashbuckle.AspNetCore/4.0.1": {
       "sha512": "Zq6lkFieuFPNDwXwQ+e8i5zy2VMrexcRFU8mQORxqIc8r7Y+qKX63vg57yL1HeGCINHQGGzxGfw2rP63IeEqhg==",
       "type": "package",
@@ -13104,6 +13130,7 @@
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.2.6",
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.4",
+      "Sieve >= 2.3.2",
       "Swashbuckle.AspNetCore >= 4.0.1"
     ]
   },
@@ -13176,6 +13203,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[2.2.4, )"
+          },
+          "Sieve": {
+            "target": "Package",
+            "version": "[2.3.2, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

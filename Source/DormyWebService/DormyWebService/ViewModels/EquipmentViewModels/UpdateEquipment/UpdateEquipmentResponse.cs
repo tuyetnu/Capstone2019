@@ -1,6 +1,7 @@
 ﻿using System;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment
 {
@@ -19,8 +20,8 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment
         {
             var result = new UpdateEquipmentResponse()
             {
-                CreatedDate = equipment.CreatedDate.ToString("dd/MM/yyyy HH:mm:ss"),
-                LastUpdated = equipment.LastUpdated.ToString("dd/MM/yyyy HH:mm:ss"),
+                CreatedDate = equipment.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdated = equipment.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
                 EquipmentId = equipment.EquipmentId,
                 ImageUrl = equipment.ImageUrl,
                 Name = equipment.Name,

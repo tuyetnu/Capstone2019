@@ -19,10 +19,10 @@ namespace DormyWebService.Entities.ParamEntities
 
         public string Name { get; set; }
 
-        public int Value { get; set; }
+        public int? Value { get; set; }
 
         public string TextValue { get; set; }
 
-        public DateTime TimeValue { get; set; }
+        public DateTime? TimeValue { get; set; }
     }
 }
