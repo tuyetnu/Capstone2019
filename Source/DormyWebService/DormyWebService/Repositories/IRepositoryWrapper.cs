@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using DormyWebService.Entities.NewsEntities;
-using DormyWebService.Repositories.EquipmentRepository;
+using DormyWebService.Repositories.EquipmentRepositories;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
+using DormyWebService.Repositories.TicketRepositories;
 using DormyWebService.Repositories.UserRepositories;
 
 namespace DormyWebService.Repositories
@@ -30,5 +31,11 @@ namespace DormyWebService.Repositories
         IEquipmentRepository Equipment { get; }
 
         IRoomRepository Room { get; }
+
+        IRoomBookingRepository RoomBooking { get; }
+
+        IRoomTransferRepository RoomTransfer { get; }
+
+        IIssueTicketRepository IssueTicket { get; }
     }
 }

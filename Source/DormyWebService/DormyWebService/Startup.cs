@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
 using DormyWebService.Repositories;
+using DormyWebService.Repositories.TicketRepositories;
 using DormyWebService.Repositories.UserRepositories;
 using DormyWebService.Services;
 using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Services.NewsServices;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.RoomServices;
+using DormyWebService.Services.TicketServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -109,6 +111,11 @@ namespace DormyWebService
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IParamTypeService, ParamTypeService>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IRoomBookingService, RoomBookingService>();
+            services.AddScoped<IRoomTransferService, RoomTransferService>();
+            services.AddScoped<IIssueTicketService, IssueTicketService>();
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
 
