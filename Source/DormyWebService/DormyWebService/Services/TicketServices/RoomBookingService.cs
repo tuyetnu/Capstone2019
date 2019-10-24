@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
@@ -40,19 +41,11 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<RoomBookingRequestForm> FindById(int id)
         {
-            RoomBookingRequestForm result;
-            try
-            {
-                result = await _repoWrapper.RoomBooking.FindByIdAsync(id);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomBookingService: Internal Server Error Occured when finding Room Booking");
-            }
+            var result = await _repoWrapper.RoomBooking.FindByIdAsync(id);
 
             if (result == null)
             {
-                throw new HttpStatusCodeException(404, "RoomBookingService: Room Booking is not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomBookingService: Room Booking is not found");
             }
 
             return result;
@@ -62,17 +55,17 @@ namespace DormyWebService.Services.TicketServices
         {
             if (!await _paramService.IsOfParamType(request.PriorityType, GlobalParams.ParamTypeStudentPriorityType))
             { 
-                throw new HttpStatusCodeException(400, "RoomBookingService: PriorityType is invalid");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: PriorityType is invalid");
             }
 
             if (request.Month <= 0)
             {
-                throw new HttpStatusCodeException(400, "RoomBookingService: Month is invalid");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: Month is invalid");
             }
 
             if (!await _paramService.IsOfParamType(request.TargetRoomType, GlobalParams.ParamTypeRoomType))
             {
-                throw new HttpStatusCodeException(400, "RoomBookingService: RoomType is invalid");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: RoomType is invalid");
             }
 
             var student = await _studentService.FindById(request.StudentId);
@@ -85,20 +78,13 @@ namespace DormyWebService.Services.TicketServices
             {
                 if (bookings.Exists(b => b.Status == RequestStatus.Pending || b.Status == RequestStatus.Approved))
                 {
-                    throw new HttpStatusCodeException(403, "RoomBookingService: There are already active booking requests for this account");
+                    throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: There are already active booking requests for this account");
                 }
             }
 
             var result = SendRoomBookingRequest.NewEntityFromRequest(request);
 
-            try
-            {
-                result = await _repoWrapper.RoomBooking.CreateAsync(result);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomBookingService: DbException happened when creating new request");
-            }
+            result = await _repoWrapper.RoomBooking.CreateAsync(result);
 
             return new SendRoomBookingResponse()
             {
@@ -114,7 +100,7 @@ namespace DormyWebService.Services.TicketServices
             //Check if StudentId matches
             if (roomBooking.StudentId != request.StudentId)
             {
-                throw new HttpStatusCodeException(403, "RoomBookingService: this student is not permitted to change this request");
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: this student is not permitted to change this request");
             }
 
             //Update data
@@ -130,7 +116,7 @@ namespace DormyWebService.Services.TicketServices
             var staff = await _userService.FindById(request.StaffId);
             if (staff.Role != Role.Staff)
             {
-                throw new HttpStatusCodeException(400, "RoomBookingService: Provide StaffId is not a staff");
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: Provide StaffId is not a staff");
             }
 
             //Check if Room Booking Request Exists
@@ -141,15 +127,8 @@ namespace DormyWebService.Services.TicketServices
             //Update Last Updated Date
             roomBooking.LastUpdated = DateTime.Now;
 
-            try
-            {
-                roomBooking =
+            roomBooking =
                     await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomBookingService: DbException happened when updating request");
-            }
 
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
         }
@@ -165,21 +144,12 @@ namespace DormyWebService.Services.TicketServices
                 Filters = filters
             };
 
-            ICollection<RoomBookingRequestForm> roomBookings;
-
-            try
-            {
-                //Get all RoomBookings
-                roomBookings = await _repoWrapper.RoomBooking.FindAllAsync();
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomBookingService: Internal Server Error Occured Searching for Room Booking Request");
-            }
+            //Get all RoomBookings
+            var roomBookings = await _repoWrapper.RoomBooking.FindAllAsync();
 
             if (roomBookings == null || roomBookings.Any() == false)
             {
-                throw new HttpStatusCodeException(404, "RoomBookingService: No Request is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomBookingService: No Request is found");
             }
 
             //Apply filter, sort, pagination
@@ -190,19 +160,7 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<bool> DeleteRoomBooking(int id)
         {
-            try
-            {
-                if (await _repoWrapper.RoomBooking.DeleteAsync(await FindById(id)) > 0)
-                {
-                    return true;
-                }
-            }
-            catch (DbException)
-            {
-                throw new HttpStatusCodeException(500, "RoomBookingService: Internal Server Error Occured when deleting Room Booking Request");
-            }
-
-            return false;
+            return await _repoWrapper.RoomBooking.DeleteAsync(await FindById(id)) > 0;
         }
     }
 }

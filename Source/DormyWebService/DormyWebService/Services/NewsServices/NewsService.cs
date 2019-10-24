@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
@@ -22,12 +23,13 @@ namespace DormyWebService.Services.NewsServices
 {
     public class NewsService : INewsServices
     {
-        private IRepositoryWrapper _repoWrapper;
+        private readonly IRepositoryWrapper _repoWrapper;
         private IMapper _mapper;
-        private IAdminService _admin;
-        private ISieveProcessor _sieveProcessor;
+        private readonly IAdminService _admin;
+        private readonly ISieveProcessor _sieveProcessor;
 
-        public NewsService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, ISieveProcessor sieveProcessor)
+        public NewsService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin,
+            ISieveProcessor sieveProcessor)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
@@ -37,19 +39,11 @@ namespace DormyWebService.Services.NewsServices
 
         public async Task<List<GetNewsHeadlinesResponse>> GetActiveNewsHeadLines()
         {
-            List<News> newsList;
-            try
-            {
-                newsList = (List<News>) await _repoWrapper.News.FindAllAsyncWithCondition(n => n.Status == NewsStatus.Active);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Failed to get news headlines");
-            }
+            var newsList = (List<News>) await _repoWrapper.News.FindAllAsyncWithCondition(n => n.Status == NewsStatus.Active);
 
             if (!newsList.Any())
             {
-                throw new HttpStatusCodeException(404, "No news headlines were found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "No news headlines were found");
             }
 
             return newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
@@ -57,25 +51,18 @@ namespace DormyWebService.Services.NewsServices
 
         public async Task<List<GetNewsHeadlinesResponse>> GetNewsHeadLines()
         {
-            List<News> newsList;
-            try
-            {
-                newsList = (List<News>)await _repoWrapper.News.FindAllAsync();
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Failed to get news headlines");
-            }
+            var newsList = (List<News>) await _repoWrapper.News.FindAllAsync();
 
             if (!newsList.Any())
             {
-                throw new HttpStatusCodeException(404, "No news headlines were found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "No news headlines were found");
             }
 
             return newsList.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
         }
 
-        public async Task<List<GetNewsHeadlinesResponse>> AdvancedGetNewsHeadLines(string sorts, string filters, int? page, int? pageSize)
+        public async Task<List<GetNewsHeadlinesResponse>> AdvancedGetNewsHeadLines(string sorts, string filters,
+            int? page, int? pageSize)
         {
             var sieveModel = new SieveModel()
             {
@@ -85,42 +72,26 @@ namespace DormyWebService.Services.NewsServices
                 Filters = filters
             };
 
-            ICollection<News> newsHeadLines;
-
-            try
-            {
-                newsHeadLines = await _repoWrapper.News.FindAllAsync();
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured Searching for room");
-            }
+            var newsHeadLines = await _repoWrapper.News.FindAllAsync();
 
             if (newsHeadLines == null || newsHeadLines.Any() == false)
             {
-                throw new HttpStatusCodeException(404, "RoomService: No room is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No room is found");
             }
 
             var result = _sieveProcessor.Apply(sieveModel, newsHeadLines.AsQueryable()).ToList();
-            return result.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList(); ;
+            return result.Select(GetNewsHeadlinesResponse.CreateFromNews).ToList();
+            ;
         }
 
         public async Task<News> FindById(int id)
         {
-            News news;
-            try
-            {
-                news = await _repoWrapper.News.FindByIdAsync(id);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error Occured when finding news");
-            }
+            var news = await _repoWrapper.News.FindByIdAsync(id);
 
             //Check if there's this user in database
             if (news == null)
             {
-                throw new HttpStatusCodeException(404, "News is not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "News is not found");
             }
 
             return news;
@@ -137,14 +108,7 @@ namespace DormyWebService.Services.NewsServices
         {
             var author = await _admin.FindById(requestModel.AuthorId);
             var news = CreateNewsRequest.NewNewsFromRequest(requestModel, author);
-            try
-            {
-                news = await _repoWrapper.News.CreateAsync(news);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error. Failed to create new News");
-            }
+            news = await _repoWrapper.News.CreateAsync(news);
 
             return CreateNewsResponse.CreateFromNews(news);
         }
@@ -155,14 +119,7 @@ namespace DormyWebService.Services.NewsServices
 
             news = UpdateNewsRequest.UpdateToNews(requestModel, news);
 
-            try
-            {
-                news = await _repoWrapper.News.UpdateAsync(news, news.NewsId);
-            }
-            catch (Exception )
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error. Failed to update News to Database");
-            }
+            news = await _repoWrapper.News.UpdateAsync(news, news.NewsId);
 
             return UpdateNewsResponse.CreateFromNews(news);
         }
@@ -171,15 +128,7 @@ namespace DormyWebService.Services.NewsServices
         {
             var news = await FindById(id);
             news.Status = newsStatus;
-
-            try
-            {
-                news = await _repoWrapper.News.UpdateAsync(news, news.NewsId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error. Failed to update News to Database");
-            }
+            news = await _repoWrapper.News.UpdateAsync(news, news.NewsId);
 
             return UpdateNewsResponse.CreateFromNews(news);
         }

@@ -37,17 +37,11 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Staff + "," + Role.Admin)]
         [HttpGet]
-        public async Task<ActionResult<List<GetRoomBookingResponse>>> AdvancedGetRoomBooking(string sorts, string filters, int? page,
+        public async Task<ActionResult<List<GetRoomBookingResponse>>> AdvancedGetRoomBooking(string sorts,
+            string filters, int? page,
             int? pageSize)
         {
-            try
-            {
-                return await _roomBookingService.AdvancedGetRoomRequest(sorts, filters, page, pageSize);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _roomBookingService.AdvancedGetRoomRequest(sorts, filters, page, pageSize);
         }
 
         /// <summary>
@@ -63,14 +57,7 @@ namespace DormyWebService.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                return await _roomBookingService.SendRequest(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _roomBookingService.SendRequest(request);
         }
 
         /// <summary>
@@ -80,39 +67,27 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Staff)]
         [HttpPut]
-        public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(ResolveRoomBookingRequest request)
+        public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(
+            ResolveRoomBookingRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected && request.Status != RequestStatus.Complete)
+            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected &&
+                request.Status != RequestStatus.Complete)
             {
                 return BadRequest("Status is Invalid, has to be Approved, Rejected or Complete");
             }
 
-            try
-            {
-                return await _roomBookingService.ResolveRequest(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _roomBookingService.ResolveRequest(request);
         }
 
         [HttpDelete("Debug/{RequestId}")]
         public async Task<ActionResult<bool>> DeleteRoomBooking(int RequestId)
         {
-            try
-            {
-                return await _roomBookingService.DeleteRoomBooking(RequestId);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _roomBookingService.DeleteRoomBooking(RequestId);
         }
     }
 }

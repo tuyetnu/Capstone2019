@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.EquipmentEntities;
@@ -25,10 +26,11 @@ namespace DormyWebService.Services.RoomServices
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private IMapper _mapper;
-        private IParamService _param;
-        private ISieveProcessor _sieveProcessor;
+        private readonly IParamService _param;
+        private readonly ISieveProcessor _sieveProcessor;
 
-        public RoomService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, IParamService param, ISieveProcessor sieveProcessor)
+        public RoomService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, IParamService param,
+            ISieveProcessor sieveProcessor)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
@@ -38,20 +40,12 @@ namespace DormyWebService.Services.RoomServices
 
         public async Task<Room> FindById(int id)
         {
-            Room result;
-            try
-            {
-                result = await _repoWrapper.Room.FindByIdAsync(id);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured when finding room");
-            }
+            var result = await _repoWrapper.Room.FindByIdAsync(id);
 
             //Check if there's this user in database
             if (result == null)
             {
-                throw new HttpStatusCodeException(404, "RoomService: Room is not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Room is not found");
             }
 
             return result;
@@ -59,58 +53,34 @@ namespace DormyWebService.Services.RoomServices
 
         public async Task<CreateRoomResponse> CreateRoom(CreateRoomRequest requestModel)
         {
-            Room room;
-
             //Check if room type exists
             if (!await _param.IsOfParamType(requestModel.RoomType, GlobalParams.ParamTypeRoomType))
             {
-                throw new HttpStatusCodeException(400, "RoomService: RoomType is not valid");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: RoomType is not valid");
             }
 
-            try
-            {
-                room = await _repoWrapper.Room.CreateAsync(CreateRoomRequest.NewRoomFromRequest(requestModel));
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured when creating new room");
-            }
+            var room = await _repoWrapper.Room.CreateAsync(CreateRoomRequest.NewRoomFromRequest(requestModel));
 
             //If there are equipments
             if (EnumerableExtensions.Any(requestModel.EquipmentIds))
             {
                 foreach (var equipmentId in requestModel.EquipmentIds)
                 {
-                    Equipment equipment;
-                    try
-                    {
-                        //Find if equipment exists
-                        equipment = await _repoWrapper.Equipment.FindByIdAsync(equipmentId);
-                    }
-                    catch (Exception)
-                    {
-                        throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured when finding equipment with Id:" + equipmentId);
-                    }
+                    //Find if equipment exists
+                    var equipment = await _repoWrapper.Equipment.FindByIdAsync(equipmentId);
 
                     if (equipment == null)
                     {
-                        throw new HttpStatusCodeException(404, "RoomService: Equipment with id " + equipmentId + " Is not found");
+                        throw new HttpStatusCodeException(HttpStatusCode.NotFound,
+                            "RoomService: Equipment with id " + equipmentId + " Is not found");
                     }
 
-                    if (equipment.RoomId != room.RoomId)
-                    {
-                        //Update room id for the found equipment
-                        equipment.RoomId = room.RoomId;
-                        try
-                        {
-                            equipment = await _repoWrapper.Equipment.UpdateAsyncWithoutSave(equipment, equipment.EquipmentId);
-                        }
-                        catch (Exception)
-                        {
-                            throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured when updating RoomId for Equipment with Id:" + equipment.EquipmentId);
-                        }
-                    }
+                    if (equipment.RoomId == room.RoomId) continue;
+                    //Update room id for the found equipment
+                    equipment.RoomId = room.RoomId;
+                    equipment = await _repoWrapper.Equipment.UpdateAsyncWithoutSave(equipment, equipment.EquipmentId);
                 }
+
                 //Save multiple records
                 await _repoWrapper.Save();
             }
@@ -128,20 +98,11 @@ namespace DormyWebService.Services.RoomServices
                 Filters = filters
             };
 
-            ICollection<Room> rooms;
-
-            try
-            {
-                rooms =await _repoWrapper.Room.FindAllAsync();
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured Searching for room");
-            }
+            var rooms = await _repoWrapper.Room.FindAllAsync();
 
             if (rooms == null || rooms.Any() == false)
             {
-                throw new HttpStatusCodeException(404, "RoomService: No room is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No room is found");
             }
 
             var result = _sieveProcessor.Apply(sieveModel, rooms.AsQueryable()).ToList();
@@ -154,30 +115,25 @@ namespace DormyWebService.Services.RoomServices
             var room = await FindById(requestModel.RoomId);
 
             //Check if room type exists
-            if (! await _param.IsOfParamType(requestModel.RoomType, GlobalParams.ParamTypeRoomType))
+            if (!await _param.IsOfParamType(requestModel.RoomType, GlobalParams.ParamTypeRoomType))
             {
-                throw new HttpStatusCodeException(400, "RoomService: RoomType is not valid");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: RoomType is not valid");
             }
 
             //Update room with new information
             room = UpdateRoomRequest.UpdateToRoom(room, requestModel);
 
-            try
-            {
-                //Update to database
-                room = await _repoWrapper.Room.UpdateAsync(room, room.RoomId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "RoomService: Internal Server Error Occured when updating room");
-            }
 
-            var equipments = (List<Equipment>) await _repoWrapper.Equipment.FindAllAsyncWithCondition(e=>e.RoomId == room.RoomId);
+            //Update to database
+            room = await _repoWrapper.Room.UpdateAsync(room, room.RoomId);
+
+            var equipments =
+                (List<Equipment>) await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => e.RoomId == room.RoomId);
             List<int> equipmentIds = null;
 
             if (EnumerableExtensions.Any(equipments))
             {
-                equipmentIds = Enumerable.ToList(Enumerable.Select(equipments, e => e.EquipmentId));
+                equipmentIds = equipments.Select(e => e.EquipmentId).ToList();
             }
 
             return UpdateRoomResponse.ResponseFromRoom(room, equipmentIds);

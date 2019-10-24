@@ -38,14 +38,7 @@ namespace DormyWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Room>>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize)
         {
-            try
-            {
                 return await _room.AdvancedGetRooms(sorts,filters,page,pageSize);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
         }
 
         /// <summary>
@@ -67,14 +60,7 @@ namespace DormyWebService.Controllers
                 return BadRequest("RoomsController: RoomStatus is invalid. Must be: " + RoomStatus.ListAllStatuses());
             }
 
-            try
-            {
-                return await _room.CreateRoom(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _room.CreateRoom(request);
         }
 
         /// <summary>
@@ -96,14 +82,7 @@ namespace DormyWebService.Controllers
                 return BadRequest("RoomsController: RoomStatus is invalid. Must be: " + RoomStatus.ListAllStatuses());
             }
 
-            try
-            {
-                return await _room.UpdateRoom(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _room.UpdateRoom(request);
         }
     }
 }

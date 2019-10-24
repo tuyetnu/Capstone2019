@@ -9,7 +9,7 @@ namespace DormyWebService.Services.ParamServices
 {
     public class ParamTypeService : IParamTypeService
     {
-        private IRepositoryWrapper _repoWrapper;
+        private readonly IRepositoryWrapper _repoWrapper;
 
         public ParamTypeService(IRepositoryWrapper repoWrapper)
         {
@@ -18,15 +18,7 @@ namespace DormyWebService.Services.ParamServices
 
         public async Task<List<ParamType>> FindAllAsync()
         {
-            List<ParamType> result;
-            try
-            {
-                result = (List<ParamType>) await _repoWrapper.ParamType.FindAllAsync();
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error when attempting to get ParamType from Database");
-            }
+            var result = (List<ParamType>) await _repoWrapper.ParamType.FindAllAsync();
 
             return result;
         }

@@ -46,14 +46,7 @@ namespace DormyWebService.Controllers
                 return BadRequest("Status is not valid. Must be: " + string.Join(", ", EquipmentStatus.ListAllStatuses()));
             }
 
-            try
-            {
-                return await _equipmentService.CreateEquipment(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _equipmentService.CreateEquipment(request);
         }
 
         /// <summary>
@@ -77,14 +70,7 @@ namespace DormyWebService.Controllers
                 return BadRequest("Status is not valid. Must be: " + string.Join(", ", EquipmentStatus.ListAllStatuses()));
             }
 
-            try
-            {
-                return await _equipmentService.UpdateEquipment(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _equipmentService.UpdateEquipment(request);
         }
     }
 }

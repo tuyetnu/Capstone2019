@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
@@ -24,9 +25,10 @@ namespace DormyWebService.Services.UserServices
         private readonly IUserService _userService;
         private readonly IParamService _paramService;
         private readonly IMapper _mapper;
-        private ISieveProcessor _sieveProcessor;
+        private readonly ISieveProcessor _sieveProcessor;
 
-        public StudentService(IRepositoryWrapper repoWrapper, IMapper mapper, IUserService userService, IParamService paramService, ISieveProcessor sieveProcessor)
+        public StudentService(IRepositoryWrapper repoWrapper, IMapper mapper, IUserService userService,
+            IParamService paramService, ISieveProcessor sieveProcessor)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
@@ -38,12 +40,12 @@ namespace DormyWebService.Services.UserServices
         public async Task<List<GetAllStudentResponse>> GetAllStudent()
         {
             //Get all student in database
-            var students =  await _repoWrapper.Student.FindAllAsync();
+            var students = await _repoWrapper.Student.FindAllAsync();
 
             //If list is empty, throw exception
             if (!students.Any())
             {
-                throw new HttpStatusCodeException(404, "No Student is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "No Student is found");
             }
 
             //Format student list into a list of response object
@@ -52,7 +54,8 @@ namespace DormyWebService.Services.UserServices
             return result;
         }
 
-        public async Task<List<GetAllStudentResponse>> AdvancedGetStudent(string sorts, string filters, int? page, int? pageSize)
+        public async Task<List<GetAllStudentResponse>> AdvancedGetStudent(string sorts, string filters, int? page,
+            int? pageSize)
         {
             var sieveModel = new SieveModel()
             {
@@ -62,20 +65,11 @@ namespace DormyWebService.Services.UserServices
                 Filters = filters,
             };
 
-            ICollection<Student> students;
-
-            try
-            {
-                students = await _repoWrapper.Student.FindAllAsync();
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "StudentService: Internal Server Error Occured Searching for student");
-            }
+            var students = await _repoWrapper.Student.FindAllAsync();
 
             if (students == null || students.Any() == false)
             {
-                throw new HttpStatusCodeException(404, "StudentService: No student is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "StudentService: No student is found");
             }
 
             var sortedStudents = _sieveProcessor.Apply(sieveModel, students.AsQueryable()).ToList();
@@ -90,7 +84,7 @@ namespace DormyWebService.Services.UserServices
 
             if (student == null)
             {
-                throw new HttpStatusCodeException(404, "No Student is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "No Student is found");
             }
 
             return _mapper.Map<FindByIdStudentResponse>(student);
@@ -102,7 +96,7 @@ namespace DormyWebService.Services.UserServices
 
             if (student == null)
             {
-                throw new HttpStatusCodeException(404, "No Student is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "No Student is found");
             }
 
             var priorityType = await _paramService.FindById(student.PriorityType);
@@ -117,7 +111,7 @@ namespace DormyWebService.Services.UserServices
             //check if request is empty
             if (!requestModel.Any())
             {
-                throw new HttpStatusCodeException(400, "StudentService: request is empty");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "StudentService: request is empty");
             }
 
             //Check records in requestModel for duplicate email
@@ -135,7 +129,8 @@ namespace DormyWebService.Services.UserServices
                 {
                     //clear pending changes
                     _repoWrapper.DeleteChanges();
-                    throw new HttpStatusCodeException(400, "StudentService: Email: " + s.Email + " Already Existed");
+                    throw new HttpStatusCodeException(HttpStatusCode.NotFound,
+                        "StudentService: Email: " + s.Email + " Already Existed");
                 }
 
                 //Add student to pending changes
@@ -151,7 +146,8 @@ namespace DormyWebService.Services.UserServices
             {
                 //clear pending changes if fail
                 _repoWrapper.DeleteChanges();
-                throw new HttpStatusCodeException(500, "StudentService: Could not create new student");
+                throw new HttpStatusCodeException(HttpStatusCode.InternalServerError,
+                    "StudentService: Could not create new student");
             }
 
             return students.Select(ImportStudentResponse.CreateFromStudent).ToList();
@@ -159,7 +155,6 @@ namespace DormyWebService.Services.UserServices
 
         public async Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel)
         {
-
             //Find User with the same id in database
             var user = await _userService.FindById(requestModel.StudentId);
 
@@ -167,18 +162,11 @@ namespace DormyWebService.Services.UserServices
             var student = await _repoWrapper.Student.FindByIdAsync(requestModel.StudentId);
 
             //If student already existed, update student
-                student = requestModel.MapToStudent(student);
+            student = requestModel.MapToStudent(student);
 
-                //Update Student
-                try
-                {
-                    student = await _repoWrapper.Student.UpdateAsync(student, student.StudentId);
-                }
-                catch (Exception)
-                {
-                    throw new HttpStatusCodeException(500, "Failed to update student");
-                }
-            
+            //Update Student
+            student = await _repoWrapper.Student.UpdateAsync(student, student.StudentId);
+
 
             return UpdateStudentResponse.CreateFromStudent(student);
         }
@@ -194,7 +182,7 @@ namespace DormyWebService.Services.UserServices
             }
             catch (Exception)
             {
-                throw new HttpStatusCodeException(404, "Could not find student in database");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Could not find student in database");
             }
 
             //Declare User
@@ -204,15 +192,8 @@ namespace DormyWebService.Services.UserServices
             user.Status = status;
 
             //Save changes to user in database
-            try
-            {
-                user = await _repoWrapper.User.UpdateAsync(user, student.StudentId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Failed to update student's status'");
-            }
-            
+            user = await _repoWrapper.User.UpdateAsync(user, student.StudentId);
+
             return new ChangeStudentStatusResponse()
             {
                 Id = student.StudentId,
@@ -226,9 +207,10 @@ namespace DormyWebService.Services.UserServices
             //Check if there are duplicate email in request
             foreach (var student in requestModel)
             {
-                if (requestModel.Exists(s=> s.Email == student.Email))
+                if (requestModel.Exists(s => s.Email == student.Email))
                 {
-                    throw new HttpStatusCodeException(400, "StudentService: there are duplicate email of: " + student.Email);
+                    throw new HttpStatusCodeException(HttpStatusCode.NotFound,
+                        "StudentService: there are duplicate email of: " + student.Email);
                 }
             }
         }

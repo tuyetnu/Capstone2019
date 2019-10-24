@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.EquipmentEntities;
@@ -22,7 +23,8 @@ namespace DormyWebService.Services.EquipmentServices
         private IRoomService _room;
         private IParamService _param;
 
-        public EquipmentService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, IRoomService room, IParamService param)
+        public EquipmentService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, IRoomService room,
+            IParamService param)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
@@ -33,20 +35,12 @@ namespace DormyWebService.Services.EquipmentServices
 
         public async Task<Equipment> FindById(int id)
         {
-            Equipment equipment;
-            try
-            {
-                equipment = await _repoWrapper.Equipment.FindByIdAsync(id);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error Occured when finding Equipment");
-            }
+            var equipment = await _repoWrapper.Equipment.FindByIdAsync(id);
 
             //Check if there's this user in database
             if (equipment == null)
             {
-                throw new HttpStatusCodeException(404, "Equipment is not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: Equipment is not found");
             }
 
             return equipment;
@@ -60,17 +54,8 @@ namespace DormyWebService.Services.EquipmentServices
                 var room = await _room.FindById(requestModel.RoomId.Value);
             }
 
-            Equipment equipment;
-            try
-            {   
-                equipment =
-                    await _repoWrapper.Equipment.CreateAsync(
-                        CreateEquipmentRequest.NewEquipmentFromRequest(requestModel));
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "EquipmentService: Internal Server Error Occured when creating new equipment");
-            }
+            var equipment = await _repoWrapper.Equipment.CreateAsync(
+                CreateEquipmentRequest.NewEquipmentFromRequest(requestModel));
 
             return CreateEquipmentResponse.CreateFromEquipment(equipment);
         }
@@ -91,14 +76,7 @@ namespace DormyWebService.Services.EquipmentServices
             //Update new information to equipment
             equipment = UpdateEquipmentRequest.UpdateToEquipment(equipment, requestModel, room);
 
-            try
-            {
-                equipment = await _repoWrapper.Equipment.UpdateAsync(equipment, equipment.EquipmentId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "EquipmentService: Internal Server Error Occured when updating equipment");
-            }
+            equipment = await _repoWrapper.Equipment.UpdateAsync(equipment, equipment.EquipmentId);
 
             return UpdateEquipmentResponse.CreateFromEquipment(equipment, room);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.ParamEntities;
@@ -14,7 +15,7 @@ namespace DormyWebService.Services.ParamServices
     public class ParamService : IParamService
     {
         private readonly IRepositoryWrapper _repoWrapper;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public ParamService(IRepositoryWrapper repoWrapper, IMapper mapper)
         {
@@ -24,20 +25,11 @@ namespace DormyWebService.Services.ParamServices
 
         public async Task<List<Param>> FindAllAsync()
         {
-            List<Param> result;
-
-            try
-            {
-                result = (List<Param>)await _repoWrapper.Param.FindAllAsync();
-            }
-            catch (Exception )
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error when attempting to get Param from Database");
-            }
+            var result = (List<Param>) await _repoWrapper.Param.FindAllAsync();
 
             if (!result.Any())
             {
-                throw new HttpStatusCodeException(404, "There are no param type in database");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "There are no param type in database");
             }
 
             return result;
@@ -45,41 +37,25 @@ namespace DormyWebService.Services.ParamServices
 
         public async Task<Param> FindById(int id)
         {
-            Param result;
-            try
-            {
-                result = await _repoWrapper.Param.FindByIdAsync(id);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error when attempting to get Param from Database");
-            }
+            var result = await _repoWrapper.Param.FindByIdAsync(id);
 
             if (result == null)
             {
-                throw new HttpStatusCodeException(404, "Param not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Param not found");
             }
 
             return result;
-            
         }
 
         public async Task<List<ParamModelView>> FindAllByParamType(int paramTypeId)
         {
-            List<Param> paramList;
-
-            try
-            {
-                paramList = (List<Param>)await _repoWrapper.Param.FindAllAsyncWithCondition(param => param.ParamTypeId == paramTypeId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "Internal Server Error when attempting to get Param from Database");
-            }
+            var paramList =
+                (List<Param>) await _repoWrapper.Param.FindAllAsyncWithCondition(param =>
+                    param.ParamTypeId == paramTypeId);
 
             if (!paramList.Any())
             {
-                throw new HttpStatusCodeException(404, "There are no param type in database");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "There are no param type in database");
             }
 
             return paramList.Select(param => _mapper.Map<ParamModelView>(param)).ToList();
@@ -87,17 +63,9 @@ namespace DormyWebService.Services.ParamServices
 
         public async Task<bool> IsOfParamType(int paramId, int paramTypeId)
         {
-            List<Param> tmpParams;
-            try
-            {
-                tmpParams = (List<Param>)await _repoWrapper.Param.FindAllAsyncWithCondition(p =>
-                    p.ParamId == paramId && p.ParamTypeId == paramTypeId);
-            }
-            catch (Exception)
-            {
-                throw new HttpStatusCodeException(500, "ParamService: Internal Server Error when attempting to get Param from Database");
-            }
-            
+            var tmpParams = (List<Param>) await _repoWrapper.Param.FindAllAsyncWithCondition(p =>
+                p.ParamId == paramId && p.ParamTypeId == paramTypeId);
+
             //Check if room type exists
             return tmpParams.Any();
         }

@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DormyWebService.Controllers
 {
-    
     [Route("api/[controller]")]
     [ApiController]
     public class ParamTypesController : ControllerBase
@@ -35,14 +34,7 @@ namespace DormyWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ParamType>>> GetAllParamTypes()
         {
-            try
-            {
-                return (List<ParamType>)await _paramTypeService.FindAllAsync();
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return (List<ParamType>) await _paramTypeService.FindAllAsync();
         }
 
         /// <summary>
@@ -53,14 +45,7 @@ namespace DormyWebService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ParamType>> FindById(int id)
         {
-            try
-            {
-                return await _paramTypeService.FindById(id);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _paramTypeService.FindById(id);
         }
     }
 }

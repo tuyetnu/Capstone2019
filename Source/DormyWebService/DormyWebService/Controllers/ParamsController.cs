@@ -18,7 +18,7 @@ namespace DormyWebService.Controllers
     [ApiController]
     public class ParamsController : ControllerBase
     {
-        private IParamService _paramService;
+        private readonly IParamService _paramService;
 
         public ParamsController(IParamService paramService)
         {
@@ -34,15 +34,7 @@ namespace DormyWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Param>>> GetAllParams()
         {
-            try
-            {
-                return (List<Param>)await _paramService.FindAllAsync();
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
-                
+            return await _paramService.FindAllAsync();
         }
 
         /// <summary>
@@ -54,14 +46,7 @@ namespace DormyWebService.Controllers
         [HttpGet("GetAllByParamType/{paramTypeId}")]
         public async Task<ActionResult<List<ParamModelView>>> GetAllByParamType(int paramTypeId)
         {
-            try
-            {
-                return await _paramService.FindAllByParamType(paramTypeId);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _paramService.FindAllByParamType(paramTypeId);
         }
 
         /// <summary>
@@ -74,14 +59,7 @@ namespace DormyWebService.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Param>> FindById(int id)
         {
-            try
-            {
-                return await _paramService.FindById(id);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _paramService.FindById(id);
         }
 
         /// <summary>
@@ -92,7 +70,7 @@ namespace DormyWebService.Controllers
         [HttpGet("UserStatus")]
         public ActionResult<List<string>> GetUserStatus()
         {
-                return UserStatus.GetAllStatus();
+            return UserStatus.GetAllStatus();
         }
     }
 }

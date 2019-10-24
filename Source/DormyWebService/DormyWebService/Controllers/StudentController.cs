@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.UserServices;
@@ -31,14 +32,7 @@ namespace DormyWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetAllStudentResponse>>> GetAllStudents()
         {
-            try
-            {
-                return await _studentService.GetAllStudent();
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _studentService.GetAllStudent();
         }
 
         /// <summary>
@@ -51,16 +45,10 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("AdvancedGet")]
-        public async Task<ActionResult<List<GetAllStudentResponse>>> AdvancedGetStudent(string sorts, string filters, int? page, int? pageSize)
+        public async Task<ActionResult<List<GetAllStudentResponse>>> AdvancedGetStudent(string sorts, string filters,
+            int? page, int? pageSize)
         {
-            try
-            {
-                return await _studentService.AdvancedGetStudent(sorts,filters,page,pageSize);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _studentService.AdvancedGetStudent(sorts, filters, page, pageSize);
         }
 
         //        [HttpGet("{id}")]
@@ -85,14 +73,7 @@ namespace DormyWebService.Controllers
         [HttpGet("GetProfile/{id}")]
         public async Task<ActionResult<GetStudentProfileResponse>> GetProfile(int id)
         {
-            try
-            {
-                return await _studentService.GetProfile(id);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _studentService.GetProfile(id);
         }
 
         /// <summary>
@@ -102,7 +83,8 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Admin)]
         [HttpPost]
-        public async Task<ActionResult<List<ImportStudentResponse>>> UpdateStudent(List<ImportStudentRequest> requestModel)
+        public async Task<ActionResult<List<ImportStudentResponse>>> UpdateStudent(
+            List<ImportStudentRequest> requestModel)
         {
             //Check form
             if (!ModelState.IsValid)
@@ -110,14 +92,7 @@ namespace DormyWebService.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                return await _studentService.ImportStudent(requestModel);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _studentService.ImportStudent(requestModel);
         }
 
         /// <summary>
@@ -130,19 +105,12 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<UpdateStudentResponse>> UpdateStudent(UpdateStudentRequest requestModel)
         {
             //Check form
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                return await _studentService.UpdateStudent(requestModel);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _studentService.UpdateStudent(requestModel);
         }
 
         /// <summary>
@@ -153,21 +121,15 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Admin)]
         [HttpPut("admin/{studentId}/")]
-        public async Task<ActionResult<ChangeStudentStatusResponse>> AdminChangeStudentStatus(int studentId, string status)
+        public async Task<ActionResult<ChangeStudentStatusResponse>> AdminChangeStudentStatus(int studentId,
+            string status)
         {
-            try
+            if (!UserStatus.IsRole(status))
             {
-                if (!UserStatus.IsRole(status))
-                {
-                    throw new HttpStatusCodeException(400, "Status is not found");
-                }
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "Status is not found");
+            }
 
-                return await _studentService.ChangeStudentStatus(studentId, status);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _studentService.ChangeStudentStatus(studentId, status);
         }
     }
 }

@@ -39,16 +39,10 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("AdvancedGet")]
-        public async Task<ActionResult<List<GetUserResponse>>> AdvancedGetUser(string sorts, string filters, int? page, int? pageSize)
+        public async Task<ActionResult<List<GetUserResponse>>> AdvancedGetUser(string sorts, string filters, int? page,
+            int? pageSize)
         {
-            try
-            {
-                return await _userService.AdvancedGetUser(sorts, filters, page, pageSize);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _userService.AdvancedGetUser(sorts, filters, page, pageSize);
         }
 
         /// <summary>
@@ -71,28 +65,14 @@ namespace DormyWebService.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult<LoginSuccessUser>> Login( [FromBody] SocialUser socialUser)
+        public async Task<ActionResult<LoginSuccessUser>> Login([FromBody] SocialUser socialUser)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            try
-            {
-                return await _userService.Authenticate(socialUser.IdToken, socialUser.Email);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                switch (e.StatusCode)
-                {
-                    case 400: return BadRequest("Request is invalid");
-                    case 404: return NotFound("Could not find email in Google API");
-                    default: return StatusCode(500, "Internal server error");
-                }
-
-            }
-            
+            return await _userService.Authenticate(socialUser.IdToken, socialUser.Email);
         }
 
         /// <summary>
@@ -116,14 +96,7 @@ namespace DormyWebService.Controllers
                 return BadRequest("Role is not valid,");
             }
 
-            try
-            {
-                return await _userService.ChangeUserRole(userId, role);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _userService.ChangeUserRole(userId, role);
         }
     }
 }

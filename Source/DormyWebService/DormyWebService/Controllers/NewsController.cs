@@ -32,18 +32,11 @@ namespace DormyWebService.Controllers
         /// Get list of active news headlines for authorized users
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+//        [Authorize]
         [HttpGet("Headlines")]
         public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> GetActiveNewsHeadlines()
         {
-            try
-            {
-                return await _newsServices.GetActiveNewsHeadLines();
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.GetActiveNewsHeadLines();
         }
 
         /// <summary>
@@ -57,16 +50,10 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("AdvancedGet")]
-        public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> AdvancedGetNewsHeadlines(string sorts, string filters, int? page, int? pageSize)
+        public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> AdvancedGetNewsHeadlines(string sorts,
+            string filters, int? page, int? pageSize)
         {
-            try
-            {
-                return await _newsServices.AdvancedGetNewsHeadLines(sorts,filters,page,pageSize);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.AdvancedGetNewsHeadLines(sorts, filters, page, pageSize);
         }
 
         /// <summary>
@@ -77,14 +64,7 @@ namespace DormyWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> GetNewsHeadlines()
         {
-            try
-            {
-                return await _newsServices.GetActiveNewsHeadLines();
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.GetActiveNewsHeadLines();
         }
 
         /// <summary>
@@ -92,18 +72,11 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="id">news id</param>
         /// <returns></returns>
-        [Authorize]
+//        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<GetNewsDetailResponse>> GetNewsDetail(int id)
         {
-            try
-            {
-                return await _newsServices.GetNewsDetail(id);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.GetNewsDetail(id);
         }
 
         /// <summary>
@@ -118,14 +91,7 @@ namespace DormyWebService.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                return await _newsServices.CreateNews(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.CreateNews(request);
         }
 
         /// <summary>
@@ -150,14 +116,7 @@ namespace DormyWebService.Controllers
             }
 
             //Call Service
-            try
-            {
-                return await _newsServices.UpdateNews(request);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.UpdateNews(request);
         }
 
         /// <summary>
@@ -176,14 +135,7 @@ namespace DormyWebService.Controllers
             }
 
             //Call Service
-            try
-            {
-                return await _newsServices.ChangeNewsStatus(id, status);
-            }
-            catch (HttpStatusCodeException e)
-            {
-                return StatusCode(e.StatusCode, e.Message);
-            }
+            return await _newsServices.ChangeNewsStatus(id, status);
         }
     }
 }
