@@ -36,11 +36,6 @@ namespace DormyWebService.Utilities
             CreateMap<News, GetNewsHeadlinesResponse>();
             CreateMap<Param, ParamModelView>();
 
-            //Send Room Booking request
-            CreateMap<RoomBookingRequestForm, SendRoomBookingResponse>()
-                .ForMember(dest=>dest.CreatedDate, o => o.MapFrom(src=>src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
-                .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat)));
-
             //Resolve Room Booking
             CreateMap<ResolveRoomBookingRequest, RoomBookingRequestForm>();
             CreateMap<RoomBookingRequestForm, ResolveRoomBookingResponse>()

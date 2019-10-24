@@ -54,7 +54,7 @@ namespace DormyWebService.Controllers
         /// send room booking request for student
         /// </summary>
         /// <param name="request"></param>
-        [Authorize(Roles = Role.Student)]
+//        [Authorize(Roles = Role.Student)]
         [HttpPost]
         public async Task<ActionResult<SendRoomBookingResponse>> SendRoomBooking(SendRoomBookingRequest request)
         {
@@ -95,6 +95,19 @@ namespace DormyWebService.Controllers
             try
             {
                 return await _roomBookingService.ResolveRequest(request);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
+        }
+
+        [HttpDelete("Debug/{RequestId}")]
+        public async Task<ActionResult<bool>> DeleteRoomBooking(int RequestId)
+        {
+            try
+            {
+                return await _roomBookingService.DeleteRoomBooking(RequestId);
             }
             catch (HttpStatusCodeException e)
             {

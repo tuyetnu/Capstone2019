@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,6 +10,7 @@ using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
@@ -56,22 +58,6 @@ namespace DormyWebService.Services.TicketServices
             return result;
         }
 
-//        public async Task<bool> HasActiveRequest(int studentId)
-//        {
-//            var bookings = (List<RoomBookingRequestForm>)
-//                await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.StudentId == studentId);
-//
-//            if (bookings != null)
-//            {
-//                if (bookings.Exists(b => b.Status == RequestStatus.Pending || b.Status == RequestStatus.Approved))
-//                {
-//                    throw new HttpStatusCodeException(403, "RoomBookingService: There are already active booking requests for this account");
-//                }
-//            }
-//
-//            return 
-//        } 
-
         public async Task<SendRoomBookingResponse> SendRequest(SendRoomBookingRequest request)
         {
             if (!await _paramService.IsOfParamType(request.PriorityType, GlobalParams.ParamTypeStudentPriorityType))
@@ -91,6 +77,18 @@ namespace DormyWebService.Services.TicketServices
 
             var student = await _studentService.FindById(request.StudentId);
 
+            //Check for active requests
+            var bookings = (List<RoomBookingRequestForm>)
+                await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.StudentId == request.StudentId);
+
+            if (bookings != null)
+            {
+                if (bookings.Exists(b => b.Status == RequestStatus.Pending || b.Status == RequestStatus.Approved))
+                {
+                    throw new HttpStatusCodeException(403, "RoomBookingService: There are already active booking requests for this account");
+                }
+            }
+
             var result = SendRoomBookingRequest.NewEntityFromReQuest(request);
 
             try
@@ -102,7 +100,17 @@ namespace DormyWebService.Services.TicketServices
                 throw new HttpStatusCodeException(500, "RoomBookingService: DbException happened when creating new request");
             }
 
-            return _mapper.Map<SendRoomBookingResponse>(result);
+            return new SendRoomBookingResponse()
+            {
+                RoomBookingRequestFormId = result.RoomBookingRequestFormId
+            };
+        }
+
+        public Task<bool> EditRoomRequest(EditRoomBookingRequest request)
+        {
+            _studentService.FindById(request.StudentId);
+
+            return null;
         }
 
         public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)
@@ -137,6 +145,7 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<List<GetRoomBookingResponse>> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize)
         {
+            //Build model for SieveProcessor
             var sieveModel = new SieveModel()
             {
                 PageSize = pageSize,
@@ -149,6 +158,7 @@ namespace DormyWebService.Services.TicketServices
 
             try
             {
+                //Get all RoomBookings
                 roomBookings = await _repoWrapper.RoomBooking.FindAllAsync();
             }
             catch (Exception)
@@ -161,9 +171,27 @@ namespace DormyWebService.Services.TicketServices
                 throw new HttpStatusCodeException(404, "RoomBookingService: No Request is found");
             }
 
+            //Apply filter, sort, pagination
             var result = _sieveProcessor.Apply(sieveModel, roomBookings.AsQueryable()).ToList();
 
             return result.Select(r=>_mapper.Map<GetRoomBookingResponse>(r)).ToList(); 
+        }
+
+        public async Task<bool> DeleteRoomBooking(int id)
+        {
+            try
+            {
+                if (await _repoWrapper.RoomBooking.DeleteAsync(await FindById(id)) > 0)
+                {
+                    return true;
+                }
+            }
+            catch (DbException)
+            {
+                throw new HttpStatusCodeException(500, "RoomBookingService: Internal Server Error Occured when deleting Room Booking Request");
+            }
+
+            return false;
         }
     }
 }
