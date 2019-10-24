@@ -6,6 +6,7 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,30 @@ namespace DormyWebService.Controllers
         public RoomBookingsController(IRoomBookingService roomBookingService)
         {
             _roomBookingService = roomBookingService;
+        }
+
+        /// <summary>
+        /// Get List of Room Booking Request with condition for staff and admin
+        /// </summary>
+        /// <remarks>See GET /api/Rooms for examples</remarks>
+        /// <param name="sorts"></param>
+        /// <param name="filters"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff + "," + Role.Admin)]
+        [HttpGet]
+        public async Task<ActionResult<List<GetRoomBookingResponse>>> AdvancedGetRoomBooking(string sorts, string filters, int? page,
+            int? pageSize)
+        {
+            try
+            {
+                return await _roomBookingService.AdvancedGetRoomRequest(sorts, filters, page, pageSize);
+            }
+            catch (HttpStatusCodeException e)
+            {
+                return StatusCode(e.StatusCode, e.Message);
+            }
         }
 
         /// <summary>
@@ -62,9 +87,9 @@ namespace DormyWebService.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected)
+            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected && request.Status != RequestStatus.Complete)
             {
-                return BadRequest("Status is Invalid, has to be Approved or Rejected");
+                return BadRequest("Status is Invalid, has to be Approved, Rejected or Complete");
             }
 
             try

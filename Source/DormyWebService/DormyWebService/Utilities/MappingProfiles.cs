@@ -9,6 +9,7 @@ using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
 using DormyWebService.ViewModels.Param;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using DormyWebService.ViewModels.UserModelViews;
@@ -34,6 +35,8 @@ namespace DormyWebService.Utilities
             CreateMap<News, CreateNewsResponse>();
             CreateMap<News, GetNewsHeadlinesResponse>();
             CreateMap<Param, ParamModelView>();
+
+            //Send Room Booking request
             CreateMap<RoomBookingRequestForm, SendRoomBookingResponse>()
                 .ForMember(dest=>dest.CreatedDate, o => o.MapFrom(src=>src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
                 .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat)));
@@ -41,6 +44,11 @@ namespace DormyWebService.Utilities
             //Resolve Room Booking
             CreateMap<ResolveRoomBookingRequest, RoomBookingRequestForm>();
             CreateMap<RoomBookingRequestForm, ResolveRoomBookingResponse>()
+                .ForMember(dest => dest.CreatedDate, o => o.MapFrom(src => src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
+                .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat)));
+
+            //Get Room Booking
+            CreateMap<RoomBookingRequestForm, GetRoomBookingResponse>()
                 .ForMember(dest => dest.CreatedDate, o => o.MapFrom(src => src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
                 .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat))); ;
         }

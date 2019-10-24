@@ -14,5 +14,6 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBoo
         public int StudentId { get; set; }
         public int StaffId { get; set; }
         public int TargetRoomType { get; set; }
+        public string Reason { get; set; }
     }
 }

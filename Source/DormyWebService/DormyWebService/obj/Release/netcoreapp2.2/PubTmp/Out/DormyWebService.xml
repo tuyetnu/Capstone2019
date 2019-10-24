@@ -113,6 +113,17 @@
             <remarks>authorization disabled for debug purposes</remarks>
             //        [Authorize(Roles = Role.Admin)]
         </member>
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.AdvancedGetRoomBooking(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get List of Room Booking Request with condition for staff and admin
+            </summary>
+            <remarks>See GET /api/Rooms for examples</remarks>
+            <param name="sorts"></param>
+            <param name="filters"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.RoomBookingsController.SendRoomBooking(DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking.SendRoomBookingRequest)">
             <summary>
             send room booking request for student

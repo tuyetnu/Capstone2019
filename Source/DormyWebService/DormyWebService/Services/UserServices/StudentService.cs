@@ -107,7 +107,9 @@ namespace DormyWebService.Services.UserServices
 
             var priorityType = await _paramService.FindById(student.PriorityType);
 
-            return GetStudentProfileResponse.MapFromStudent(student, priorityType);
+            var user = await _userService.FindById(student.StudentId);
+
+            return GetStudentProfileResponse.MapFromStudent(student, priorityType, user);
         }
 
         public async Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel)
