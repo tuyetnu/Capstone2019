@@ -584,6 +584,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int?>("StudentId");
+
                     b.Property<int?>("TargetUserUserId");
 
                     b.Property<string>("Title")
@@ -602,6 +604,8 @@ namespace DormyWebService.Migrations
 
                     b.HasIndex("StaffId");
 
+                    b.HasIndex("StudentId");
+
                     b.HasIndex("TargetUserUserId");
 
                     b.ToTable("IssueTickets");
@@ -617,9 +621,14 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("LastUpdated");
 
-                    b.Property<int?>("StaffId");
+                    b.Property<int>("Month");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Reason");
+
+                    b.Property<int>("StaffId");
+
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<int>("StudentId");
 
@@ -813,6 +822,10 @@ namespace DormyWebService.Migrations
                         .WithMany()
                         .HasForeignKey("StaffId");
 
+                    b.HasOne("DormyWebService.Entities.AccountEntities.Student")
+                        .WithMany("IssueTickets")
+                        .HasForeignKey("StudentId");
+
                     b.HasOne("DormyWebService.Entities.AccountEntities.User", "TargetUser")
                         .WithMany()
                         .HasForeignKey("TargetUserUserId");
@@ -822,10 +835,11 @@ namespace DormyWebService.Migrations
                 {
                     b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
                         .WithMany()
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
-                        .WithMany()
+                        .WithMany("RoomBookingRequests")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -837,7 +851,7 @@ namespace DormyWebService.Migrations
                         .HasForeignKey("StaffId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
-                        .WithMany()
+                        .WithMany("RoomTransferRequests")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

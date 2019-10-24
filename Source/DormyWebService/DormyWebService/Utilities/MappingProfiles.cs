@@ -4,10 +4,13 @@ using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Entities.ParamEntities;
+using DormyWebService.Entities.TicketEntities;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
 using DormyWebService.ViewModels.Param;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetUser;
@@ -31,6 +34,12 @@ namespace DormyWebService.Utilities
             CreateMap<News, CreateNewsResponse>();
             CreateMap<News, GetNewsHeadlinesResponse>();
             CreateMap<Param, ParamModelView>();
+            CreateMap<RoomBookingRequestForm, SendRoomBookingResponse>()
+                .ForMember(dest=>dest.CreatedDate, o => o.MapFrom(src=>src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
+                .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat)));
+            CreateMap<RoomBookingRequestForm, ResolveRoomBookingResponse>()
+                .ForMember(dest => dest.LastUpdated,
+                    o => o.MapFrom(DateTime.Now.ToString(GlobalParams.DateTimeResponseFormat)));
         }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Entities.TicketEntities;
 using Sieve.Attributes;
 
 namespace DormyWebService.Entities.AccountEntities
@@ -63,6 +64,9 @@ namespace DormyWebService.Entities.AccountEntities
         //Hình đối tượng ưu tiên
         public string PriorityImageUrl { get; set; }
 
+        [ForeignKey("Room")]
+        public int? RoomId { get; set; }
+
         //Phòng đang ở
         public Room Room { get; set; }
 
@@ -98,5 +102,8 @@ namespace DormyWebService.Entities.AccountEntities
         public DateTime BirthDay { get; set; }
 
         public virtual ICollection<Contract> Contracts { get; set; }
+        public virtual ICollection<RoomBookingRequestForm> RoomBookingRequests { get; set; }
+        public virtual ICollection<RoomTransferRequestForm> RoomTransferRequests { get; set; }
+        public virtual ICollection<IssueTicket> IssueTickets { get; set; }
     }
 }

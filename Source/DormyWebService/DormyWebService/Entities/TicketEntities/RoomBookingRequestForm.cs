@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.RoomEntities;
 
@@ -20,19 +21,26 @@ namespace DormyWebService.Entities.TicketEntities
         public DateTime LastUpdated { get; set; }
 
         [Required]
-        private int Month { get; set; }
+        public int Month { get; set; }
 
-        //Param
         //Current Status
         [Required]
-        public int Status { get; set; }
+        public string Status { get; set; }
 
         [Required]
+        [ForeignKey("Student")]
+        public int StudentId { get; set; }
+        
         public Student Student { get; set; }
 
-        public Staff Staff { get; set; }
+        [ForeignKey("Staff")]
+        public int? StaffId { get; set; }
+
+        public virtual Staff Staff { get; set; }
 
         [Required]
         public int TargetRoomType { get; set; }
+
+        public string Reason { get; set; }
     }
 }

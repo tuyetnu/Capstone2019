@@ -9,7 +9,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBookin
         public DateTime CreatedDate { get; set; }
         public DateTime LastUpdated { get; set; }
         private int Month { get; set; }
-        public int Status { get; set; }
+        public string Status { get; set; }
         public int StudentId { get; set; }
         public int TargetRoomType { get; set; }
     }
