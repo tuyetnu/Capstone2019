@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
@@ -21,14 +22,16 @@ namespace DormyWebService.Services.TicketServices
         private ISieveProcessor _sieveProcessor;
         private readonly IStudentService _studentService;
         private readonly IParamService _paramService;
+        private readonly IUserService _userService;
 
-        public RoomBookingService(IRepositoryWrapper repoWrapper, IMapper mapper, ISieveProcessor sieveProcessor, IStudentService studentService, IParamService paramService)
+        public RoomBookingService(IRepositoryWrapper repoWrapper, IMapper mapper, ISieveProcessor sieveProcessor, IStudentService studentService, IParamService paramService, IUserService userService)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
             _sieveProcessor = sieveProcessor;
             _studentService = studentService;
             _paramService = paramService;
+            _userService = userService;
         }
 
         public async Task<RoomBookingRequestForm> FindById(int id)
@@ -87,9 +90,32 @@ namespace DormyWebService.Services.TicketServices
             return _mapper.Map<SendRoomBookingResponse>(result);
         }
 
-        public async Task<ResolveRoomBookingResponse> ResolveRequest(int adminId, string requestStatus)
+        public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)
         {
-            throw new NotImplementedException();
+            //Check if this staff exist
+            var staff = await _userService.FindById(request.StaffId);
+
+            if (staff.Role != Role.Staff)
+            {
+                throw new HttpStatusCodeException(400, "RoomBookingService: Provide StaffId is not a staff");
+            }
+
+            var roomBooking = await FindById(request.RoomBookingRequestFormId);
+
+            roomBooking = _mapper.Map(request, roomBooking);
+            roomBooking.LastUpdated = DateTime.Now;
+
+            try
+            {
+                roomBooking =
+                    await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
+            }
+            catch (Exception)
+            {
+                throw new HttpStatusCodeException(500, "RoomBookingService: DbException happened when updating request");
+            }
+
+            return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
         }
     }
 }

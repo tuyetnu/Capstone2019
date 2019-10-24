@@ -119,6 +119,13 @@
             </summary>
             <param name="request"></param>
         </member>
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.ChangeRoomBookingStatus(DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking.ResolveRoomBookingRequest)">
+            <summary>
+            Change status of a Room Booking Request, for staff
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.RoomsController.AdvancedGetRooms(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Get list of room with pagination and condition, Authorization is not determined yet

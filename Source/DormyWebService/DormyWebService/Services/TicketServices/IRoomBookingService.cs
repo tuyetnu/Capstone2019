@@ -11,6 +11,6 @@ namespace DormyWebService.Services.TicketServices
 
         Task<SendRoomBookingResponse> SendRequest(SendRoomBookingRequest request);
 
-        Task<ResolveRoomBookingResponse> ResolveRequest(int adminId, string requestStatus);
+        Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request);
     }
 }

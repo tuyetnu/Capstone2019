@@ -625,7 +625,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("Reason");
 
-                    b.Property<int>("StaffId");
+                    b.Property<int?>("StaffId");
 
                     b.Property<string>("Status")
                         .IsRequired();
@@ -835,8 +835,7 @@ namespace DormyWebService.Migrations
                 {
                     b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
                         .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StaffId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany("RoomBookingRequests")

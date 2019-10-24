@@ -2,8 +2,8 @@
 {
     public class ResolveRoomBookingRequest
     {
+        public int RoomBookingRequestFormId { get; set; }
         public string Status { get; set; }
-        public int StudentId { get; set; }
         public int StaffId { get; set; }
     }
 }
