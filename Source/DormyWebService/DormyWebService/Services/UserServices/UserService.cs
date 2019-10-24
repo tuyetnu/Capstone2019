@@ -109,11 +109,11 @@ namespace DormyWebService.Services.UserServices
                 {
                     using (var response = await httpClient.GetAsync(GoogleApiTokenInfoUrl + idToken))
                     {
-                        string test = await response.Content.ReadAsStringAsync();
+                        var test = await response.Content.ReadAsStringAsync();
                         try
                         {
                             //Covert Json to IdToken
-                            IdTokenResponse idTokenResponse = JsonConvert.DeserializeObject<IdTokenResponse>(test);
+                            var idTokenResponse = JsonConvert.DeserializeObject<IdTokenResponse>(test);
 
                             //Log for debug
                             System.Diagnostics.Debug.WriteLine("idToken.Email: " + idTokenResponse.Email);
@@ -133,51 +133,38 @@ namespace DormyWebService.Services.UserServices
                     }
                 }
 
-                try
+                //Find User with the same email in database
+                var user = await _repoWrapper.User.FindAsync(u => u.Email == email);
+
+                //Check if user is null
+                if (user == null)
                 {
-                    //Find User with the same email in database
-                    var user = await _repoWrapper.User.FindAsync(u => u.Email == email);
+                    throw new HttpStatusCodeException(401,"This account doesn't exist'");
+                }
 
-                    //If user is null, create new user
-                    if (user == null)
+                // authentication successful so generate jwt token
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_authSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
                     {
-                        user = await _repoWrapper.User.CreateAsync(new User()
-                        {
-                            Email = email,
-                            //Active
-                            Status = UserStatus.Active,
-                            Role = Role.AuthorizedUser,
-                        });
-                    }
-
-                    // authentication successful so generate jwt token
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var key = Encoding.ASCII.GetBytes(_authSettings.Secret);
-                    var tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                            new Claim(ClaimTypes.Role, user.Role),
-                        }),
-                        Expires = DateTime.UtcNow.AddDays(7),
-                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                    };
-                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                        new Claim(ClaimTypes.Role, user.Role),
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
                     
 
-                    return new LoginSuccessUser()
-                    {
-                        Role = user.Role,
-                        AccessToken = tokenHandler.WriteToken(token),
-                        Id = user.UserId,
-                        Status = user.Status,
-                        Email = user.Email
-                    };
-                }
-                catch (Exception)
+                return new LoginSuccessUser()
                 {
-                    throw new HttpStatusCodeException(500);
-                }
+                    Role = user.Role,
+                    AccessToken = tokenHandler.WriteToken(token),
+                    Id = user.UserId,
+                    Status = user.Status,
+                    Email = user.Email
+                };
 
                 
         }

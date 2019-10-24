@@ -54,7 +54,7 @@ namespace DormyWebService.Controllers
         /// send room booking request for student
         /// </summary>
         /// <param name="request"></param>
-//        [Authorize(Roles = Role.Student)]
+        [Authorize(Roles = Role.Student)]
         [HttpPost]
         public async Task<ActionResult<SendRoomBookingResponse>> SendRoomBooking(SendRoomBookingRequest request)
         {

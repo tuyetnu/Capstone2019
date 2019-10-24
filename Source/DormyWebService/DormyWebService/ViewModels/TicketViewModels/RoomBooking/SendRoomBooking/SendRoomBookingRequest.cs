@@ -29,7 +29,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBookin
         [Required]
         public string PriorityImageUrl { get; set; }
 
-        public static RoomBookingRequestForm NewEntityFromReQuest(SendRoomBookingRequest request)
+        public static RoomBookingRequestForm NewEntityFromRequest(SendRoomBookingRequest request)
         {
             return new RoomBookingRequestForm()
             {

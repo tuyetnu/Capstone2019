@@ -89,7 +89,7 @@ namespace DormyWebService.Services.TicketServices
                 }
             }
 
-            var result = SendRoomBookingRequest.NewEntityFromReQuest(request);
+            var result = SendRoomBookingRequest.NewEntityFromRequest(request);
 
             try
             {
@@ -106,11 +106,22 @@ namespace DormyWebService.Services.TicketServices
             };
         }
 
-        public Task<bool> EditRoomRequest(EditRoomBookingRequest request)
+        public async Task<bool> EditRoomRequest(EditRoomBookingRequest request)
         {
-            _studentService.FindById(request.StudentId);
+            //Find Room Booking by Id
+            var roomBooking = await FindById(request.RoomBookingRequestFormId);
 
-            return null;
+            //Check if StudentId matches
+            if (roomBooking.StudentId != request.StudentId)
+            {
+                throw new HttpStatusCodeException(403, "RoomBookingService: this student is not permitted to change this request");
+            }
+
+            //Update data
+            roomBooking = EditRoomBookingRequest.NewEntityFromRequest(request);
+
+            //Update to database
+            return false;
         }
 
         public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)

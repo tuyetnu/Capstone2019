@@ -58,7 +58,6 @@ namespace DormyWebService
 
             //Register DBContext and database connection string
             services.AddDbContext<DormyDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:DormyDB"]));
-//            services.AddDbContext<UniversityDbContext>(op => op.UseSqlServer(Configuration["ConnectionString:UniversityDB"]));
 
             // Register the Swagger generator, defining 1 or more Swagger documents, v1 is for version 
             services.AddSwaggerGen(c =>
@@ -138,6 +137,8 @@ namespace DormyWebService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
             //For JWT
             app.UseAuthentication();

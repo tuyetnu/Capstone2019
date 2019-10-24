@@ -117,7 +117,7 @@ namespace DormyWebService.Services.UserServices
             //check if request is empty
             if (!requestModel.Any())
             {
-                return null;
+                throw new HttpStatusCodeException(400, "StudentService: request is empty");
             }
 
             //Check records in requestModel for duplicate email
@@ -166,31 +166,10 @@ namespace DormyWebService.Services.UserServices
             //Check if student already existed in database
             var student = await _repoWrapper.Student.FindByIdAsync(requestModel.StudentId);
 
-            //If there isn't a student with this id, create new
-            if (student == null)
-            {
-                student = _mapper.Map<Student>(requestModel);
-                student.IsRoomLeader = false;
-                student.AccountBalance = 0;
-
-                try
-                {
-                    student = await _repoWrapper.Student.CreateAsync(student);
-                }
-                catch (Exception)
-                {
-                    throw new HttpStatusCodeException(500, "Could not create new student");
-                }
-
-                user.Role = Role.Student;
-                await _repoWrapper.User.UpdateAsync(user, user.UserId);
-            }
-
             //If student already existed, update student
-            else
-            {
                 student = requestModel.MapToStudent(student);
 
+                //Update Student
                 try
                 {
                     student = await _repoWrapper.Student.UpdateAsync(student, student.StudentId);
@@ -199,7 +178,7 @@ namespace DormyWebService.Services.UserServices
                 {
                     throw new HttpStatusCodeException(500, "Failed to update student");
                 }
-            }
+            
 
             return UpdateStudentResponse.CreateFromStudent(student);
         }
