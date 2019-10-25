@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
 using DormyWebService.Repositories;
-using DormyWebService.Repositories.TicketRepositories;
-using DormyWebService.Repositories.UserRepositories;
-using DormyWebService.Services;
 using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Services.HomeService;
+using DormyWebService.Services.MoneyServices;
 using DormyWebService.Services.NewFolder;
 using DormyWebService.Services.NewsServices;
 using DormyWebService.Services.ParamServices;
@@ -23,9 +18,6 @@ using DormyWebService.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -120,6 +112,9 @@ namespace DormyWebService
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IMoneyTransactionService, MoneyTransactionService>();
+            services.AddScoped<IRoomMonthlyBillService, RoomMonthlyBillService>();
+            services.AddScoped<IStudentMonthlyBillService, StudentMonthlyBillService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

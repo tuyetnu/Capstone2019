@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Repositories.EquipmentRepositories;
+using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
@@ -37,5 +38,11 @@ namespace DormyWebService.Repositories
         IRoomTransferRepository RoomTransfer { get; }
 
         IIssueTicketRepository IssueTicket { get; }
+
+        IMoneyTransactionRepository MoneyTransaction { get; }
+
+        IRoomMonthlyBillRepository RoomMonthlyBill { get; }
+
+        IStudentMonthlyBillRepository StudentMonthlyBill { get; }
     }
 }

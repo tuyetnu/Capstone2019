@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using DormyWebService.Entities;
 using DormyWebService.Repositories.EquipmentRepositories;
+using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
@@ -25,6 +26,9 @@ namespace DormyWebService.Repositories
         private IRoomBookingRepository _roomBooking;
         private IRoomTransferRepository _roomTransfer;
         private IIssueTicketRepository _issueTicket;
+        private IMoneyTransactionRepository _moneyTransaction;
+        private IRoomMonthlyBillRepository _roomMonthlyBill;
+        private IStudentMonthlyBillRepository _studentMonthlyBill;
 
         public RepositoryWrapper(DormyDbContext context)
         {
@@ -61,5 +65,8 @@ namespace DormyWebService.Repositories
         public IRoomBookingRepository RoomBooking => _roomBooking ?? (_roomBooking = new RoomBookingRepository(_context));
         public IRoomTransferRepository RoomTransfer => _roomTransfer ?? (_roomTransfer = new RoomTransferRepository(_context));
         public IIssueTicketRepository IssueTicket => _issueTicket ?? (_issueTicket = new IssueTicketRepository(_context));
+        public IMoneyTransactionRepository MoneyTransaction => _moneyTransaction ?? (_moneyTransaction = new MoneyTransactionRepository(_context));
+        public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(_context));
+        public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(_context));
     }
 }
