@@ -44,30 +44,28 @@ namespace DormyWebService.Entities
             base.OnModelCreating(modelBuilder);
 
             //Restrict cascade on delete
-            modelBuilder.Entity<Contract>().HasOne(c => c.Student).WithMany(s => s.Contracts)
-                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<StudentMonthlyBill>().HasOne(c => c.Room).WithMany(r => r.StudentMonthlyBills)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //Seed ParamType Table
-            modelBuilder.Entity<ParamType>().HasData(
-                new ParamType() { ParamTypeId = 0, Name = "MoneyTransactionType" },
-                new ParamType() { ParamTypeId = 1, Name = "NotificationType" },
-                new ParamType() { ParamTypeId = 2, Name = "StudentPriorityType" },
-                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
-                new ParamType() { ParamTypeId = 4, Name = "RoomType" }
-            );
+//            modelBuilder.Entity<ParamType>().HasData(
+//                new ParamType() { ParamTypeId = 0, Name = "MoneyTransactionType" },
+//                new ParamType() { ParamTypeId = 1, Name = "NotificationType" },
+//                new ParamType() { ParamTypeId = 2, Name = "StudentPriorityType" },
+//                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
+//                new ParamType() { ParamTypeId = 4, Name = "RoomType" }
+//            );
 
             //Seed Param Table
-            modelBuilder.Entity<Param>().HasData(
-                new Param() { ParamId = 0, Name = "Ưu tiên loại 1", ParamTypeId = 2},
-                new Param() { ParamId = 1, Name = "Ưu tiên loại 2", ParamTypeId = 2 },
-                new Param() { ParamId = 2, Name = "Ưu tiên loại 1 và 2", ParamTypeId = 2 },
-                new Param() { ParamId = 3, Name = "Không có ưu tiên", ParamTypeId = 2 },
-                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 3, TextValue = "fpt.edu.vn" },
-                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 4 },
-                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 4 }
-            );
+//            modelBuilder.Entity<Param>().HasData(
+//                new Param() { ParamId = 0, Name = "Ưu tiên loại 1", ParamTypeId = 2},
+//                new Param() { ParamId = 1, Name = "Ưu tiên loại 2", ParamTypeId = 2 },
+//                new Param() { ParamId = 2, Name = "Ưu tiên loại 1 và 2", ParamTypeId = 2 },
+//                new Param() { ParamId = 3, Name = "Không có ưu tiên", ParamTypeId = 2 },
+//                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 3, TextValue = "fpt.edu.vn" },
+//                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 4 },
+//                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 4 }
+//            );
 
         }
 

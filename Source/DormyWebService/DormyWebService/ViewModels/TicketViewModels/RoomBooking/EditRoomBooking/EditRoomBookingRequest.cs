@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Entities.TicketEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking
 {
@@ -30,21 +31,17 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBookin
         [Required]
         public string PriorityImageUrl { get; set; }
 
-        public static RoomBookingRequestForm NewEntityFromRequest(EditRoomBookingRequest request)
+        public static RoomBookingRequestForm UpdateFromRequest(RoomBookingRequestForm roomBooking, EditRoomBookingRequest request)
         {
-            return new RoomBookingRequestForm()
-            {
-                StudentId = request.StudentId,
-                CreatedDate = DateTime.Now,
-                LastUpdated = DateTime.Now,
-                Month = request.Month,
-                Status = RequestStatus.Pending,
-                TargetRoomType = request.TargetRoomType,
-                IdentityCardImageUrl = request.IdentityCardImageUrl,
-                PriorityImageUrl = request.PriorityImageUrl,
-                StudentCardImageUrl = request.StudentCardImageUrl,
-                PriorityType = request.PriorityType,
-            };
+            roomBooking.LastUpdated = DateTime.Now;
+            roomBooking.Month = request.Month;
+            roomBooking.TargetRoomType = request.TargetRoomType;
+            roomBooking.IdentityCardImageUrl = request.IdentityCardImageUrl;
+            roomBooking.PriorityImageUrl = request.PriorityImageUrl;
+            roomBooking.StudentCardImageUrl = request.StudentCardImageUrl;
+            roomBooking.PriorityType = request.PriorityType;
+
+            return roomBooking;
         }
     }
 }

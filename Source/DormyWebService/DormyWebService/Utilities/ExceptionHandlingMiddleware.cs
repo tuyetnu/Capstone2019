@@ -37,12 +37,8 @@ namespace DormyWebService.Utilities
             switch (exception)
             {
                 case HttpStatusCodeException codeException:
-                    httpStatusCode = codeException.StatusCode; // Or whatever status code you want to return
-                    message = codeException.Message; // Or whatever message you want to return
-                    break;
-                case BadHttpRequestException badHttpRequestExceptionException:
-                    httpStatusCode = HttpStatusCode.NotFound; // Or whatever status code you want to return
-                    message = exception.Message; // Or whatever message you want to return
+                    httpStatusCode = codeException.StatusCode;
+                    message = codeException.Message; 
                     break;
             }
 

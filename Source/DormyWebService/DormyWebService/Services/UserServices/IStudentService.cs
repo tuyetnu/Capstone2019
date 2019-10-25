@@ -14,10 +14,11 @@ namespace DormyWebService.Services.UserServices
     {
         Task<List<GetAllStudentResponse>> GetAllStudent();
         Task<List<GetAllStudentResponse>> AdvancedGetStudent(string sorts, string filters, int? page, int? pageSize);
-        Task<FindByIdStudentResponse> FindById(int id);
+        Task<Student> FindById(int id);
         Task<GetStudentProfileResponse> GetProfile(int id);
         Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel);
         Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel);
         Task<ChangeStudentStatusResponse> ChangeStudentStatus(int id, string status);
+        Task<bool> HasARoom(int studentId);
     }
 }

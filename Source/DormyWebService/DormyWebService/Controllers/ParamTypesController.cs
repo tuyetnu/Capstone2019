@@ -34,7 +34,7 @@ namespace DormyWebService.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ParamType>>> GetAllParamTypes()
         {
-            return (List<ParamType>) await _paramTypeService.FindAllAsync();
+            return await _paramTypeService.FindAllAsync();
         }
 
         /// <summary>

@@ -36,6 +36,10 @@ namespace DormyWebService.Entities.RoomEntities
 
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
+        public int CurrentNumberOfStudent { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
         public int RoomType { get; set; }
 
         [Required]
@@ -45,6 +49,10 @@ namespace DormyWebService.Entities.RoomEntities
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public string RoomStatus { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public bool Gender { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
 

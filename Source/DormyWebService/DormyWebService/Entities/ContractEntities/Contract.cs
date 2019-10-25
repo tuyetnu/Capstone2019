@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DormyWebService.Entities.ContractEntities
 {
@@ -10,6 +12,9 @@ namespace DormyWebService.Entities.ContractEntities
         public int ContractId { get; set; }
 
         [Required]
+        [ForeignKey("Student")]
+        public int StudentId { get; set; }
+
         public Student Student { get; set; }
 
         //Param

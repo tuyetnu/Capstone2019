@@ -21,5 +21,7 @@ namespace DormyWebService.Services.TicketServices
         Task<List<GetRoomBookingResponse>> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize);
 
         Task<bool> DeleteRoomBooking(int id);
+
+        Task<bool> StudentHasRoomRequestWithStatus(int studentId, List<string> statuses);
     }
 }

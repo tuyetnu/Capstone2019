@@ -51,19 +51,6 @@ namespace DormyWebService.Controllers
             return await _studentService.AdvancedGetStudent(sorts, filters, page, pageSize);
         }
 
-        //        [HttpGet("{id}")]
-        //        public async Task<ActionResult<FindByIdStudentResponse>> FindById(int id)
-        //        {
-        //            try
-        //            {
-        //                return await _studentService.FindById(id);
-        //            }
-        //            catch (HttpStatusCodeException e)
-        //            {
-        //                return StatusCode(e.StatusCode, e.Message);
-        //            }
-        //        }
-
         /// <summary>
         /// Get Profile of student, for student 
         /// </summary>
@@ -96,11 +83,11 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
-        /// Update profile for students and authorized users
+        /// Update profile for students and authorized student
         /// </summary>
         /// <param name="requestModel"></param>
         /// <returns></returns>
-        [Authorize(Roles = Role.AuthorizedUser + "," + Role.Student)]
+        [Authorize(Roles = Role.Student)]
         [HttpPut]
         public async Task<ActionResult<UpdateStudentResponse>> UpdateStudent(UpdateStudentRequest requestModel)
         {

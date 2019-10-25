@@ -12,6 +12,8 @@ using DormyWebService.Repositories.TicketRepositories;
 using DormyWebService.Repositories.UserRepositories;
 using DormyWebService.Services;
 using DormyWebService.Services.EquipmentServices;
+using DormyWebService.Services.HomeService;
+using DormyWebService.Services.NewFolder;
 using DormyWebService.Services.NewsServices;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.RoomServices;
@@ -117,6 +119,7 @@ namespace DormyWebService
             services.AddScoped<IIssueTicketService, IssueTicketService>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<IHomeService, HomeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -138,6 +141,7 @@ namespace DormyWebService
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
+            //Exception Handler
             app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
             //For JWT

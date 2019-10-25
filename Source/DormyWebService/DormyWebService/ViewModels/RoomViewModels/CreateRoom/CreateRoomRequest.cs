@@ -26,6 +26,9 @@ namespace DormyWebService.ViewModels.RoomViewModels.CreateRoom
         [Required]
         public string RoomStatus { get; set; }
 
+        [Required]
+        public bool Gender { get; set; }
+
         public static Room NewRoomFromRequest(CreateRoomRequest request)
         {
             return new Room()
@@ -37,7 +40,9 @@ namespace DormyWebService.ViewModels.RoomViewModels.CreateRoom
                 Price = request.Price,
                 Name = request.Name,
                 RoomType = request.RoomType,
-                RoomStatus = request.RoomStatus
+                RoomStatus = request.RoomStatus,
+                CurrentNumberOfStudent = 0,
+                Gender = request.Gender
             };
         }
     }

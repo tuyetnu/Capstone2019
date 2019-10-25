@@ -77,7 +77,7 @@ namespace DormyWebService.Services.UserServices
             return sortedStudents.Select(student => _mapper.Map<GetAllStudentResponse>(student)).ToList();
         }
 
-        public async Task<FindByIdStudentResponse> FindById(int id)
+        public async Task<Student> FindById(int id)
         {
             //Get student in database
             var student = await _repoWrapper.Student.FindByIdAsync(id);
@@ -87,7 +87,7 @@ namespace DormyWebService.Services.UserServices
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "No Student is found");
             }
 
-            return _mapper.Map<FindByIdStudentResponse>(student);
+            return student;
         }
 
         public async Task<GetStudentProfileResponse> GetProfile(int id)
@@ -200,6 +200,13 @@ namespace DormyWebService.Services.UserServices
                 Name = student.Name,
                 Status = student.User.Status
             };
+        }
+
+        public async Task<bool> HasARoom(int studentId)
+        {
+            var student = await FindById(studentId);
+
+            return student.RoomId != null;
         }
 
         private void CheckImportStudentRecords(List<ImportStudentRequest> requestModel)

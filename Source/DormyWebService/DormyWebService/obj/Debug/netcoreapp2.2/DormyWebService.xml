@@ -20,6 +20,26 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.HomeController.GetInitialValues(System.Int32)">
+            <summary>
+            Get values of a student for home screen of the mobile app, for authorized users
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.AdvancedGetRoomBooking(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Find IssueTickets with condition for staff and admin
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.SendIssueTicket(DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket.SendIssueTicketRequest)">
+            <summary>
+            Send Issue Ticket for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.NewsController.GetActiveNewsHeadlines">
             <summary>
             Get list of active news headlines for authorized users
@@ -130,6 +150,13 @@
             </summary>
             <param name="request"></param>
         </member>
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.EditRoomBooking(DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking.EditRoomBookingRequest)">
+            <summary>
+            Edit room booking request, for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.RoomBookingsController.ChangeRoomBookingStatus(DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking.ResolveRoomBookingRequest)">
             <summary>
             Change status of a Room Booking Request, for staff
@@ -187,7 +214,7 @@
         </member>
         <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(DormyWebService.ViewModels.UserModelViews.UpdateStudent.UpdateStudentRequest)">
             <summary>
-            Update profile for students and authorized users
+            Update profile for students and authorized student
             </summary>
             <param name="requestModel"></param>
             <returns></returns>

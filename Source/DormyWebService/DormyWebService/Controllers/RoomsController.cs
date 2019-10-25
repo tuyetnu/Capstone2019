@@ -69,7 +69,7 @@ namespace DormyWebService.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-//        [Authorize(Roles = Role.Admin)]
+        [Authorize(Roles = Role.Admin)]
         public async Task<ActionResult<UpdateRoomResponse>> UpdateRoom(UpdateRoomRequest request)
         {
             if (!ModelState.IsValid)

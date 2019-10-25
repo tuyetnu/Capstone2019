@@ -100,10 +100,5 @@ namespace DormyWebService.Entities.AccountEntities
 
         [Sieve(CanFilter = true, CanSort = true)]
         public DateTime BirthDay { get; set; }
-
-        public virtual ICollection<Contract> Contracts { get; set; }
-        public virtual ICollection<RoomBookingRequestForm> RoomBookingRequests { get; set; }
-        public virtual ICollection<RoomTransferRequestForm> RoomTransferRequests { get; set; }
-        public virtual ICollection<IssueTicket> IssueTickets { get; set; }
     }
 }

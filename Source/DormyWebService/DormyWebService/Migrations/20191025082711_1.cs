@@ -17,9 +17,6 @@ namespace DormyWebService.Migrations
                 name: "CancelContractForms");
 
             migrationBuilder.DropTable(
-                name: "Contract");
-
-            migrationBuilder.DropTable(
                 name: "ContractRenewalForms");
 
             migrationBuilder.DropTable(

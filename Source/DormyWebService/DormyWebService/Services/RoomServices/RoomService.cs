@@ -68,24 +68,29 @@ namespace DormyWebService.Services.RoomServices
                 {
                     //Find if equipment exists
                     var equipment = await _repoWrapper.Equipment.FindByIdAsync(equipmentId);
-
                     if (equipment == null)
                     {
                         throw new HttpStatusCodeException(HttpStatusCode.NotFound,
                             "RoomService: Equipment with id " + equipmentId + " Is not found");
                     }
 
-                    if (equipment.RoomId == room.RoomId) continue;
                     //Update room id for the found equipment
-                    equipment.RoomId = room.RoomId;
-                    equipment = await _repoWrapper.Equipment.UpdateAsyncWithoutSave(equipment, equipment.EquipmentId);
+                    if (equipment.RoomId != room.RoomId)
+                    {
+                        equipment.RoomId = room.RoomId;
+                        await _repoWrapper.Equipment.UpdateAsyncWithoutSave(equipment,
+                            equipment.EquipmentId);
+                    }
                 }
 
                 //Save multiple records
                 await _repoWrapper.Save();
             }
 
-            return CreateRoomResponse.ResponseFromRoom(room, requestModel.EquipmentIds);
+            return new CreateRoomResponse()
+            {
+                RoomId = room.RoomId
+            };
         }
 
         public async Task<List<Room>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize)

@@ -24,7 +24,7 @@ namespace DormyWebService.Services.TicketServices
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private readonly IMapper _mapper;
-        private ISieveProcessor _sieveProcessor;
+        private readonly ISieveProcessor _sieveProcessor;
         private readonly IStudentService _studentService;
         private readonly IParamService _paramService;
         private readonly IUserService _userService;
@@ -53,21 +53,16 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<SendRoomBookingResponse> SendRequest(SendRoomBookingRequest request)
         {
-            if (!await _paramService.IsOfParamType(request.PriorityType, GlobalParams.ParamTypeStudentPriorityType))
-            { 
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: PriorityType is invalid");
-            }
-
-            if (request.Month <= 0)
+            //Check request
+            var checkResult =
+                await Check_PriorityType_Month_TargetRoomType(request.PriorityType, request.Month,
+                    request.TargetRoomType);
+            if (checkResult.Code != HttpStatusCode.OK)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: Month is invalid");
+                throw new HttpStatusCodeException(checkResult.Code, checkResult.Message);
             }
 
-            if (!await _paramService.IsOfParamType(request.TargetRoomType, GlobalParams.ParamTypeRoomType))
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: RoomType is invalid");
-            }
-
+            //Find student in database
             var student = await _studentService.FindById(request.StudentId);
 
             //Check for active requests
@@ -82,8 +77,10 @@ namespace DormyWebService.Services.TicketServices
                 }
             }
 
+            //Create new room booking from request
             var result = SendRoomBookingRequest.NewEntityFromRequest(request);
 
+            //Create in database
             result = await _repoWrapper.RoomBooking.CreateAsync(result);
 
             return new SendRoomBookingResponse()
@@ -94,8 +91,23 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<bool> EditRoomRequest(EditRoomBookingRequest request)
         {
+            //Check request
+            var checkResult =
+                await Check_PriorityType_Month_TargetRoomType(request.PriorityType, request.Month,
+                    request.TargetRoomType);
+            if (checkResult.Code != HttpStatusCode.OK)
+            {
+                throw new HttpStatusCodeException(checkResult.Code, checkResult.Message);
+            }
+
             //Find Room Booking by Id
             var roomBooking = await FindById(request.RoomBookingRequestFormId);
+
+            //Check if status is valid
+            if (roomBooking.Status == RequestStatus.Approved || roomBooking.Status == RequestStatus.Complete)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: Can't not edit Approved and Completed Room Booking Requests'");
+            }
 
             //Check if StudentId matches
             if (roomBooking.StudentId != request.StudentId)
@@ -104,10 +116,12 @@ namespace DormyWebService.Services.TicketServices
             }
 
             //Update data
-            roomBooking = EditRoomBookingRequest.NewEntityFromRequest(request);
+            roomBooking = EditRoomBookingRequest.UpdateFromRequest(roomBooking,request);
 
-            //Update to database
-            return false;
+            //Save to database
+            roomBooking = await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
+
+            return true;
         }
 
         public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)
@@ -124,12 +138,15 @@ namespace DormyWebService.Services.TicketServices
 
             //Update information into DataSet
             roomBooking = _mapper.Map(request, roomBooking);
+
             //Update Last Updated Date
             roomBooking.LastUpdated = DateTime.Now;
 
+            //Update to database
             roomBooking =
                     await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
 
+            //Return mapped response
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
         }
 
@@ -155,12 +172,66 @@ namespace DormyWebService.Services.TicketServices
             //Apply filter, sort, pagination
             var result = _sieveProcessor.Apply(sieveModel, roomBookings.AsQueryable()).ToList();
 
+            //Return List of result
             return result.Select(r=>_mapper.Map<GetRoomBookingResponse>(r)).ToList(); 
         }
 
         public async Task<bool> DeleteRoomBooking(int id)
         {
             return await _repoWrapper.RoomBooking.DeleteAsync(await FindById(id)) > 0;
+        }
+
+        public async Task<bool> StudentHasRoomRequestWithStatus(int studentId, List<string> statuses)
+        {
+            //Find if student exists
+            var student = await _repoWrapper.Student.FindByIdAsync(studentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomBookingService: Student not found");
+            }
+
+            List<RoomBookingRequestForm> roomBooking;
+
+            if (!statuses.Any())
+            {
+                roomBooking =
+                    (List<RoomBookingRequestForm>) await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r =>
+                        r.StudentId == studentId);
+            }
+
+            else
+            {
+                roomBooking =
+                    (List<RoomBookingRequestForm>)await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r =>
+                        r.StudentId == studentId && statuses.Contains(r.Status));
+            }
+
+            return roomBooking.Any();
+        }
+
+        //Used to check request for Send and edit room booking
+        private async Task<HttpCodeReturn> Check_PriorityType_Month_TargetRoomType(int priorityType, int month, int targetRoomType)
+        {
+            //Check if PriorityType is valid
+            if (!await _paramService.IsOfParamType(priorityType, GlobalParams.ParamTypeStudentPriorityType))
+            {
+                return new HttpCodeReturn(HttpStatusCode.BadRequest, "RoomBookingService: PriorityType is Invalid");
+            }
+
+            //Check if Month is valid
+            if (month <= 0)
+            {
+                return new HttpCodeReturn(HttpStatusCode.BadRequest, "RoomBookingService: Month is invalid");
+            }
+
+            //Check if TargetRoomType is valid
+            if (!await _paramService.IsOfParamType(targetRoomType, GlobalParams.ParamTypeRoomType))
+            {
+                return new HttpCodeReturn(HttpStatusCode.BadRequest, "RoomBookingService: RoomType is invalid");
+            }
+
+            //return ok
+            return new HttpCodeReturn(HttpStatusCode.OK);
         }
     }
 }

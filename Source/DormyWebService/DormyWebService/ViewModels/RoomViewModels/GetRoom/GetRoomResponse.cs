@@ -17,6 +17,7 @@ namespace DormyWebService.ViewModels.RoomViewModels.GetRoom
         public string CreatedDate { get; set; }
         public string LastUpdated { get; set; }
         public string RoomStatus { get; set; }
+        public int CurrentNumberOfStudent { get; set; }
 
         public static GetRoomResponse ResponseFromRoom(Room room, List<int> equipmentIds, List<Student> students)
         {
@@ -31,7 +32,8 @@ namespace DormyWebService.ViewModels.RoomViewModels.GetRoom
                 Capacity = room.Capacity,
                 CreatedDate = room.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = room.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
-                RoomStatus = room.RoomStatus
+                RoomStatus = room.RoomStatus,
+                CurrentNumberOfStudent = room.CurrentNumberOfStudent
             };
         }
     }

@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DormyWebService.Controllers
 {
@@ -61,12 +64,29 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
+        /// Edit room booking request, for student
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Student)]
+        [HttpPut]
+        public async Task<ActionResult<bool>> EditRoomBooking(EditRoomBookingRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+
+            return await _roomBookingService.EditRoomRequest(request);
+        }
+
+        /// <summary>
         /// Change status of a Room Booking Request, for staff
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [Authorize(Roles = Role.Staff)]
-        [HttpPut]
+        [HttpPut("ChangeRoomBookingStatus")]
         public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(
             ResolveRoomBookingRequest request)
         {

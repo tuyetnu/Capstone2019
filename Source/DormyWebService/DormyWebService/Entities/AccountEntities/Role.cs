@@ -9,13 +9,11 @@ namespace DormyWebService.Entities.AccountEntities
         public const string Admin = "Admin";
         public const string Staff = "Staff";
         public const string Student = "Student";
-        public const string AuthorizedUser = "AuthorizedUser";
         private static readonly List<string> RoleList = new List<string>()
         {
             Admin,
             Staff,
-            Student,
-            AuthorizedUser
+            Student
         };
 
         public static List<string> GetAllRole()
