@@ -1,9 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using DormyWebService.Entities.AccountEntities;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace DormyWebService.ViewModels.RoomTransferRequestViewModels.SendRoomTransfer
+namespace DormyWebService.ViewModels.TicketViewModels.RoomTransferRequestViewModels.SendRoomTransfer
 {
     public class SendRoomTransferRequest
     {

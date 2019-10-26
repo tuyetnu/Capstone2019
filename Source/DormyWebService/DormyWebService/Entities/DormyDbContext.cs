@@ -53,8 +53,9 @@ namespace DormyWebService.Entities
 //                new ParamType() { ParamTypeId = 1, Name = "NotificationType" },
 //                new ParamType() { ParamTypeId = 2, Name = "StudentPriorityType" },
 //                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
-//                new ParamType() { ParamTypeId = 4, Name = "RoomType" }
-//            );
+//                new ParamType() { ParamTypeId = 4, Name = "RoomType" },
+//                new ParamType() { ParamTypeId = 5, Name = "DepositMoneyParam" },
+            //            );
 
             //Seed Param Table
 //            modelBuilder.Entity<Param>().HasData(
@@ -64,7 +65,11 @@ namespace DormyWebService.Entities
 //                new Param() { ParamId = 3, Name = "Không có ưu tiên", ParamTypeId = 2 },
 //                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 3, TextValue = "fpt.edu.vn" },
 //                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 4 },
-//                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 4 }
+//                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 4 },
+//                new Param() { ParamId = 13, Name = "DepositMoney", ParamTypeId = 5 },
+//                new Param() { ParamId = 14, Name = "DepositMoneyUpperLimit", ParamTypeId = 5 , Value = 10000},
+//                new Param() { ParamId = 15, Name = "DepositMoneyLowerLimit", ParamTypeId = 5 , Value = 10000000},
+//                new Param() { ParamId = 16, Name = "DepositMoneyStep", ParamTypeId = 5, Value = 500 }
 //            );
 
         }

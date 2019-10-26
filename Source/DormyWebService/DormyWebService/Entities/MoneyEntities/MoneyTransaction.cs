@@ -12,12 +12,15 @@ namespace DormyWebService.Entities.MoneyEntities
         public int MoneyTransactionId { get; set; }
 
         [Required]
+        [ForeignKey("Student")]
+        public int StudentId { get; set; }
         public Student Student { get; set; }
 
         [Required]
         public int Type { get; set; }
 
-        [Required]
+        [ForeignKey("Room")]
+        public int? RoomId { get; set; }
         public Room Room { get; set; }
 
         [Required]

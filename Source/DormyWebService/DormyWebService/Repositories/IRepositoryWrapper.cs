@@ -5,6 +5,7 @@ using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
+using DormyWebService.Repositories.StaffRepositories;
 using DormyWebService.Repositories.TicketRepositories;
 using DormyWebService.Repositories.UserRepositories;
 
@@ -22,6 +23,8 @@ namespace DormyWebService.Repositories
         IStudentRepository Student { get; }
 
         IAdminRepository Admin { get; }
+
+        IStaffRepository Staff { get; }
 
         INewsRepository News { get; }
 

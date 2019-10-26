@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,6 +12,7 @@ using DormyWebService.Services.RoomServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment;
+using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment;
 using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
 
@@ -79,6 +82,30 @@ namespace DormyWebService.Services.EquipmentServices
             equipment = await _repoWrapper.Equipment.UpdateAsync(equipment, equipment.EquipmentId);
 
             return UpdateEquipmentResponse.CreateFromEquipment(equipment, room);
+        }
+
+        public async Task<List<GetEquipmentResponse>> GetEquipmentOfStudent(int studentId)
+        {
+            var student = await _repoWrapper.Student.FindByIdAsync(studentId);
+
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: Student not found");
+            }
+
+            if (student.RoomId == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: Student doesn't have room'");
+            }
+
+            var equipments = (List<Equipment>) await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => e.RoomId == student.RoomId);
+
+            if (!equipments.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: Equipments not found");
+            }
+
+            return equipments.Select(equipment => _mapper.Map<GetEquipmentResponse>(equipment)).ToList();
         }
     }
 }

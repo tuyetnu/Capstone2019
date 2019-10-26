@@ -4,15 +4,18 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels;
+using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -143,5 +146,79 @@ namespace DormyWebService.Services.RoomServices
 
             return UpdateRoomResponse.ResponseFromRoom(room, equipmentIds);
         }
+
+//        private async Task<ArrangeRoomResponse> ArrangeRoomForAllApprovedRequests()
+//        {
+//            //Get all approve request
+//            var requests =(List<RoomBookingRequestForm>) await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Approved);
+//
+//            //Check if list of approved request is empty
+//            if (requests == null || !requests.Any())
+//            {
+//                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No request is found");
+//            }
+//
+//            //Get list of available room
+//            var availableRooms = (List<Room>)await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.CurrentNumberOfStudent < r.Capacity);
+//
+//            //Check if there are rooms available
+//            if (availableRooms == null || !availableRooms.Any())
+//            {
+//                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No Room is Available");
+//            }
+//
+//
+//
+//            var maleStudents = new List<Student>();
+//            var femaleStudents = new List<Student>();
+//
+//            foreach (var r in requests)
+//            {
+//                var s = await _repoWrapper.Student.FindByIdAsync(r.StudentId);
+//                if (s.Gender)
+//                {
+//                    maleStudents.Add(s);
+//                }
+//                else
+//                {
+//                    femaleStudents.Add(s);
+//                }
+//            }
+//
+//            if (maleStudents.Any())
+//            {
+//                //Get list of available mal rooms
+//                var availableMaleRoom = SplitRoomByGender(availableRooms, true);
+//                //if there are male rooms, sort them in ascending order of available spot
+//                if (availableMaleRoom.Any())
+//                {
+//                    availableMaleRoom.Sort((x, y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
+//                }
+//            }
+//            var availableFemaleRoom = SplitRoomByGender(availableRooms, false);
+//
+//            //Sort list by ascending number of available spot
+//            
+//            
+//            availableFemaleRoom.Sort((x, y) => x.CurrentNumberOfStudent.CompareTo(x.CurrentNumberOfStudent));
+//
+//            //Sort list of approved requests in ascending CreatedDate
+//            requests.Sort((x, y) => DateTime.Compare(x.CreatedDate, y.CreatedDate));
+//            
+//        }
+//
+//        private List<Room> SplitRoomByGender(List<Room> src, bool gender)
+//        {
+//            return src.Where(room => room.Gender == gender).ToList();
+//        }
+
+//        private List<Student> ArrangRoom(List<Room> rooms, List<Student> students)
+//        {
+//            //Go through each room
+//            foreach (var room in rooms)
+//            {
+//                if
+//            }
+//        }
     }
 }

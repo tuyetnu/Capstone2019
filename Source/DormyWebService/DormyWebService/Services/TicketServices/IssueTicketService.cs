@@ -6,10 +6,12 @@ using AutoMapper;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
 using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
 using DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -40,7 +42,7 @@ namespace DormyWebService.Services.TicketServices
             return await result;
         }
 
-        public async Task<SendIssueTicketReponse> SendTicket(SendIssueTicketRequest request)
+        public async Task<SendIssueTicketResponse> SendTicket(SendIssueTicketRequest request)
         {
             //Check if student exists
             var owner = await _repoWrapper.Student.FindByIdAsync(request.OwnerId);
@@ -73,7 +75,7 @@ namespace DormyWebService.Services.TicketServices
             //Create new in database
             issueTicket = await _repoWrapper.IssueTicket.CreateAsync(issueTicket);
 
-            return new SendIssueTicketReponse()
+            return new SendIssueTicketResponse()
             {
                 IssueTicketId = issueTicket.IssueTicketId
             };
@@ -103,6 +105,35 @@ namespace DormyWebService.Services.TicketServices
 
             //Return List of result
             return result.Select( GetIssueTicketResponse.ResponseFromEntity).ToList();
+        }
+
+        public async Task<ChangeIssueTicketStatusResponse> ChangeIssueTicketStatus(
+            ChangeIssueTicketStatusRequest request)
+        {
+            //Check if Staff Exists
+            var staff = await _repoWrapper.Staff.FindByIdAsync(request.StaffId);
+            if (staff == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicketService: Staff not found");
+            }
+
+            //Find Issue Ticket
+            var issueTicket = await _repoWrapper.IssueTicket.FindByIdAsync(request.IssueTicketId);
+            if (issueTicket == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicketService: Issue Ticket not found");
+            }
+
+            //Update information
+            issueTicket = request.UpdateToIssueTicket(issueTicket);
+
+            //Update to database
+            issueTicket = await _repoWrapper.IssueTicket.UpdateAsync(issueTicket, issueTicket.IssueTicketId);
+
+            return new ChangeIssueTicketStatusResponse()
+            {
+                Status = issueTicket.Status
+            };
         }
     }
 }

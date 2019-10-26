@@ -42,7 +42,7 @@ namespace DormyWebService.ViewModels.RoomViewModels.CreateRoom
                 RoomType = request.RoomType,
                 RoomStatus = request.RoomStatus,
                 CurrentNumberOfStudent = 0,
-                Gender = request.Gender
+                Gender = request.Gender,
             };
         }
     }

@@ -167,7 +167,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<decimal>("ResultBalance");
 
-                    b.Property<int>("RoomId");
+                    b.Property<int?>("RoomId");
 
                     b.Property<int>("StudentId");
 
@@ -631,8 +631,7 @@ namespace DormyWebService.Migrations
                 {
                     b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RoomId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    [Migration("20191025090240_3")]
-    partial class _3
+    [Migration("20191026050901_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -581,13 +581,15 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("StudentId");
 
-                    b.Property<int>("TargetRoomType");
+                    b.Property<int>("TargetRoomId");
 
                     b.HasKey("RoomTransferRequestFormId");
 
                     b.HasIndex("StaffId");
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("TargetRoomId");
 
                     b.ToTable("RoomTransferRequestForms");
                 });
@@ -754,6 +756,11 @@ namespace DormyWebService.Migrations
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "TargetRoom")
+                        .WithMany()
+                        .HasForeignKey("TargetRoomId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

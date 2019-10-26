@@ -7,6 +7,7 @@ using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment;
+using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,18 @@ namespace DormyWebService.Controllers
         public EquipmentsController(IEquipmentService equipmentService)
         {
             _equipmentService = equipmentService;
+        }
+
+        /// <summary>
+        /// Get equipment in the room of a student, for authorized users
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("GetByStudent/{studentId}")]
+        public async Task<ActionResult<List<GetEquipmentResponse>>> GetByStudent(int studentId)
+        {
+            return await _equipmentService.GetEquipmentOfStudent(studentId);
         }
 
         /// <summary>

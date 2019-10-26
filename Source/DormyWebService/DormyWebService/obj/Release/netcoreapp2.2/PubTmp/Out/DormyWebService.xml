@@ -4,6 +4,13 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.EquipmentsController.GetByStudent(System.Int32)">
+            <summary>
+            Get equipment in the room of a student, for authorized users
+            </summary>
+            <param name="studentId"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.EquipmentsController.CreateEquipment(DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment.CreateEquipmentRequest)">
             <summary>
             Create new Equipment for Admin
@@ -36,6 +43,20 @@
         <member name="M:DormyWebService.Controllers.IssueTicketsController.SendIssueTicket(DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket.SendIssueTicketRequest)">
             <summary>
             Send Issue Ticket for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.ChangeIssueTicketStatus(DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus.ChangeIssueTicketStatusRequest)">
+            <summary>
+            Change a issue ticket, for staff
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.MoneyController.DepositMoney(DormyWebService.ViewModels.MoneyViewModels.DepositMoney.DepositMoneyRequest)">
+            <summary>
+            Deposit money into student account, for student
             </summary>
             <param name="request"></param>
             <returns></returns>

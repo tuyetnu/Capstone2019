@@ -63,7 +63,7 @@ namespace DormyWebService.Services.TicketServices
             }
 
             //Find student in database
-            var student = await _studentService.FindById(request.StudentId);
+            await _studentService.FindById(request.StudentId);
 
             //Check for active requests
             var bookings = (List<RoomBookingRequestForm>)

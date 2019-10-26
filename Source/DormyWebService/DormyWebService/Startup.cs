@@ -15,6 +15,7 @@ using DormyWebService.Services.RoomServices;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -99,6 +100,7 @@ namespace DormyWebService
             // Configure Dependency Injection
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IStaffService, StaffService>();
             services.AddScoped<IParamService, ParamService>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<INewsServices, NewsService>();
@@ -115,6 +117,8 @@ namespace DormyWebService
             services.AddScoped<IMoneyTransactionService, MoneyTransactionService>();
             services.AddScoped<IRoomMonthlyBillService, RoomMonthlyBillService>();
             services.AddScoped<IStudentMonthlyBillService, StudentMonthlyBillService>();
+
+            //Dependency Injection for fluent validation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    [Migration("20191025124531_4")]
+    [Migration("20191026113809_4")]
     partial class _4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,7 +169,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<decimal>("ResultBalance");
 
-                    b.Property<int>("RoomId");
+                    b.Property<int?>("RoomId");
 
                     b.Property<int>("StudentId");
 
@@ -633,8 +633,7 @@ namespace DormyWebService.Migrations
                 {
                     b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RoomId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()

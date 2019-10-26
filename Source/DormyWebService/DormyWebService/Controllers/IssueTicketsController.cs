@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Services.TicketServices;
+using DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
 using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
 using DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket;
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +43,7 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Student)]
         [HttpPost]
-        public async Task<ActionResult<SendIssueTicketReponse>> SendIssueTicket(SendIssueTicketRequest request)
+        public async Task<ActionResult<SendIssueTicketResponse>> SendIssueTicket(SendIssueTicketRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -49,6 +51,28 @@ namespace DormyWebService.Controllers
             }
 
             return await _issueTicketService.SendTicket(request);
+        }
+
+        /// <summary>
+        /// Change a issue ticket, for staff
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ChangeIssueTicketStatus")]
+        public async Task<ActionResult<ChangeIssueTicketStatusResponse>> ChangeIssueTicketStatus(ChangeIssueTicketStatusRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!IssueStatus.IsIssueStatus(request.Status))
+            {
+                return BadRequest("Status is invalid. Must be" + IssueStatus.ListAllStatuses());
+            }
+
+            return await _issueTicketService.ChangeIssueTicketStatus(request);
         }
     }
 }

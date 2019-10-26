@@ -1,6 +1,6 @@
 ﻿namespace DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket
 {
-    public class SendIssueTicketReponse
+    public class SendIssueTicketResponse
     {
         public int IssueTicketId { get; set; }
     }

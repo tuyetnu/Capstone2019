@@ -2,9 +2,11 @@
 using System.Globalization;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.TicketEntities;
+using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
@@ -48,6 +50,8 @@ namespace DormyWebService.Utilities
                 .ForMember(dest => dest.CreatedDate, o => o.MapFrom(src => src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
                 .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat)));
 
+            //GetEquipment
+            CreateMap<Equipment, GetEquipmentResponse>();
         }
     }
 }

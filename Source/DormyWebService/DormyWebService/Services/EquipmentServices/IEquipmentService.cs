@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment;
+using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment;
 
 namespace DormyWebService.Services.EquipmentServices
@@ -10,5 +12,6 @@ namespace DormyWebService.Services.EquipmentServices
         Task<Equipment> FindById(int id);
         Task<CreateEquipmentResponse> CreateEquipment(CreateEquipmentRequest requestModel);
         Task<UpdateEquipmentResponse> UpdateEquipment(UpdateEquipmentRequest requestModel);
+        Task<List<GetEquipmentResponse>> GetEquipmentOfStudent(int studentId);
     }
 }

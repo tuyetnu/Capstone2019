@@ -40,6 +40,20 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.ChangeIssueTicketStatus(DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus.ChangeIssueTicketStatusRequest)">
+            <summary>
+            Change a issue ticket, for staff
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.MoneyController.DepositMoney(DormyWebService.ViewModels.MoneyViewModels.DepositMoney.DepositMoneyRequest)">
+            <summary>
+            Deposit money into student account, for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.NewsController.GetActiveNewsHeadlines">
             <summary>
             Get list of active news headlines for authorized users

@@ -6,6 +6,7 @@ using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
+using DormyWebService.Repositories.StaffRepositories;
 using DormyWebService.Repositories.TicketRepositories;
 using DormyWebService.Repositories.UserRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace DormyWebService.Repositories
         private IUserRepository _user;
         private IStudentRepository _student;
         private IAdminRepository _admin;
+        private IStaffRepository _staff;
         private INewsRepository _news;
         private IParamRepository _param;
         private IParamTypeRepository _paramType;
@@ -57,6 +59,7 @@ namespace DormyWebService.Repositories
         public IUserRepository User => _user ?? (_user = new UserRepository(_context));
         public IStudentRepository Student => _student ?? (_student = new StudentRepository(_context));
         public IAdminRepository Admin => _admin ?? (_admin = new AdminRepository(_context));
+        public IStaffRepository Staff => _staff ?? (_staff = new StaffRepository(_context));
         public INewsRepository News => _news ?? (_news = new NewsRepository(_context));
         public IParamRepository Param => _param ?? (_param = new ParamRepositories.ParamRepository(_context));
         public IParamTypeRepository ParamType => _paramType ?? (_paramType = new ParamTypeRepository(_context));
