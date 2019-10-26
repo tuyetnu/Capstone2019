@@ -55,7 +55,8 @@ namespace DormyWebService.Entities
 //                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
 //                new ParamType() { ParamTypeId = 4, Name = "RoomType" },
 //                new ParamType() { ParamTypeId = 5, Name = "DepositMoneyParam" },
-            //            );
+//                new ParamType() { ParamTypeId = 6, Name = "IssueType" }
+//                );
 
             //Seed Param Table
 //            modelBuilder.Entity<Param>().HasData(
@@ -69,7 +70,9 @@ namespace DormyWebService.Entities
 //                new Param() { ParamId = 13, Name = "DepositMoney", ParamTypeId = 5 },
 //                new Param() { ParamId = 14, Name = "DepositMoneyUpperLimit", ParamTypeId = 5 , Value = 10000},
 //                new Param() { ParamId = 15, Name = "DepositMoneyLowerLimit", ParamTypeId = 5 , Value = 10000000},
-//                new Param() { ParamId = 16, Name = "DepositMoneyStep", ParamTypeId = 5, Value = 500 }
+//                new Param() { ParamId = 16, Name = "DepositMoneyStep", ParamTypeId = 5, Value = 500 },
+//                new Param() { ParamId = 17, Name = "Tình trạng thiết bị", ParamTypeId = 6},
+//                new Param() { ParamId = 18, Name = "Phản ánh", ParamTypeId = 6}
 //            );
 
         }

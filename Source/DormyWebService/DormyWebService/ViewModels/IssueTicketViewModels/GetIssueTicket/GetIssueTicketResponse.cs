@@ -15,9 +15,7 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket
         public string Title { get; set; }
         public string Description { get; set; }
         public int? Point { get; set; }
-
         public string ImageUrl { get; set; }
-        public int? RoomId { get; set; }
         public string CreatedDate { get; set; }
         public string LastUpdated { get; set; }
 
@@ -25,7 +23,6 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket
         {
             return new GetIssueTicketResponse()
             {
-                RoomId = issueTicket.RoomId,
                 Status = issueTicket.Status,
                 CreatedDate = issueTicket.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = issueTicket.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),

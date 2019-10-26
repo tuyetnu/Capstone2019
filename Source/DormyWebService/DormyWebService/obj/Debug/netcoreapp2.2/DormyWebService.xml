@@ -4,6 +4,13 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.EquipmentsController.GetByStudent(System.Int32)">
+            <summary>
+            Get equipment in the room of a student, for authorized users
+            </summary>
+            <param name="studentId"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.EquipmentsController.CreateEquipment(DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment.CreateEquipmentRequest)">
             <summary>
             Create new Equipment for Admin

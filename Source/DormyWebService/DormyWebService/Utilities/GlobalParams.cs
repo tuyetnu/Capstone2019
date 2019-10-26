@@ -9,6 +9,7 @@
         public const int ParamTypeAcceptedEmailHost = 3;
         public const int ParamTypeRoomType = 4;
         public const int ParamTypeDepositMoneyParam = 5;
+        public const int ParamTypeIssueType = 6;
         public const int ParamTransactionTypeDepositMoney = 13;
 
         //Depository params

@@ -35,7 +35,7 @@ namespace DormyWebService.Services.HomeService
 
             return new HomeResponse()
             {
-                IsHaveRoom = student.RoomId == null,
+                IsHaveRoom = student.RoomId != null,
                 NumberOfUnseenNotification = 0,
                 IsHaveRequestRenew = false,
                 IsHaveRequestBooking = roomBookings.Any() ,

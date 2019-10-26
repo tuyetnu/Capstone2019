@@ -51,15 +51,6 @@ namespace DormyWebService.Services.TicketServices
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: student is not found.");
             }
 
-            if (request.RoomId != null)
-            {
-                var room = await _repoWrapper.Room.FindByIdAsync(request.RoomId.Value);
-                if (room == null)
-                {
-                    throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: room is not found.");
-                }
-            }
-
             if (request.EquipmentId != null)
             {
                 var equipment = await _repoWrapper.Room.FindByIdAsync(request.EquipmentId.Value);
@@ -67,6 +58,13 @@ namespace DormyWebService.Services.TicketServices
                 {
                     throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: equipment is not found.");
                 }
+            }
+
+            var type = await _repoWrapper.Param.FindByIdAsync(request.Type);
+
+            if (type == null || type.ParamTypeId != GlobalParams.ParamTypeIssueType)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "IssueTicket: Issue Ticket Type is invalid.");
             }
 
             //Create new IssueTicket from request

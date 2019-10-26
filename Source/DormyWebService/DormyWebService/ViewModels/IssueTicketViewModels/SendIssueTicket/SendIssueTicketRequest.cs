@@ -27,8 +27,6 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket
 
         public string ImageUrl { get; set; }
 
-        public int? RoomId { get; set; }
-
         public static IssueTicket EntityFromRequest(SendIssueTicketRequest request)
         {
             return new IssueTicket()
@@ -39,7 +37,6 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket
                 EquipmentId = request.EquipmentId,
                 ImageUrl = request.ImageUrl,
                 OwnerId = request.OwnerId,
-                RoomId = request.RoomId,
                 //Set Status to pending
                 Status = IssueStatus.Pending,
                 Title = request.Title,

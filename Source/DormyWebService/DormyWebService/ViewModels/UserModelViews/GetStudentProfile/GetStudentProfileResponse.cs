@@ -24,7 +24,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
         public bool IsRoomLeader { get; set; }
         public int EvaluationScore { get; set; }
 
-        public static GetStudentProfileResponse MapFromStudent(Student student, Entities.ParamEntities.Param param, User user)
+        public static GetStudentProfileResponse MapFromStudent(Student student, Entities.ParamEntities.Param param, User user, Room room)
         {
             GetStudentProfileResponsePriorityType priorityType = null;
 
@@ -43,10 +43,10 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
                 Id = student.StudentId,
                 Email = user.Email,
                 //if null then room is null
-                Room = (student.Room != null) ? new GetStudentProfileResponseRoom()
+                Room = (room != null) ? new GetStudentProfileResponseRoom()
                 {
-                    Id = student.Room.RoomId,
-                    Name = student.Room.Name,
+                    Id = room.RoomId,
+                    Name = room.Name,
 
                 }: null,
                 PriorityType = priorityType,

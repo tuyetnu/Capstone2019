@@ -490,8 +490,6 @@ namespace DormyWebService.Migrations
 
                     b.Property<int?>("Point");
 
-                    b.Property<int?>("RoomId");
-
                     b.Property<int?>("StaffId");
 
                     b.Property<string>("Status")
@@ -508,8 +506,6 @@ namespace DormyWebService.Migrations
                     b.HasIndex("EquipmentId");
 
                     b.HasIndex("OwnerId");
-
-                    b.HasIndex("RoomId");
 
                     b.HasIndex("StaffId");
 
@@ -722,10 +718,6 @@ namespace DormyWebService.Migrations
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
                         .WithMany()

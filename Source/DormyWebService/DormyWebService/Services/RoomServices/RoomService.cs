@@ -167,43 +167,12 @@ namespace DormyWebService.Services.RoomServices
 //                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No Room is Available");
 //            }
 //
-//
-//
-//            var maleStudents = new List<Student>();
-//            var femaleStudents = new List<Student>();
-//
-//            foreach (var r in requests)
+//            //Get students from database
+//            var students = new List<Student>();
+//            for (var i = 0; i < requests.Count; i++)
 //            {
-//                var s = await _repoWrapper.Student.FindByIdAsync(r.StudentId);
-//                if (s.Gender)
-//                {
-//                    maleStudents.Add(s);
-//                }
-//                else
-//                {
-//                    femaleStudents.Add(s);
-//                }
+//                students.Add(await _repoWrapper.Student.FindByIdAsync(requests[i].StudentId));
 //            }
-//
-//            if (maleStudents.Any())
-//            {
-//                //Get list of available mal rooms
-//                var availableMaleRoom = SplitRoomByGender(availableRooms, true);
-//                //if there are male rooms, sort them in ascending order of available spot
-//                if (availableMaleRoom.Any())
-//                {
-//                    availableMaleRoom.Sort((x, y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
-//                }
-//            }
-//            var availableFemaleRoom = SplitRoomByGender(availableRooms, false);
-//
-//            //Sort list by ascending number of available spot
-//            
-//            
-//            availableFemaleRoom.Sort((x, y) => x.CurrentNumberOfStudent.CompareTo(x.CurrentNumberOfStudent));
-//
-//            //Sort list of approved requests in ascending CreatedDate
-//            requests.Sort((x, y) => DateTime.Compare(x.CreatedDate, y.CreatedDate));
 //            
 //        }
 //

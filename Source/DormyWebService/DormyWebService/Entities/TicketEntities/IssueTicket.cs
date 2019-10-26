@@ -53,11 +53,6 @@ namespace DormyWebService.Entities.TicketEntities
 
         public string ImageUrl { get; set; }
 
-        [ForeignKey("Room")]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public int? RoomId { get; set; }
-        public Room Room { get; set; }
-
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public DateTime CreatedDate { get; set; }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Utilities;
@@ -103,7 +104,13 @@ namespace DormyWebService.Services.UserServices
 
             var user = await _userService.FindById(student.StudentId);
 
-            return GetStudentProfileResponse.MapFromStudent(student, priorityType, user);
+            Room room = null;
+            if (student.RoomId != null)
+            {
+                room = await _repoWrapper.Room.FindByIdAsync(student.RoomId.Value);
+            }
+
+            return GetStudentProfileResponse.MapFromStudent(student, priorityType, user, room);
         }
 
         public async Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel)
