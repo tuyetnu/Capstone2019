@@ -167,13 +167,27 @@ namespace DormyWebService.Services.RoomServices
 //                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No Room is Available");
 //            }
 //
-//            //Get students from database
-//            var students = new List<Student>();
+//            //Sort room list sorted by available spot
+//            availableRooms.Sort((x,y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
+//
+//            //Get all room type
+//            var RoomTypeParams = _param.FindAllByParamTypeWithoutWarning(GlobalParams.ParamTypeRoomType);
+//
+//            var tempStudentRoomList = new List<RoomAndStudentLists>();
+//
 //            for (var i = 0; i < requests.Count; i++)
 //            {
-//                students.Add(await _repoWrapper.Student.FindByIdAsync(requests[i].StudentId));
+//                //Get student from database
+//                var student = await _repoWrapper.Student.FindByIdAsync(requests[i].StudentId);
+//
+//                for (var j = 0; j < tempStudentRoomList.Count; j++)
+//                {
+//                    if (student.Gender == tempStudentRoomList[i].Gender)
+//                    {
+//                        
+//                    }
+//                }
 //            }
-//            
 //        }
 //
 //        private List<Room> SplitRoomByGender(List<Room> src, bool gender)

@@ -12,6 +12,7 @@ namespace DormyWebService.Services.ParamServices
         Task<Param> FindById(int id);
 
         Task<List<ParamModelView>> FindAllByParamType(int paramTypeId);
+        Task<List<Param>> FindAllByParamTypeWithoutWarning(int paramTypeId);
 
         Task<bool> IsOfParamType(int paramId, int paramTypeId);
     }

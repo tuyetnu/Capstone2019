@@ -10,13 +10,13 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStat
         [Required]
         public int IssueTicketId { get; set; }
         [Required]
-        public int StaffId { get; set; }
+        public int TargetStudentId { get; set; }
         [Required]
         public string Status { get; set; }
 
         public IssueTicket UpdateToIssueTicket(IssueTicket issueTicket)
         {
-            issueTicket.StaffId = StaffId;
+            issueTicket.TargetStudentId = TargetStudentId;
             issueTicket.Status = Status;
             issueTicket.LastUpdated = DateTime.Now;
 

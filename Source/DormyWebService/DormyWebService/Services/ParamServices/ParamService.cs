@@ -61,6 +61,15 @@ namespace DormyWebService.Services.ParamServices
             return paramList.Select(param => _mapper.Map<ParamModelView>(param)).ToList();
         }
 
+        public async Task<List<Param>> FindAllByParamTypeWithoutWarning(int paramTypeId)
+        {
+            var paramList =
+                (List<Param>)await _repoWrapper.Param.FindAllAsyncWithCondition(param =>
+                    param.ParamTypeId == paramTypeId);
+
+            return paramList;
+        }
+
         public async Task<bool> IsOfParamType(int paramId, int paramTypeId)
         {
             var tmpParams = (List<Param>) await _repoWrapper.Param.FindAllAsyncWithCondition(p =>

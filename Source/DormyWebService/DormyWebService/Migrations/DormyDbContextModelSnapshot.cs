@@ -490,14 +490,10 @@ namespace DormyWebService.Migrations
 
                     b.Property<int?>("Point");
 
-                    b.Property<int?>("StaffId");
-
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<int?>("TargetStudentId");
 
                     b.Property<int>("Type");
 
@@ -507,7 +503,7 @@ namespace DormyWebService.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.HasIndex("StaffId");
+                    b.HasIndex("TargetStudentId");
 
                     b.ToTable("IssueTickets");
                 });
@@ -719,9 +715,9 @@ namespace DormyWebService.Migrations
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
+                    b.HasOne("DormyWebService.Entities.AccountEntities.Student", "TargetStudent")
                         .WithMany()
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("TargetStudentId");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.RoomBookingRequestForm", b =>

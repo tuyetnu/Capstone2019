@@ -11,8 +11,7 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket
         public string Status { get; set; }
         public int OwnerId { get; set; }
         public int? EquipmentId { get; set; }
-        public int? StaffId { get; set; }
-        public string Title { get; set; }
+        public int? TargetStudentId { get; set; }
         public string Description { get; set; }
         public int? Point { get; set; }
         public string ImageUrl { get; set; }
@@ -30,8 +29,7 @@ namespace DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket
                 Description = issueTicket.Description,
                 OwnerId = issueTicket.OwnerId,
                 ImageUrl = issueTicket.ImageUrl,
-                StaffId = issueTicket.StaffId,
-                Title = issueTicket.Title,
+                TargetStudentId = issueTicket.TargetStudentId,
                 Type = issueTicket.Type,
                 IssueTicketId = issueTicket.IssueTicketId,
                 Point = issueTicket.Point
