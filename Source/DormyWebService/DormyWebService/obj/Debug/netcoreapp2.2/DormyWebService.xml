@@ -4,6 +4,16 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.ContractsController.AdvancedGetContracts(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get contracts with condition, for admin and staff
+            </summary>
+            <param name="sorts"></param>
+            <param name="filters"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.EquipmentsController.GetByStudent(System.Int32)">
             <summary>
             Get equipment in the room of a student, for authorized users

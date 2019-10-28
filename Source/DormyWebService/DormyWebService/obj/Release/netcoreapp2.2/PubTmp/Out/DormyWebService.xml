@@ -4,6 +4,16 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.ContractsController.AdvancedGetContracts(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get contracts with condition, for admin and staff
+            </summary>
+            <param name="sorts"></param>
+            <param name="filters"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.EquipmentsController.GetByStudent(System.Int32)">
             <summary>
             Get equipment in the room of a student, for authorized users
@@ -50,14 +60,14 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.IssueTicketsController.SendIssueTicket(DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket.SendIssueTicketRequest)">
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.SendIssueTicket(DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket.SendIssueTicketRequest)">
             <summary>
             Send Issue Ticket for student
             </summary>
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.IssueTicketsController.ChangeIssueTicketStatus(DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus.ChangeIssueTicketStatusRequest)">
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.ChangeIssueTicketStatus(DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus.ChangeIssueTicketStatusRequest)">
             <summary>
             Change a issue ticket, for staff
             </summary>
