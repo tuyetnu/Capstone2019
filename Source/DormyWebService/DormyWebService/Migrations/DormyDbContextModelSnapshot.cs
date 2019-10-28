@@ -591,7 +591,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<int?>("StaffId");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<int>("StudentId");
 

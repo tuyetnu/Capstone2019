@@ -19,6 +19,8 @@ namespace DormyWebService.ViewModels.RoomViewModels.ArrangeRoom
         {
             Gender = gender;
             RoomType = roomType;
+            Students = new List<Student>();
+            Rooms = new List<Room>();
         }
     }
 }

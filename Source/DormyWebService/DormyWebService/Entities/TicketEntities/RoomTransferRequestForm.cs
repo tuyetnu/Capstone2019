@@ -45,6 +45,6 @@ namespace DormyWebService.Entities.TicketEntities
 
         //Param
         [Required]
-        public int Status { get; set; }
+        public string Status { get; set; }
     }
 }

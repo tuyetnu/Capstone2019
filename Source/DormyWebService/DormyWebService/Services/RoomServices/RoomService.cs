@@ -167,24 +167,55 @@ namespace DormyWebService.Services.RoomServices
 //                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No Room is Available");
 //            }
 //
+//            //Sort requests by CreatedDate
+//            requests.Sort((x, y) => DateTime.Compare(x.CreatedDate, y.CreatedDate));
+//
 //            //Sort room list sorted by available spot
 //            availableRooms.Sort((x,y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
 //
-//            //Get all room type
-//            var RoomTypeParams = _param.FindAllByParamTypeWithoutWarning(GlobalParams.ParamTypeRoomType);
+//            var arrangedStudents = new List<Student>();
+//            var unArrangedStudents = new List<Student>();
+//            var arrangedRooms = new List<Room>();
 //
-//            var tempStudentRoomList = new List<RoomAndStudentLists>();
-//
+//            //Go through every requests
 //            for (var i = 0; i < requests.Count; i++)
 //            {
-//                //Get student from database
+//                //Get the student from database
 //                var student = await _repoWrapper.Student.FindByIdAsync(requests[i].StudentId);
 //
-//                for (var j = 0; j < tempStudentRoomList.Count; j++)
+//                //Go through every available rooms, which has been previously sorted
+//                for (var j = 0; j < availableRooms.Count; j++)
 //                {
-//                    if (student.Gender == tempStudentRoomList[i].Gender)
+//                    var currentRoom = arrangedRooms[j];
+//                    //If there's a room that satisfies student's requirements, add student to that room
+//                    if (requests[i].TargetRoomType == currentRoom.RoomType && student.Gender == currentRoom.Gender)
 //                    {
-//                        
+//                        //add student to room
+//                        student.RoomId = currentRoom.RoomId;
+//                        //Increase current student number of room
+//                        currentRoom.CurrentNumberOfStudent++;
+//                        //If room is full after adding the student
+//                        if (currentRoom.Capacity == currentRoom.CurrentNumberOfStudent)
+//                        {
+//                            //Add current room to arranged room list
+//                            arrangedRooms.Add(currentRoom);
+//                            //Remove full current room from available room list so we won't have to check this room again
+//                            availableRooms.RemoveAt(j);
+//                        }
+//                        //If room is not full , but we
+//                        else if (i == requests.Count - 1)
+//                        {
+//                            
+//                        }
+//                        //Break loop and move on to next request and go through list of available room again
+//                        break;
+//                    }
+//
+//                    //if at the end of available room list and hasn't found a suitable room yet, add current student to unArrangedStudents list
+//                    if (j == availableRooms.Count -1)
+//                    {
+//                        //Add current student to unArrangedStudentList
+//                        unArrangedStudents.Add(student);
 //                    }
 //                }
 //            }
