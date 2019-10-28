@@ -7,7 +7,6 @@ using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
-using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
 using DormyWebService.ViewModels.NewsViewModels;
 using DormyWebService.ViewModels.NewsViewModels.CreateNews;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;

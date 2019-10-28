@@ -32,7 +32,7 @@ namespace DormyWebService.Controllers
         /// Get list of active news headlines for authorized users
         /// </summary>
         /// <returns></returns>
-//        [Authorize]
+        [Authorize]
         [HttpGet("Headlines")]
         public async Task<ActionResult<List<GetNewsHeadlinesResponse>>> GetActiveNewsHeadlines()
         {

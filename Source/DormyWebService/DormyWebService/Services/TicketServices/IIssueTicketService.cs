@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DormyWebService.Entities.TicketEntities;
-using DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
-using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
-using DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Microsoft.AspNetCore.Mvc;
 

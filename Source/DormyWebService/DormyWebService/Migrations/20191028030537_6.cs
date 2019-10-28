@@ -2,22 +2,21 @@
 
 namespace DormyWebService.Migrations
 {
-    public partial class _4 : Migration
+    public partial class _6 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Gender",
-                table: "RoomBookingRequestForm");
+                name: "Point",
+                table: "IssueTickets");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "Gender",
-                table: "RoomBookingRequestForm",
-                nullable: false,
-                defaultValue: false);
+            migrationBuilder.AddColumn<int>(
+                name: "Point",
+                table: "IssueTickets",
+                nullable: true);
         }
     }
 }

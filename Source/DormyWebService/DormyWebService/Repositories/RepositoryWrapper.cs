@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities;
+using DormyWebService.Repositories.ContractRepositories;
 using DormyWebService.Repositories.EquipmentRepositories;
 using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
@@ -25,6 +26,7 @@ namespace DormyWebService.Repositories
         private IParamTypeRepository _paramType;
         private IEquipmentRepository _equipment;
         private IRoomRepository _room;
+        private IContractRepository _contract;
         private IRoomBookingRepository _roomBooking;
         private IRoomTransferRepository _roomTransfer;
         private IIssueTicketRepository _issueTicket;
@@ -65,6 +67,7 @@ namespace DormyWebService.Repositories
         public IParamTypeRepository ParamType => _paramType ?? (_paramType = new ParamTypeRepository(_context));
         public IEquipmentRepository Equipment => _equipment ?? (_equipment = new EquipmentRepositories.EquipmentRepository(_context));
         public IRoomRepository Room => _room ?? (_room = new RoomRepository(_context));
+        public IContractRepository Contract => _contract ?? (_contract = new ContractRepository(_context));
         public IRoomBookingRepository RoomBooking => _roomBooking ?? (_roomBooking = new RoomBookingRepository(_context));
         public IRoomTransferRepository RoomTransfer => _roomTransfer ?? (_roomTransfer = new RoomTransferRepository(_context));
         public IIssueTicketRepository IssueTicket => _issueTicket ?? (_issueTicket = new IssueTicketRepository(_context));

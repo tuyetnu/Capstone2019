@@ -11,6 +11,16 @@
             <param name="studentId"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.EquipmentsController.AdvancedGetEquipment(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get equipments with conditions, for staff and admin
+            </summary>
+            <param name="sorts"></param>
+            <param name="filters"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.EquipmentsController.CreateEquipment(DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment.CreateEquipmentRequest)">
             <summary>
             Create new Equipment for Admin

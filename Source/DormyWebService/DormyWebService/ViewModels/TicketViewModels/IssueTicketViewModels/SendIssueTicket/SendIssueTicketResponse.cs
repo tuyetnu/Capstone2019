@@ -1,4 +1,4 @@
-﻿namespace DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket
+﻿namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket
 {
     public class SendIssueTicketResponse
     {

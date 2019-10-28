@@ -1,4 +1,4 @@
-﻿namespace DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus
+﻿namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus
 {
     public class ChangeIssueTicketStatusResponse
     {

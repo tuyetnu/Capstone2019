@@ -32,10 +32,25 @@ namespace DormyWebService.Controllers
         /// <param name="studentId"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet("GetByStudent/{studentId}")]
+        [HttpGet("AdvancedGet")]
         public async Task<ActionResult<List<GetEquipmentResponse>>> GetByStudent(int studentId)
         {
             return await _equipmentService.GetEquipmentOfStudent(studentId);
+        }
+
+        /// <summary>
+        /// Get equipments with conditions, for staff and admin
+        /// </summary>
+        /// <param name="sorts"></param>
+        /// <param name="filters"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("GetByStudent/{studentId}")]
+        public async Task<ActionResult<List<GetEquipmentResponse>>> AdvancedGetEquipment(string sorts, string filters, int? page, int? pageSize)
+        {
+            return await _equipmentService.AdvancedGetEquipments(sorts,filters,page,pageSize);
         }
 
         /// <summary>

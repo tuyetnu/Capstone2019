@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    [Migration("20191026053812_2")]
-    partial class _2
+    [Migration("20191027084711_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -492,16 +492,10 @@ namespace DormyWebService.Migrations
 
                     b.Property<int?>("Point");
 
-                    b.Property<int?>("RoomId");
-
-                    b.Property<int?>("StaffId");
-
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<int?>("TargetStudentId");
 
                     b.Property<int>("Type");
 
@@ -511,9 +505,7 @@ namespace DormyWebService.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.HasIndex("RoomId");
-
-                    b.HasIndex("StaffId");
+                    b.HasIndex("TargetStudentId");
 
                     b.ToTable("IssueTickets");
                 });
@@ -725,13 +717,9 @@ namespace DormyWebService.Migrations
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
+                    b.HasOne("DormyWebService.Entities.AccountEntities.Student", "TargetStudent")
                         .WithMany()
-                        .HasForeignKey("RoomId");
-
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("TargetStudentId");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.RoomBookingRequestForm", b =>

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Services.TicketServices;
-using DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
-using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
-using DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace DormyWebService.Controllers
     [ApiController]
     public class IssueTicketsController : ControllerBase
     {
-        private IIssueTicketService _issueTicketService;
+        private readonly IIssueTicketService _issueTicketService;
 
         public IssueTicketsController(IIssueTicketService issueTicketService)
         {

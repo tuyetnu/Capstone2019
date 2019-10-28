@@ -6,9 +6,9 @@ using AutoMapper;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
-using DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
-using DormyWebService.ViewModels.IssueTicketViewModels.GetIssueTicket;
-using DormyWebService.ViewModels.IssueTicketViewModels.SendIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Microsoft.AspNetCore.Mvc;
@@ -51,9 +51,9 @@ namespace DormyWebService.Services.TicketServices
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: student is not found.");
             }
 
-            if (request.EquipmentId != null)
+            if (request.EquipmentId >= 0)
             {
-                var equipment = await _repoWrapper.Room.FindByIdAsync(request.EquipmentId.Value);
+                var equipment = await _repoWrapper.Equipment.FindByIdAsync(request.EquipmentId);
                 if (equipment == null)
                 {
                     throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: equipment is not found.");
@@ -108,11 +108,11 @@ namespace DormyWebService.Services.TicketServices
         public async Task<ChangeIssueTicketStatusResponse> ChangeIssueTicketStatus(
             ChangeIssueTicketStatusRequest request)
         {
-            //Check if Staff Exists
-            var staff = await _repoWrapper.Staff.FindByIdAsync(request.StaffId);
-            if (staff == null)
+            //Check if target student Exists
+            var student = await _repoWrapper.Student.FindByIdAsync(request.TargetStudentId);
+            if (student == null)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicketService: Staff not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicketService: target student not found");
             }
 
             //Find Issue Ticket

@@ -15,25 +15,29 @@ using DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment;
 using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace DormyWebService.Services.EquipmentServices
 {
     public class EquipmentService : IEquipmentService
     {
-        private IRepositoryWrapper _repoWrapper;
-        private IMapper _mapper;
-        private IAdminService _admin;
-        private IRoomService _room;
-        private IParamService _param;
+        private readonly IRepositoryWrapper _repoWrapper;
+        private readonly IMapper _mapper;
+        private readonly IAdminService _admin;
+        private readonly IRoomService _room;
+        private readonly IParamService _param;
+        private readonly ISieveProcessor _sieveProcessor;
 
         public EquipmentService(IRepositoryWrapper repoWrapper, IMapper mapper, IAdminService admin, IRoomService room,
-            IParamService param)
+            IParamService param, ISieveProcessor sieveProcessor)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
             _admin = admin;
             _room = room;
             _param = param;
+            _sieveProcessor = sieveProcessor;
         }
 
         public async Task<Equipment> FindById(int id)
@@ -106,6 +110,27 @@ namespace DormyWebService.Services.EquipmentServices
             }
 
             return equipments.Select(equipment => _mapper.Map<GetEquipmentResponse>(equipment)).ToList();
+        }
+
+        public async Task<List<GetEquipmentResponse>> AdvancedGetEquipments(string sorts, string filters, int? page, int? pageSize)
+        {
+            var sieveModel = new SieveModel()
+            {
+                PageSize = pageSize,
+                Sorts = sorts,
+                Page = page,
+                Filters = filters
+            };
+
+            var equipment = await _repoWrapper.Equipment.FindAllAsync();
+
+            if (equipment == null || equipment.Any() == false)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: No equipment is found");
+            }
+
+            var result = _sieveProcessor.Apply(sieveModel, equipment.AsQueryable()).ToList();
+            return result.Select(e=>_mapper.Map<GetEquipmentResponse>(e)).ToList();
         }
     }
 }

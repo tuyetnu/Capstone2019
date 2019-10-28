@@ -1,22 +1,21 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Entities.TicketEntities;
-using FluentValidation;
 
-namespace DormyWebService.ViewModels.IssueTicketViewModels.ChangeIssueTicketStatus
+namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus
 {
     public class ChangeIssueTicketStatusRequest
     {
         [Required]
         public int IssueTicketId { get; set; }
         [Required]
-        public int StaffId { get; set; }
+        public int TargetStudentId { get; set; }
         [Required]
         public string Status { get; set; }
 
         public IssueTicket UpdateToIssueTicket(IssueTicket issueTicket)
         {
-            issueTicket.StaffId = StaffId;
+            issueTicket.TargetStudentId = TargetStudentId;
             issueTicket.Status = Status;
             issueTicket.LastUpdated = DateTime.Now;
 

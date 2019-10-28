@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
@@ -127,14 +128,25 @@ namespace DormyWebService.Services.TicketServices
         public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)
         {
             //Check if this staff exist
-            var staff = await _userService.FindById(request.StaffId);
-            if (staff.Role != Role.Staff)
+            var staff = await _repoWrapper.Staff.FindByIdAsync(request.StaffId);
+
+            if (staff == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: Provide StaffId is not a staff");
             }
 
             //Check if Room Booking Request Exists
             var roomBooking = await FindById(request.RoomBookingRequestFormId);
+
+            if (roomBooking.Status == request.Status)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: This request already has this status");
+            }
+
+            if (roomBooking.Status == RequestStatus.Complete)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: This request is already completed, can't change it to anything else''");
+            }
 
             //Update information into DataSet
             roomBooking = _mapper.Map(request, roomBooking);
@@ -144,7 +156,38 @@ namespace DormyWebService.Services.TicketServices
 
             //Update to database
             roomBooking =
-                    await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
+                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
+
+            //If request is changed to complete
+            if (request.Status == RequestStatus.Complete)
+            {
+                //Get contract that have the same studentId
+                System.Diagnostics.Debug.WriteLine("roomBooking.StudentId: " + roomBooking.StudentId);
+                var tempContractList = (List<Contract>)await
+                    _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == roomBooking.StudentId);
+
+                //Create new contract if this student doesn't have any active contract
+                if (tempContractList != null && !tempContractList.Exists(c=>c.Status == ContractStatus.Active))
+                {
+                    var contract = new Contract()
+                    {
+                        StudentId = roomBooking.StudentId,
+                        CreatedDate = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        //Set to Start of next month
+                        StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month +1, 1,
+                            0, 0, 0, DateTime.Now.Kind),
+                        Status = ContractStatus.NotActiveYet,
+                    };
+                    //Set end to StartDate + RoomBooking.Month
+                    contract.EndDate = contract.StartDate.AddMonths(roomBooking.Month);
+
+                    _repoWrapper.Contract.CreateAsyncWithoutSave(contract);
+                }
+            }
+
+            //Save to database at once
+            await _repoWrapper.Save();
 
             //Return mapped response
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
