@@ -13307,23 +13307,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ADMIN\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
       "projectName": "DormyWebService",
-      "projectPath": "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
-      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ADMIN\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\DormyWebService.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -13410,13 +13406,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\Admin\\Desktop\\Capstone2019\\Source\\DormyWebService\\DormyWebService\\obj\\DormyWebService.csproj.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

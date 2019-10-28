@@ -4,9 +4,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DormyWebService.Migrations
 {
-    public partial class _3 : Migration
+    public partial class _2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "IssueTickets");
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "IssueTickets",
@@ -14,16 +20,15 @@ namespace DormyWebService.Migrations
                 {
                     IssueTicketId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Type = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(nullable: false),
-                    OwnerId = table.Column<int>(nullable: false),
-                    EquipmentId = table.Column<int>(nullable: true),
-                    TargetStudentId = table.Column<int>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Point = table.Column<int>(nullable: true),
-                    ImageUrl = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    LastUpdated = table.Column<DateTime>(nullable: false)
+                    Description = table.Column<string>(nullable: true),
+                    EquipmentId = table.Column<int>(nullable: true),
+                    ImageUrl = table.Column<string>(nullable: true),
+                    LastUpdated = table.Column<DateTime>(nullable: false),
+                    OwnerId = table.Column<int>(nullable: false),
+                    Status = table.Column<string>(nullable: false),
+                    TargetStudentId = table.Column<int>(nullable: true),
+                    Type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,12 +67,6 @@ namespace DormyWebService.Migrations
                 name: "IX_IssueTickets_TargetStudentId",
                 table: "IssueTickets",
                 column: "TargetStudentId");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "IssueTickets");
         }
     }
 }

@@ -20,6 +20,9 @@ namespace DormyWebService.Migrations
                 name: "ContractRenewalForms");
 
             migrationBuilder.DropTable(
+                name: "Contracts");
+
+            migrationBuilder.DropTable(
                 name: "IssueTickets");
 
             migrationBuilder.DropTable(
