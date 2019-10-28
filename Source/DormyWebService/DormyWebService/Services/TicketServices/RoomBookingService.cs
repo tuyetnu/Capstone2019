@@ -205,18 +205,26 @@ namespace DormyWebService.Services.TicketServices
             };
 
             //Get all RoomBookings
-            var roomBookings = await _repoWrapper.RoomBooking.FindAllAsync();
+            var roomBookings = (List<RoomBookingRequestForm>) await _repoWrapper.RoomBooking.FindAllAsync();
 
             if (roomBookings == null || roomBookings.Any() == false)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomBookingService: No Request is found");
             }
 
+            var resultResponses = new List<GetRoomBookingResponse>();
+            foreach (var form in roomBookings)
+            {
+                var student = await _repoWrapper.Student.FindByIdAsync(form.StudentId);
+                var roomType = await _repoWrapper.Param.FindByIdAsync(form.TargetRoomType);
+                resultResponses.Add(GetRoomBookingResponse.ResponseFromEntity(form, student, roomType));
+            }
+
             //Apply filter, sort, pagination
-            var result = _sieveProcessor.Apply(sieveModel, roomBookings.AsQueryable()).ToList();
+            var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable()).ToList();
 
             //Return List of result
-            return result.Select(r=>_mapper.Map<GetRoomBookingResponse>(r)).ToList(); 
+            return result; 
         }
 
         public async Task<bool> DeleteRoomBooking(int id)

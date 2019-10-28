@@ -7,6 +7,7 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;

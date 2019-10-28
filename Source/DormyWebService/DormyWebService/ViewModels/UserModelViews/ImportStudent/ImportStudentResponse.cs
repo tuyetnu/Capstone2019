@@ -33,7 +33,7 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
                 IdentityNumber = student.IdentityNumber,
                 PhoneNumber = student.PhoneNumber,
                 Status = student.User.Status,
-                Email = student.User.Email,
+                Email = student.Email,
             };
         }
     }

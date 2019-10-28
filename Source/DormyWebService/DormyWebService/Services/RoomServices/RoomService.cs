@@ -147,7 +147,7 @@ namespace DormyWebService.Services.RoomServices
             return UpdateRoomResponse.ResponseFromRoom(room, equipmentIds);
         }
 
-        private async Task<ArrangeRoomResponse> ArrangeRoomForAllApprovedRequests()
+        public async Task<ArrangeRoomResponse> ArrangeRoomForAllApprovedRequests()
         {
             //Get all approve request
             var requests =(List<RoomBookingRequestForm>) await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Approved);
@@ -155,7 +155,7 @@ namespace DormyWebService.Services.RoomServices
             //Check if list of approved request is empty
             if (requests == null || !requests.Any())
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No request is found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No approved request is found");
             }
 
             //Get list of available room
@@ -177,9 +177,11 @@ namespace DormyWebService.Services.RoomServices
             var unArrangedStudents = new List<Student>();
             var arrangedRooms = new List<Room>();
 
+            var k = 0;
             //Go through every requests
             for (var i = 0; i < requests.Count; i++)
             {
+                k++;
                 //Get the student from database
                 var student = await _repoWrapper.Student.FindByIdAsync(requests[i].StudentId);
 
@@ -194,31 +196,29 @@ namespace DormyWebService.Services.RoomServices
                     //Go through every available rooms, which has been previously sorted
                     for (var j = 0; j < availableRooms.Count; j++)
                     {
-                        var currentRoom = arrangedRooms[j];
+                        var currentRoom = availableRooms[j];
                         //If there's a room that satisfies student's requirements, add student to that room
                         if (requests[i].TargetRoomType == currentRoom.RoomType && student.Gender == currentRoom.Gender)
                         {
                             //add student to room
                             student.RoomId = currentRoom.RoomId;
+                            if (!arrangedRooms.Contains(currentRoom))
+                            {
+                                arrangedRooms.Add(currentRoom);
+                            }
                             //Increase current student number of room
                             currentRoom.CurrentNumberOfStudent++;
                             //add student to arrangedStudentList to save to database 
                             arrangedStudents.Add(student);
+                            //Add arranged student to list of pending database update
+                            await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
                             //If room is full after adding the student
                             if (currentRoom.Capacity == currentRoom.CurrentNumberOfStudent)
                             {
-                                //Add current room to arranged room list
-                                arrangedRooms.Add(currentRoom);
                                 //Remove full current room from available room list so we won't have to check this room again
                                 availableRooms.RemoveAt(j);
-                            }
-                            //If room is not full , but it's the last request
-                            else if (i == requests.Count - 1)
-                            {
-                                //Add current room to arranged room list
-                                arrangedRooms.Add(currentRoom);
-                                //Remove full current room from available room list so we won't have to check this room again
-                                availableRooms.RemoveAt(j);
+                                //Add room to pending changes to database
+                                await _repoWrapper.Room.UpdateAsyncWithoutSave(currentRoom, currentRoom.RoomId);
                             }
                             //Break loop and move on to next request and go through list of available room again
                             break;
@@ -234,7 +234,11 @@ namespace DormyWebService.Services.RoomServices
                 }
             }
 
+            //Save all students
+            await _repoWrapper.Save();
 
+            //If save is successful, preparing response message
+            return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents,unArrangedStudents,arrangedRooms);
         }
 //
 //        private List<Room> SplitRoomByGender(List<Room> src, bool gender)

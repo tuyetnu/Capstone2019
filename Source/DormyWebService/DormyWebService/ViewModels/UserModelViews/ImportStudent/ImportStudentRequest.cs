@@ -74,6 +74,7 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
                     Status = UserStatus.Active,
                     Email = request.Email
                 },
+                Email = request.Email,
         };
         }
     }

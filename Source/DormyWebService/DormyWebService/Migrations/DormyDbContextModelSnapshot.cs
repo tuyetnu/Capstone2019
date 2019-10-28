@@ -65,6 +65,9 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("BirthDay");
 
+                    b.Property<string>("Email")
+                        .IsRequired();
+
                     b.Property<int>("EvaluationScore");
 
                     b.Property<bool>("Gender");

@@ -7,6 +7,7 @@ using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Services.RoomServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels;
+using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using Microsoft.AspNetCore.Authorization;
@@ -83,6 +84,17 @@ namespace DormyWebService.Controllers
             }
 
             return await _room.UpdateRoom(request);
+        }
+
+        /// <summary>
+        /// Arrange all students with approved room booking requests, for staff and admin
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Student)]
+        [HttpGet("ArrangeAllApprovedRequest")]
+        public async Task<ActionResult<ArrangeRoomResponse>> ArrangeAllApprovedRequest()
+        {
+            return await _room.ArrangeRoomForAllApprovedRequests();
         }
     }
 }

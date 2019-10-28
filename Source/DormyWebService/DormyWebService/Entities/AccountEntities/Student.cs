@@ -27,6 +27,11 @@ namespace DormyWebService.Entities.AccountEntities
         [Sieve(CanFilter = true, CanSort = true)]
         public string Name { get; set; }
 
+        [Required]
+        [EmailAddress]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string Email { get; set; }
+
         //Năm nhập học
         [Required]
         [RegularExpression(@"^[0-9]*$")]
