@@ -229,6 +229,13 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.RoomTransferController.SendRoomTransfer(DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer.SendRoomTransferRequest)">
+            <summary>
+            send room transfer request for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.StudentController.AdvancedGetStudent(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Get student with condition, for admin and staff

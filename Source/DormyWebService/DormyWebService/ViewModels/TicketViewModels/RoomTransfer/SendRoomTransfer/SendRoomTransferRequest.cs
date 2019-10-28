@@ -12,7 +12,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
         [Required]
         public int StudentId { get; set; }
         [Required]
-        public int RoomTypeId { get; set; }
+        public int RoomId { get; set; }
         [Required]
         public string Description { get; set; }
 
@@ -22,9 +22,11 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
             {
                 StudentId = request.StudentId,
                 Reason = request.Description,
-                TargetRoomId = request.RoomTypeId,
+                TargetRoomId = request.RoomId,
                 CreatedDate = DateTime.Now,
-                LastUpdated = DateTime.Now
+                LastUpdated = DateTime.Now,
+                //Quên add status vô
+                Status = RequestStatus.Pending
             };
         }
     }

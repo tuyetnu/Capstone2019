@@ -33,21 +33,31 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<SendRoomTransferRespone> SendRequest(SendRoomTransferRequest request)
         {
-            //Check request
+            //Check if room exist
+            var room = await _repoWrapper.Room.FindByIdAsync(request.RoomId);
 
+            if (room == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Room not found");
+            }
 
             //Find student in database
             await _studentService.FindById(request.StudentId);
-            //
+
+            //Check if there's active room transfer request
+            //Chỗ này ko phải _repoWrapper.RoomBooking mà là _repoWrapper.RoomTransfer
             var bookings = (List<RoomTransferRequestForm>)
-                await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.StudentId == request.StudentId);
+                await _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(r => r.StudentId == request.StudentId);
             if (bookings!= null)
             {
-                //if (bookings.Exists(b => b.Status == RequestStatus.Pending))
-                //{
-                //    throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: There are already active booking requests for this account");
-                //}
+                if (bookings.Exists(b => b.Status == RequestStatus.Pending))
+                {
+                    throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomTransferService: There are already active transfer requests for this account");
+                }
             }
+
+            //TODO: check if contract is valid
+
             //Create new room booking from request
             var result = SendRoomTransferRequest.NewEntityFromRequest(request);
 
