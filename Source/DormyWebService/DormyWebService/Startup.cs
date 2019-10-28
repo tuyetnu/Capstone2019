@@ -5,6 +5,7 @@ using System.Text;
 using AutoMapper;
 using DormyWebService.Entities;
 using DormyWebService.Repositories;
+using DormyWebService.Services.ContractServices;
 using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Services.HomeService;
 using DormyWebService.Services.MoneyServices;
@@ -117,6 +118,9 @@ namespace DormyWebService
             services.AddScoped<INewsServices, NewsService>();
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IContractService, ContractService>();
+            services.AddScoped<IRenewContractService, RenewContractService>();
+            services.AddScoped<ICancelContractService, CancelContractService>();
             services.AddScoped<IParamTypeService, ParamTypeService>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddScoped<IRoomBookingService, RoomBookingService>();

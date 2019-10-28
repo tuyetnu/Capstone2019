@@ -27,6 +27,8 @@ namespace DormyWebService.Repositories
         private IEquipmentRepository _equipment;
         private IRoomRepository _room;
         private IContractRepository _contract;
+        private IRenewContractRepository _renewContract;
+        private ICancelContractRepository _cancelContract;
         private IRoomBookingRepository _roomBooking;
         private IRoomTransferRepository _roomTransfer;
         private IIssueTicketRepository _issueTicket;
@@ -68,6 +70,8 @@ namespace DormyWebService.Repositories
         public IEquipmentRepository Equipment => _equipment ?? (_equipment = new EquipmentRepositories.EquipmentRepository(_context));
         public IRoomRepository Room => _room ?? (_room = new RoomRepository(_context));
         public IContractRepository Contract => _contract ?? (_contract = new ContractRepository(_context));
+        public IRenewContractRepository RenewContract => _renewContract ?? (_renewContract = new RenewContractRepository(_context));
+        public ICancelContractRepository CancelContract => _cancelContract ?? (_cancelContract = new CancelContractRepository(_context));
         public IRoomBookingRepository RoomBooking => _roomBooking ?? (_roomBooking = new RoomBookingRepository(_context));
         public IRoomTransferRepository RoomTransfer => _roomTransfer ?? (_roomTransfer = new RoomTransferRepository(_context));
         public IIssueTicketRepository IssueTicket => _issueTicket ?? (_issueTicket = new IssueTicketRepository(_context));
