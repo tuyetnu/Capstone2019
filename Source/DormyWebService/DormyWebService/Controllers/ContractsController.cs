@@ -24,6 +24,18 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
+        /// Get Contract by StudentId, for authorized users
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("GetByStudentId/{id}")]
+        public async Task<ActionResult<List<GetContractResponse>>> GetByStudentId (int id)
+        {
+            return await _contractService.GetByStudentId(id);
+        }
+
+        /// <summary>
         /// Get contracts with condition, for admin and staff
         /// </summary>
         /// <param name="sorts"></param>

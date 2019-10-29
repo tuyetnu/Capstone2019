@@ -4,6 +4,13 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.ContractsController.GetByStudentId(System.Int32)">
+            <summary>
+            Get Contract by StudentId, for authorized users
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.ContractsController.AdvancedGetContracts(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Get contracts with condition, for admin and staff

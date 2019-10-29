@@ -42,5 +42,17 @@ namespace DormyWebService.Services.ContractServices
             var result = _sieveProcessor.Apply(sieveModel, contracts.AsQueryable()).ToList();
             return result.Select(GetContractResponse.ResponseFromEntity).ToList();
         }
+
+        public async Task<List<GetContractResponse>> GetByStudentId(int id)
+        {
+            var contracts = await _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == id);
+
+            if (contracts == null || contracts.Any() == false)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractService: No contract is found");
+            }
+
+            return contracts.Select(GetContractResponse.ResponseFromEntity).ToList();
+        }
     }
 }
