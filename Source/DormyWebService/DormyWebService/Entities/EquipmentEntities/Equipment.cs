@@ -14,7 +14,7 @@ namespace DormyWebService.Entities.EquipmentEntities
 
         [MaxLength(50)]
         [Sieve(CanFilter = true, CanSort = true)]
-        public string Name { get; set; }
+        public string Code { get; set; }
 
         [ForeignKey("Room")]
         [Sieve(CanFilter = true, CanSort = true)]

@@ -3,11 +3,17 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
+using DormyWebService.Services.ParamServices;
+using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.EditIssueTicket;
 using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicketDetail;
 using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
@@ -21,25 +27,47 @@ namespace DormyWebService.Services.TicketServices
     {
         private readonly IRepositoryWrapper _repoWrapper;
         private IMapper _mapper;
-        private ISieveProcessor _sieveProcessor;
+        private readonly ISieveProcessor _sieveProcessor;
+        private readonly IParamService _paramService;
+        private readonly IStudentService _studentService;
 
-        public IssueTicketService(IRepositoryWrapper repoWrapper, IMapper mapper, ISieveProcessor sieveProcessor)
+        public IssueTicketService(IRepositoryWrapper repoWrapper, IMapper mapper, ISieveProcessor sieveProcessor, IParamService paramService, IStudentService studentService)
         {
             _repoWrapper = repoWrapper;
             _mapper = mapper;
             _sieveProcessor = sieveProcessor;
+            _paramService = paramService;
+            _studentService = studentService;
         }
 
         public async Task<IssueTicket> FindById(int id)
         {
-            var result = _repoWrapper.IssueTicket.FindByIdAsync(id);
+            var result = await _repoWrapper.IssueTicket.FindByIdAsync(id);
 
             if (result == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: IssueTicket is not found.");
             }
 
-            return await result;
+            return result;
+        }
+
+        public async Task<GetIssueTicketDetailResponse> GetIssueTicketDetail(int id)
+        {
+            var issueTicket = await FindById(id);
+
+            var owner = await _studentService.FindById(issueTicket.OwnerId);
+
+            Student targetStudent = null;
+
+            if (issueTicket.TargetStudentId != null)
+            {
+                targetStudent = await _studentService.FindById(issueTicket.TargetStudentId.Value);
+            }
+
+            var type = await _paramService.FindById(issueTicket.Type);
+
+            return GetIssueTicketDetailResponse.ResponseFromEntity(issueTicket, owner,targetStudent, type);
         }
 
         public async Task<SendIssueTicketResponse> SendTicket(SendIssueTicketRequest request)
@@ -77,6 +105,25 @@ namespace DormyWebService.Services.TicketServices
             {
                 IssueTicketId = issueTicket.IssueTicketId
             };
+        }
+
+        public async Task<bool> EditIssueTicket(EditIssueTicketRequest request)
+        {
+            var issueTicket = await FindById(request.IssueTicketId);
+
+            var type = await _paramService.FindById(request.Type);
+
+            if (type.ParamTypeId != GlobalParams.ParamTypeIssueType)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "IssueTicket: Issue Ticket Type is invalid.");
+            }
+
+            //update information into issue ticket
+            issueTicket = EditIssueTicketRequest.EntityFromRequest(issueTicket, request);
+
+            await _repoWrapper.IssueTicket.UpdateAsync(issueTicket, issueTicket.IssueTicketId);
+
+            return true;
         }
 
         public async Task<List<GetIssueTicketResponse>> AdvancedGetIssueTicket(string sorts, string filters, int? page, int? pageSize)

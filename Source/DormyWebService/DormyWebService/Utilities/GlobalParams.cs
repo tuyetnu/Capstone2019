@@ -14,6 +14,7 @@
         public const int ParamTypeRoomType = 4;
         public const int ParamTypeDepositMoneyParam = 5;
         public const int ParamTypeIssueType = 6;
+        public const int ParamTypeEquipmentType = 7;
 
         //Room Type Param
         public const int ParamStandardRoomType = 11;

@@ -6,7 +6,9 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.ChangeIssueTicketStatus;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.EditIssueTicket;
 using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicket;
+using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetIssueTicketDetail;
 using DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +25,18 @@ namespace DormyWebService.Controllers
         public IssueTicketsController(IIssueTicketService issueTicketService)
         {
             _issueTicketService = issueTicketService;
+        }
+
+        /// <summary>
+        /// Get Detail of an IssueTicket, for Authorized Users
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<GetIssueTicketDetailResponse>> GetIssueTicketDetail(int id)
+        {
+            return await _issueTicketService.GetIssueTicketDetail(id);
         }
 
         /// <summary>
@@ -51,6 +65,23 @@ namespace DormyWebService.Controllers
             }
 
             return await _issueTicketService.SendTicket(request);
+        }
+
+        /// <summary>
+        /// Edit Issue Ticket, for Student
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Student)]
+        [HttpPut]
+        public async Task<ActionResult<bool>> EditIssueTicket(EditIssueTicketRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _issueTicketService.EditIssueTicket(request);
         }
 
         /// <summary>

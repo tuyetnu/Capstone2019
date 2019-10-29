@@ -8,7 +8,7 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
     public class CreateEquipmentResponse
     {
         public int EquipmentId { get; set; }
-        public string Name { get; set; }
+        public string Code { get; set; }
         public int? RoomId { get; set; }
         public string ImageUrl { get; set; }
         public string Status { get; set; }
@@ -24,7 +24,7 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
                 LastUpdated = equipment.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
                 EquipmentId = equipment.EquipmentId,
                 ImageUrl = equipment.ImageUrl,
-                Name = equipment.Name,
+                Code = equipment.Code,
                 Price = equipment.Price,
                 Status = equipment.Status,
                 RoomId = equipment.RoomId

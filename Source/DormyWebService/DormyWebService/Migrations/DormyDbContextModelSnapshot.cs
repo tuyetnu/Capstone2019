@@ -159,14 +159,14 @@ namespace DormyWebService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<string>("ImageUrl");
 
                     b.Property<DateTime>("LastUpdated");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50);
 
                     b.Property<decimal>("Price");
 
@@ -376,6 +376,8 @@ namespace DormyWebService.Migrations
             modelBuilder.Entity("DormyWebService.Entities.ParamEntities.Param", b =>
                 {
                     b.Property<int>("ParamId");
+
+                    b.Property<decimal?>("DecimalValue");
 
                     b.Property<string>("Name");
 

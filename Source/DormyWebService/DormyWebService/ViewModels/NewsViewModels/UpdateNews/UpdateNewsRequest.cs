@@ -23,7 +23,7 @@ namespace DormyWebService.ViewModels.NewsViewModels.UpdateNews
             news.Content = request.Content;
             news.AttachedFileUrl = request.AttachedFileUrl;
             news.Status = request.Status;
-            news.LastUpdate = DateTime.Now;
+            news.LastUpdate = DateTime.Now.AddHours(7);
 
             return news;
         }

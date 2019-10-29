@@ -39,8 +39,8 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Send
 
             return new IssueTicket()
             {
-                CreatedDate = DateTime.Now,
-                LastUpdated = DateTime.Now,
+                CreatedDate = DateTime.Now.AddHours(7),
+                LastUpdated = DateTime.Now.AddHours(7),
                 Description = request.Description,
                 EquipmentId = equipmentId,
                 ImageUrl = request.ImageUrl,

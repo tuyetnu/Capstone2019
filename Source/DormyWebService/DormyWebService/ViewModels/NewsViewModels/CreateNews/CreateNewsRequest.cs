@@ -26,8 +26,8 @@ namespace DormyWebService.ViewModels.NewsViewModels.CreateNews
                 AttachedFileUrl = request.AttachedFileUrl,
                 Author = author,
                 Content = request.Content,
-                CreatedDate = DateTime.Now,
-                LastUpdate = DateTime.Now,
+                CreatedDate = DateTime.Now.AddHours(7),
+                LastUpdate = DateTime.Now.AddHours(7),
                 Status = NewsStatus.Active,
                 Title = request.Title
             };

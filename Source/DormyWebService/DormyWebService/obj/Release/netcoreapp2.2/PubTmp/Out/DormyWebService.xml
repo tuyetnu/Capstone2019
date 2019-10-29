@@ -54,6 +54,13 @@
             <param name="id"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.GetIssueTicketDetail(System.Int32)">
+            <summary>
+            Get Detail of an IssueTicket, for Authorized Users
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.IssueTicketsController.AdvancedGetRoomBooking(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Find IssueTickets with condition for staff and admin
@@ -63,6 +70,13 @@
         <member name="M:DormyWebService.Controllers.IssueTicketsController.SendIssueTicket(DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.SendIssueTicket.SendIssueTicketRequest)">
             <summary>
             Send Issue Ticket for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.EditIssueTicket(DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.EditIssueTicket.EditIssueTicketRequest)">
+            <summary>
+            Edit Issue Ticket, for Student
             </summary>
             <param name="request"></param>
             <returns></returns>

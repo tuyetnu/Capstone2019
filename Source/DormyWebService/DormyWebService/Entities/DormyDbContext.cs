@@ -49,15 +49,16 @@ namespace DormyWebService.Entities
                 .OnDelete(DeleteBehavior.Restrict);
 
             //Seed ParamType Table
-//            modelBuilder.Entity<ParamType>().HasData(
-//                new ParamType() { ParamTypeId = 0, Name = "MoneyTransactionType" },
-//                new ParamType() { ParamTypeId = 1, Name = "NotificationType" },
-//                new ParamType() { ParamTypeId = 2, Name = "StudentPriorityType" },
-//                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
-//                new ParamType() { ParamTypeId = 4, Name = "RoomType" },
-//                new ParamType() { ParamTypeId = 5, Name = "DepositMoneyParam" },
-//                new ParamType() { ParamTypeId = 6, Name = "IssueType" }
-//                );
+            //            modelBuilder.Entity<ParamType>().HasData(
+            //                new ParamType() { ParamTypeId = 0, Name = "MoneyTransactionType" },
+            //                new ParamType() { ParamTypeId = 1, Name = "NotificationType" },
+            //                new ParamType() { ParamTypeId = 2, Name = "StudentPriorityType" },
+            //                new ParamType() { ParamTypeId = 3, Name = "AcceptedEmailHost" },
+            //                new ParamType() { ParamTypeId = 4, Name = "RoomType" },
+            //                new ParamType() { ParamTypeId = 5, Name = "DepositMoneyParam" },
+            //                new ParamType() { ParamTypeId = 6, Name = "IssueType" },
+            //                new ParamType() { ParamTypeId = 7, Name = "EquipmentType" }
+            //                );
 
             //Seed Param Table
 //            modelBuilder.Entity<Param>().HasData(
@@ -65,7 +66,13 @@ namespace DormyWebService.Entities
 //                new Param() { ParamId = 1, Name = "Ưu tiên loại 2", ParamTypeId = 2 },
 //                new Param() { ParamId = 2, Name = "Ưu tiên loại 1 và 2", ParamTypeId = 2 },
 //                new Param() { ParamId = 3, Name = "Không có ưu tiên", ParamTypeId = 2 },
-//                new Param() { ParamId = 10, Name = "Fpt email host",ParamTypeId = 3, TextValue = "fpt.edu.vn" },
+//                new Param() { ParamId = 4, Name = "Bed", ParamTypeId = 7 },
+//                new Param() { ParamId = 5, Name = "Table", ParamTypeId = 7 },
+//                new Param() { ParamId = 6, Name = "Wardrobe", ParamTypeId = 7 },
+//                new Param() { ParamId = 7, Name = "Fan", ParamTypeId = 7 },
+//                new Param() { ParamId = 8, Name = "Wifi", ParamTypeId = 7 },
+//                new Param() { ParamId = 9, Name = "Air Conditioner", ParamTypeId = 7 },
+//                new Param() { ParamId = 10, Name = "Fridge",ParamTypeId = 7},
 //                new Param() { ParamId = 11, Name = "Standard Room", ParamTypeId = 4 },
 //                new Param() { ParamId = 12, Name = "Service Room", ParamTypeId = 4 },
 //                new Param() { ParamId = 13, Name = "DepositMoney", ParamTypeId = 5 },

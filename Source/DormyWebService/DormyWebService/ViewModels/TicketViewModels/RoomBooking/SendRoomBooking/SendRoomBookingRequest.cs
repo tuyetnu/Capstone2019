@@ -34,8 +34,8 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBookin
             return new RoomBookingRequestForm()
             {
                 StudentId = request.StudentId,
-                CreatedDate = DateTime.Now,
-                LastUpdated = DateTime.Now,
+                CreatedDate = DateTime.Now.AddHours(7),
+                LastUpdated = DateTime.Now.AddHours(7),
                 Month = request.Month,
                 Status = RequestStatus.Pending,
                 TargetRoomType = request.TargetRoomType,

@@ -24,10 +24,16 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Edit
 
         public string ImageUrl { get; set; }
 
-//        public static IssueTicket EntityFromRequest(IssueTicket issueTicket, EditIssueTicketRequest request)
-//        {
-//            issueTicket.Type = request.Type;
-//            issueTicket.EquipmentId = request.EquipmentId < 0 ? null : request.EquipmentId;
-//        }
+        public static IssueTicket EntityFromRequest(IssueTicket issueTicket, EditIssueTicketRequest request)
+        {
+            issueTicket.Type = request.Type;
+            issueTicket.EquipmentId = request.EquipmentId < 0 ? (int?) null : request.EquipmentId;
+            issueTicket.LastUpdated = DateTime.Now.AddHours(7);
+            issueTicket.TargetStudentId = request.TargetStudentId < 0 ? (int?)null : request.TargetStudentId;
+            issueTicket.Description = request.Description;
+            issueTicket.ImageUrl = request.ImageUrl;
+
+            return issueTicket;
+        }
     }
 }

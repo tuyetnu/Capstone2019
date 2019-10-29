@@ -154,7 +154,7 @@ namespace DormyWebService.Services.TicketServices
             roomBooking = _mapper.Map(request, roomBooking);
 
             //Update Last Updated Date
-            roomBooking.LastUpdated = DateTime.Now;
+            roomBooking.LastUpdated = DateTime.Now.AddHours(7);
 
             //Update to database
             roomBooking =
@@ -174,8 +174,8 @@ namespace DormyWebService.Services.TicketServices
                     var contract = new Contract()
                     {
                         StudentId = roomBooking.StudentId,
-                        CreatedDate = DateTime.Now,
-                        LastUpdate = DateTime.Now,
+                        CreatedDate = DateTime.Now.AddHours(7),
+                        LastUpdate = DateTime.Now.AddHours(7),
                         //Set to Start of next month
                         StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month +1, 1,
                             0, 0, 0, DateTime.Now.Kind),

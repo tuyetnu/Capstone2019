@@ -24,5 +24,7 @@ namespace DormyWebService.Entities.ParamEntities
         public string TextValue { get; set; }
 
         public DateTime? TimeValue { get; set; }
+
+        public decimal? DecimalValue { get; set; }
     }
 }

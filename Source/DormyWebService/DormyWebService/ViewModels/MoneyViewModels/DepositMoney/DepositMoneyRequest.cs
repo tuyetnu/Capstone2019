@@ -17,7 +17,7 @@ namespace DormyWebService.ViewModels.MoneyViewModels.DepositMoney
             return new MoneyTransaction()
             {
                 StudentId = request.StudentId,
-                Date = DateTime.Now,
+                Date = DateTime.Now.AddHours(7),
                 MoneyAmount = request.Amount,
                 OriginalBalance = originalBalance,
                 ResultBalance = resultBalance,

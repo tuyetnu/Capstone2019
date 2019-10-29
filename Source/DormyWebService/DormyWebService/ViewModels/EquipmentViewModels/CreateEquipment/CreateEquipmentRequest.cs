@@ -7,7 +7,7 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
 {
     public class CreateEquipmentRequest
     {
-        public string Name { get; set; }
+        public string Code { get; set; }
         public int? RoomId { get; set; }
         public string ImageUrl { get; set; }
         [Required]
@@ -19,10 +19,10 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
         {
             var result = new Equipment()
             {
-                Name = request.Name,
+                Code = request.Code,
                 Status = request.Status,
-                CreatedDate = DateTime.Now,
-                LastUpdated = DateTime.Now,
+                CreatedDate = DateTime.Now.AddHours(7),
+                LastUpdated = DateTime.Now.AddHours(7),
                 ImageUrl = request.ImageUrl,
                 Price = request.Price,
                 RoomId = request.RoomId

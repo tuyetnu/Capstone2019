@@ -72,7 +72,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="id">news id</param>
         /// <returns></returns>
-//        [Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<GetNewsDetailResponse>> GetNewsDetail(int id)
         {
