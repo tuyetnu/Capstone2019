@@ -10,6 +10,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Microsoft.AspNetCore.Authorization;
@@ -39,13 +40,25 @@ namespace DormyWebService.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [Authorize(Roles = Role.Staff + "," + Role.Admin)]
+//        [Authorize(Roles = Role.Staff + "," + Role.Admin)]
         [HttpGet]
-        public async Task<ActionResult<List<GetRoomBookingResponse>>> AdvancedGetRoomBooking(string sorts,
+        public async Task<ActionResult<AdvancedGetRoomBookingResponse>> AdvancedGetRoomBooking(string sorts,
             string filters, int? page,
             int? pageSize)
         {
             return await _roomBookingService.AdvancedGetRoomRequest(sorts, filters, page, pageSize);
+        }
+
+        /// <summary>
+        /// Get a room booking request's detail, for authorized user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("GetDetail/{id}")]
+        public async Task<ActionResult<GetRoomBookingDetailResponse>> GetRoomBookingDetail(int id)
+        {
+            return await _roomBookingService.GetRoomBookingDetail(id);
         }
 
         /// <summary>

@@ -557,6 +557,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("Reason");
 
+                    b.Property<int?>("RoomId");
+
                     b.Property<int?>("StaffId");
 
                     b.Property<string>("Status")
@@ -570,6 +572,8 @@ namespace DormyWebService.Migrations
                     b.Property<int>("TargetRoomType");
 
                     b.HasKey("RoomBookingRequestFormId");
+
+                    b.HasIndex("RoomId");
 
                     b.HasIndex("StaffId");
 
@@ -758,6 +762,10 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.RoomBookingRequestForm", b =>
                 {
+                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
                     b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
                         .WithMany()
                         .HasForeignKey("StaffId");

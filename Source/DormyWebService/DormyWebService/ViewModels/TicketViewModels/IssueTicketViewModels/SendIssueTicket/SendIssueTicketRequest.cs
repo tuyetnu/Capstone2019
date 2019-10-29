@@ -17,6 +17,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Send
 
         public int TargetStudentId { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         public string ImageUrl { get; set; }
@@ -47,6 +48,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Send
                 //Set Status to pending
                 Status = IssueStatus.Pending,
                 Type = request.Type,
+                TargetStudentId = targetStudentId
             };
         }
     }

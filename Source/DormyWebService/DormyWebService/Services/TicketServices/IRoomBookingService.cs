@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 
@@ -18,10 +19,12 @@ namespace DormyWebService.Services.TicketServices
 
         Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request);
 
-        Task<List<GetRoomBookingResponse>> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize);
+        Task<AdvancedGetRoomBookingResponse> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize);
 
         Task<bool> DeleteRoomBooking(int id);
 
         Task<bool> StudentHasRoomRequestWithStatus(int studentId, List<string> statuses);
+
+        Task<GetRoomBookingDetailResponse> GetRoomBookingDetail(int id);
     }
 }

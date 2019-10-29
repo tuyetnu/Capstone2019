@@ -185,6 +185,13 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.GetRoomBookingDetail(System.Int32)">
+            <summary>
+            Get a room booking request's detail, for authorized user
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.RoomBookingsController.SendRoomBooking(DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking.SendRoomBookingRequest)">
             <summary>
             send room booking request for student

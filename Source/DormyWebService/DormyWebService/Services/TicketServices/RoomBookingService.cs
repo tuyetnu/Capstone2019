@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ContractEntities;
+using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
@@ -14,6 +15,7 @@ using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Sieve.Models;
@@ -193,7 +195,7 @@ namespace DormyWebService.Services.TicketServices
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
         }
 
-        public async Task<List<GetRoomBookingResponse>> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize)
+        public async Task<AdvancedGetRoomBookingResponse> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize)
         {
             //Build model for SieveProcessor
             var sieveModel = new SieveModel()
@@ -213,18 +215,56 @@ namespace DormyWebService.Services.TicketServices
             }
 
             var resultResponses = new List<GetRoomBookingResponse>();
+
             foreach (var form in roomBookings)
             {
                 var student = await _repoWrapper.Student.FindByIdAsync(form.StudentId);
                 var roomType = await _repoWrapper.Param.FindByIdAsync(form.TargetRoomType);
-                resultResponses.Add(GetRoomBookingResponse.ResponseFromEntity(form, student, roomType));
+
+                Room room = null;
+
+                if (form.RoomId != null)
+                {
+                    room = await _repoWrapper.Room.FindByIdAsync(form.RoomId.Value);
+                }
+                
+                resultResponses.Add(GetRoomBookingResponse.ResponseFromEntity(form, student, roomType, room));
             }
 
-            //Apply filter, sort, pagination
-            var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable()).ToList();
+            //Apply filter, sort
+            var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable(), applyPagination: false).ToList();
+
+            var response = new AdvancedGetRoomBookingResponse
+            {
+                CurrentPage = page ?? 1,
+                TotalPage = (int) Math.Ceiling((double) result.Count / pageSize ?? 1),
+                //Apply pagination
+                ResultList = _sieveProcessor
+                    .Apply(sieveModel, result.AsQueryable(), applyFiltering: false, applySorting: false).ToList()
+            };
 
             //Return List of result
-            return result; 
+            return response; 
+        }
+
+        public async Task<GetRoomBookingDetailResponse> GetRoomBookingDetail(int id)
+        {
+            var roomBooking = await FindById(id);
+
+            var student = await _studentService.FindById(roomBooking.StudentId);
+
+            var priorityType = await _paramService.FindById(student.PriorityType);
+
+            var roomType = await _paramService.FindById(roomBooking.TargetRoomType);
+
+            Room room = null;
+
+            if (roomBooking.RoomId != null)
+            {
+                room = await _repoWrapper.Room.FindByIdAsync(roomBooking.RoomId.Value);
+            }
+
+            return GetRoomBookingDetailResponse.ResponseFromEntity(roomBooking, student, roomType, priorityType, room);
         }
 
         public async Task<bool> DeleteRoomBooking(int id)

@@ -64,5 +64,10 @@ namespace DormyWebService.Entities.TicketEntities
 
         [Required]
         public string PriorityImageUrl { get; set; }
+
+        [ForeignKey("Room")]
+        public int? RoomId { get; set; }
+
+        public Room Room { get; set; }
     }
 }

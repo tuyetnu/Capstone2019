@@ -177,11 +177,9 @@ namespace DormyWebService.Services.RoomServices
             var unArrangedStudents = new List<Student>();
             var arrangedRooms = new List<Room>();
 
-            var k = 0;
             //Go through every requests
             for (var i = 0; i < requests.Count; i++)
             {
-                k++;
                 //Get the student from database
                 var student = await _repoWrapper.Student.FindByIdAsync(requests[i].StudentId);
 
@@ -210,6 +208,11 @@ namespace DormyWebService.Services.RoomServices
                             currentRoom.CurrentNumberOfStudent++;
                             //add student to arrangedStudentList to save to database 
                             arrangedStudents.Add(student);
+                            //add room Id into request;
+                            requests[i].RoomId = currentRoom.RoomId;
+                            //Pend request update
+                            await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(requests[i],
+                                requests[i].RoomBookingRequestFormId);
                             //Add arranged student to list of pending database update
                             await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
                             //If room is full after adding the student
@@ -234,7 +237,7 @@ namespace DormyWebService.Services.RoomServices
                 }
             }
 
-            //Save all students
+            //Save all students, rooms and requests at once, roll back everything if something went wrong
             await _repoWrapper.Save();
 
             //If save is successful, preparing response message
