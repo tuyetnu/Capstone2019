@@ -10,6 +10,11 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment
     {
         [Required]
         public int EquipmentId { get; set; }
+
+        [Required]
+        public int EquipmentTypeId { get; set; }
+
+        [Required]
         public string Code { get; set; }
 
         [RegularExpression(@"^[0-9]*$", ErrorMessage = "Room Id must be a number")]
@@ -31,6 +36,7 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment
             equipment.Price = request.Price;
             equipment.Room = room;
             equipment.Status = request.Status;
+            equipment.EquipmentTypeId = request.EquipmentTypeId;
             return equipment;
         }
     }

@@ -61,13 +61,20 @@ namespace DormyWebService.Services.EquipmentServices
                 var room = await _room.FindById(requestModel.RoomId.Value);
             }
 
+            //Check if equipment type is valid
+            var equipmentType = await _param.FindById(requestModel.EquipmentTypeId);
+            if (equipmentType.ParamTypeId != GlobalParams.ParamTypeEquipmentType)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "EquipmentService: EquipmentType is not Valid");
+            }
+
             var equipment = await _repoWrapper.Equipment.CreateAsync(
                 CreateEquipmentRequest.NewEquipmentFromRequest(requestModel));
 
             return CreateEquipmentResponse.CreateFromEquipment(equipment);
         }
 
-        public async Task<UpdateEquipmentResponse> UpdateEquipment(UpdateEquipmentRequest requestModel)
+        public async Task<bool> UpdateEquipment(UpdateEquipmentRequest requestModel)
         {
             Room room = null;
 
@@ -85,7 +92,7 @@ namespace DormyWebService.Services.EquipmentServices
 
             equipment = await _repoWrapper.Equipment.UpdateAsync(equipment, equipment.EquipmentId);
 
-            return UpdateEquipmentResponse.CreateFromEquipment(equipment, room);
+            return true;
         }
 
         public async Task<List<GetEquipmentResponse>> GetEquipmentOfStudent(int studentId)
@@ -112,7 +119,7 @@ namespace DormyWebService.Services.EquipmentServices
             return equipments.Select(equipment => _mapper.Map<GetEquipmentResponse>(equipment)).ToList();
         }
 
-        public async Task<List<GetEquipmentResponse>> AdvancedGetEquipments(string sorts, string filters, int? page, int? pageSize)
+        public async Task<AdvancedGetEquipmentResponse> AdvancedGetEquipments(string sorts, string filters, int? page, int? pageSize)
         {
             var sieveModel = new SieveModel()
             {
@@ -122,15 +129,43 @@ namespace DormyWebService.Services.EquipmentServices
                 Filters = filters
             };
 
-            var equipment = await _repoWrapper.Equipment.FindAllAsync();
+            var equipments = await _repoWrapper.Equipment.FindAllAsync();
 
-            if (equipment == null || equipment.Any() == false)
+            if (equipments == null || equipments.Any() == false)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: No equipment is found");
             }
 
-            var result = _sieveProcessor.Apply(sieveModel, equipment.AsQueryable()).ToList();
-            return result.Select(e=>_mapper.Map<GetEquipmentResponse>(e)).ToList();
+            var resultResponses = new List<GetEquipmentResponse>();
+
+            foreach (var equipment in equipments)
+            {
+                var equipmentType = await _repoWrapper.Param.FindByIdAsync(equipment.EquipmentTypeId);
+
+                Room room = null;
+
+                if (equipment.RoomId != null)
+                {
+                    room = await _repoWrapper.Room.FindByIdAsync(equipment.RoomId.Value);
+                }
+
+                resultResponses.Add(GetEquipmentResponse.ResponseFromEntity(equipment, equipmentType, room));
+            }
+
+            //Apply filter, sort
+            var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable(), applyPagination: false).ToList();
+
+            var response = new AdvancedGetEquipmentResponse()
+            {
+                CurrentPage = page ?? 1,
+                TotalPage = (int)Math.Ceiling((double)result.Count / pageSize ?? 1),
+                //Apply pagination
+                ResultList = _sieveProcessor
+                    .Apply(sieveModel, result.AsQueryable(), applyFiltering: false, applySorting: false).ToList()
+            };
+
+            //Return List of result
+            return response;
         }
     }
 }

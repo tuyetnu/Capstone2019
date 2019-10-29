@@ -49,6 +49,13 @@ namespace DormyWebService.Controllers
             return await _paramService.FindAllByParamType(paramTypeId);
         }
 
+        [Authorize]
+        [HttpGet("GetAllIssueType")]
+        public async Task<ActionResult<List<ParamModelView>>> GetAllIssueType()
+        {
+            return await _paramService.FindAllByParamType(GlobalParams.ParamTypeIssueType);
+        }
+
         /// <summary>
         /// Find a param by id
         /// </summary>

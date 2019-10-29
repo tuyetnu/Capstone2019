@@ -46,9 +46,9 @@ namespace DormyWebService.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("AdvancedGet")]
-        public async Task<ActionResult<List<GetEquipmentResponse>>> AdvancedGetEquipment(string sorts, string filters, int? page, int? pageSize)
+        public async Task<ActionResult<AdvancedGetEquipmentResponse>> AdvancedGetEquipment(string sorts, string filters, int? page, int? pageSize)
         {
             return await _equipmentService.AdvancedGetEquipments(sorts,filters,page,pageSize);
         }
@@ -85,7 +85,7 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Admin)]
         [HttpPut]
-        public async Task<ActionResult<UpdateEquipmentResponse>> UpdateEquipment(UpdateEquipmentRequest request)
+        public async Task<ActionResult<bool>> UpdateEquipment(UpdateEquipmentRequest request)
         {
             if (!ModelState.IsValid)
             {

@@ -16,13 +16,14 @@ namespace DormyWebService.Services.TicketServices
     {
         Task<IssueTicket> FindById(int id);
         Task<GetIssueTicketDetailResponse> GetIssueTicketDetail(int id);
-
+        Task<List<GetIssueTicketResponse>> GetByStudent(int id);
+        Task<List<GetIssueTicketResponse>> AdvancedGetIssueTicket(string sorts, string filters, int? page,
+            int? pageSize);
         Task<SendIssueTicketResponse> SendTicket(SendIssueTicketRequest request);
 
         Task<bool> EditIssueTicket(EditIssueTicketRequest request);
 
-        Task<List<GetIssueTicketResponse>> AdvancedGetIssueTicket(string sorts, string filters, int? page,
-            int? pageSize);
+        
 
         Task<ChangeIssueTicketStatusResponse> ChangeIssueTicketStatus(ChangeIssueTicketStatusRequest request);
     }

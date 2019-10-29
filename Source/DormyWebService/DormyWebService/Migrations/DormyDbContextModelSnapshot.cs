@@ -160,9 +160,12 @@ namespace DormyWebService.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("EquipmentTypeId");
 
                     b.Property<string>("ImageUrl");
 
@@ -441,6 +444,19 @@ namespace DormyWebService.Migrations
                     b.HasKey("RoomId");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomTypes_EquipmentTypes", b =>
+                {
+                    b.Property<int>("EquipmentTypeId");
+
+                    b.Property<int>("RoomTypeId");
+
+                    b.Property<int>("Amount");
+
+                    b.HasKey("EquipmentTypeId", "RoomTypeId");
+
+                    b.ToTable("RoomTypesEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>

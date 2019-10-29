@@ -33,12 +33,24 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBookin
 
         public static RoomBookingRequestForm UpdateFromRequest(RoomBookingRequestForm roomBooking, EditRoomBookingRequest request)
         {
-            roomBooking.LastUpdated = DateTime.Now.AddHours(7);
+            roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
             roomBooking.Month = request.Month;
             roomBooking.TargetRoomType = request.TargetRoomType;
-            roomBooking.IdentityCardImageUrl = request.IdentityCardImageUrl;
-            roomBooking.PriorityImageUrl = request.PriorityImageUrl;
-            roomBooking.StudentCardImageUrl = request.StudentCardImageUrl;
+            //If Image is request is null don't change
+            if (request.IdentityCardImageUrl != null)
+            {
+                roomBooking.IdentityCardImageUrl = request.IdentityCardImageUrl;
+            }
+            //If Image is request is null don't change
+            if (request.PriorityImageUrl != null)
+            {
+                roomBooking.PriorityImageUrl = request.PriorityImageUrl;
+            }
+            //If Image is request is null don't change
+            if (request.StudentCardImageUrl != null)
+            {
+                roomBooking.StudentCardImageUrl = request.StudentCardImageUrl;
+            }
             roomBooking.PriorityType = request.PriorityType;
 
             return roomBooking;

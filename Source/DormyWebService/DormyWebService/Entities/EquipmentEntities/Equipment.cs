@@ -12,9 +12,14 @@ namespace DormyWebService.Entities.EquipmentEntities
         [Sieve(CanFilter = true, CanSort = true)]
         public int EquipmentId { get; set; }
 
+        [Required]
         [MaxLength(50)]
         [Sieve(CanFilter = true, CanSort = true)]
         public string Code { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public int EquipmentTypeId { get; set; }
 
         [ForeignKey("Room")]
         [Sieve(CanFilter = true, CanSort = true)]

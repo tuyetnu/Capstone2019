@@ -11,9 +11,9 @@ namespace DormyWebService.Services.EquipmentServices
     {
         Task<Equipment> FindById(int id);
         Task<CreateEquipmentResponse> CreateEquipment(CreateEquipmentRequest requestModel);
-        Task<UpdateEquipmentResponse> UpdateEquipment(UpdateEquipmentRequest requestModel);
+        Task<bool> UpdateEquipment(UpdateEquipmentRequest requestModel);
         Task<List<GetEquipmentResponse>> GetEquipmentOfStudent(int studentId);
 
-        Task<List<GetEquipmentResponse>> AdvancedGetEquipments(string sorts, string filters, int? page, int? pageSize);
+        Task<AdvancedGetEquipmentResponse> AdvancedGetEquipments(string sorts, string filters, int? page, int? pageSize);
     }
 }

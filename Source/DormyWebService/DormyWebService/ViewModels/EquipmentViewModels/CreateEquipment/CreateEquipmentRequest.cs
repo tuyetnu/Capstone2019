@@ -2,11 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
 {
     public class CreateEquipmentRequest
     {
+        [Required]
         public string Code { get; set; }
         public int? RoomId { get; set; }
         public string ImageUrl { get; set; }
@@ -14,6 +16,8 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
         public string Status { get; set; }
         [Required]
         public decimal Price { get; set; }
+        [Required]
+        public int EquipmentTypeId { get; set; }
 
         public static Equipment NewEquipmentFromRequest(CreateEquipmentRequest request)
         {
@@ -21,11 +25,12 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
             {
                 Code = request.Code,
                 Status = request.Status,
-                CreatedDate = DateTime.Now.AddHours(7),
-                LastUpdated = DateTime.Now.AddHours(7),
+                CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 ImageUrl = request.ImageUrl,
                 Price = request.Price,
-                RoomId = request.RoomId
+                RoomId = request.RoomId,
+                EquipmentTypeId = request.EquipmentTypeId
             };
 
             return result;

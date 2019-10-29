@@ -31,7 +31,11 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Edit
             issueTicket.LastUpdated = DateTime.Now.AddHours(7);
             issueTicket.TargetStudentId = request.TargetStudentId < 0 ? (int?)null : request.TargetStudentId;
             issueTicket.Description = request.Description;
-            issueTicket.ImageUrl = request.ImageUrl;
+            //If image in request is null, don't change
+            if (request.ImageUrl != null)
+            {
+                issueTicket.ImageUrl = request.ImageUrl;
+            }
 
             return issueTicket;
         }

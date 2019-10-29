@@ -70,6 +70,20 @@ namespace DormyWebService.Services.TicketServices
             return GetIssueTicketDetailResponse.ResponseFromEntity(issueTicket, owner,targetStudent, type);
         }
 
+        public async Task<List<GetIssueTicketResponse>> GetByStudent(int id)
+        {
+            var student = await _studentService.FindById(id);
+
+            var issueTickets = await _repoWrapper.IssueTicket.FindAllAsyncWithCondition(i => i.OwnerId == id);
+
+            if (issueTickets == null || !issueTickets.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: IssueTicket is not found.");
+            }
+
+            return issueTickets.Select(GetIssueTicketResponse.ResponseFromEntity).ToList();
+        }
+
         public async Task<SendIssueTicketResponse> SendTicket(SendIssueTicketRequest request)
         {
             //Check if student exists

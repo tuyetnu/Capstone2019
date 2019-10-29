@@ -39,6 +39,13 @@ namespace DormyWebService.Controllers
             return await _issueTicketService.GetIssueTicketDetail(id);
         }
 
+        [Authorize]
+        [HttpGet("GetByStudent/{id}")]
+        public async Task<ActionResult<List<GetIssueTicketResponse>>> GetByStudent(int id)
+        {
+            return await _issueTicketService.GetByStudent(id);
+        }
+
         /// <summary>
         /// Find IssueTickets with condition for staff and admin
         /// </summary>
