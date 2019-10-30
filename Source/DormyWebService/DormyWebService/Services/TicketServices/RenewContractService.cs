@@ -53,7 +53,7 @@ namespace DormyWebService.Services.TicketServices
 
             //Check student's evaluation point is enough
             var contractRenewalEvaluationScoreMargin = (await 
-                _paramService.FindById(GlobalParams.ParamContractRenewalEvaluationScoreMargin))?.Value ?? GlobalParams.DefaultContractRenewalEvaluationPointMargin;
+                _paramService.FindById(GlobalParams.ParamContractRenewalEvaluationPointMargin))?.Value ?? GlobalParams.DefaultContractRenewalEvaluationPointMargin;
 
             if (student.EvaluationScore < contractRenewalEvaluationScoreMargin)
             {

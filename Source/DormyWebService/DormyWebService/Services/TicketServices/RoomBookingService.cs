@@ -154,7 +154,7 @@ namespace DormyWebService.Services.TicketServices
             roomBooking = _mapper.Map(request, roomBooking);
 
             //Update Last Updated Date
-            roomBooking.LastUpdated = DateTime.Now.AddHours(7);
+            roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
 
             //Update to database
             roomBooking =
@@ -253,7 +253,7 @@ namespace DormyWebService.Services.TicketServices
 
             var student = await _studentService.FindById(roomBooking.StudentId);
 
-            var priorityType = await _paramService.FindById(student.PriorityType);
+            var priorityType = await _paramService.FindById(roomBooking.PriorityType);
 
             var roomType = await _paramService.FindById(roomBooking.TargetRoomType);
 

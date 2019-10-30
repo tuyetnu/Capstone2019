@@ -22,7 +22,8 @@
         public const int ParamStandardRoomType = 11;
         public const int ParamServiceRoomType = 12;
         public const int ParamDefaultEvaluationPoint = 19;
-        public const int ParamContractRenewalEvaluationScoreMargin = 20;
+        public const int ParamContractRenewalEvaluationPointMargin = 20;
+        public const int ParamMaxYearForStaying = 24;
 
         //DepositMoney Param
         public const int ParamTransactionTypeDepositMoney = 13;

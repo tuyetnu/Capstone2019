@@ -54,7 +54,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Authorize]
+//        [Authorize]
         [HttpGet("GetDetail/{id}")]
         public async Task<ActionResult<GetRoomBookingDetailResponse>> GetRoomBookingDetail(int id)
         {

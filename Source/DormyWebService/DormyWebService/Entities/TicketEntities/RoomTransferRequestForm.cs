@@ -39,9 +39,7 @@ namespace DormyWebService.Entities.TicketEntities
         public Staff Staff { get; set; }
 
         [Required]
-        [ForeignKey("TargetRoom")]
-        public int TargetRoomId { get; set; }
-        public Room TargetRoom { get; set; }
+        public int TargetRoomType { get; set; }
 
         //Param
         [Required]

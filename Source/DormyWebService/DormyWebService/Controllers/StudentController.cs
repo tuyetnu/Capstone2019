@@ -7,6 +7,7 @@ using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
+using DormyWebService.ViewModels.UserModelViews.CheckStudentForRenewContract;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
 using DormyWebService.ViewModels.UserModelViews.ImportStudent;
@@ -61,6 +62,19 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<GetStudentProfileResponse>> GetProfile(int id)
         {
             return await _studentService.GetProfile(id);
+        }
+
+        /// <summary>
+        /// Check if student can Renew Contract, for authorized users
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("CheckStudentForRenewContract/{id}")]
+        public async Task<ActionResult<CheckStudentForRenewContractResponse>>
+            CheckStudentForRenewContractResponse(int id)
+        {
+            return await _studentService.CheckStudentForRenewContract(id);
         }
 
         /// <summary>

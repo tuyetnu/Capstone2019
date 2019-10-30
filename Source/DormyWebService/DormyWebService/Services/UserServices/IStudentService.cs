@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
+using DormyWebService.ViewModels.UserModelViews.CheckStudentForRenewContract;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
 using DormyWebService.ViewModels.UserModelViews.ImportStudent;
@@ -14,6 +15,7 @@ namespace DormyWebService.Services.UserServices
     {
         Task<List<GetAllStudentResponse>> GetAllStudent();
         Task<List<GetAllStudentResponse>> AdvancedGetStudent(string sorts, string filters, int? page, int? pageSize);
+        Task<CheckStudentForRenewContractResponse> CheckStudentForRenewContract(int id);
         Task<Student> FindById(int id);
         Task<GetStudentProfileResponse> GetProfile(int id);
         Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel);

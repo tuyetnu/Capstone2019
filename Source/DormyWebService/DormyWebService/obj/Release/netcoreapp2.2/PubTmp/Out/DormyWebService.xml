@@ -303,6 +303,13 @@
             <param name="id">Student's id</param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.StudentController.CheckStudentForRenewContractResponse(System.Int32)">
+            <summary>
+            Check if student can Renew Contract, for authorized users
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.StudentController.UpdateStudent(System.Collections.Generic.List{DormyWebService.ViewModels.UserModelViews.ImportStudent.ImportStudentRequest})">
             <summary>
             Import List of Student, for admin

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ContractEntities;
+using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
@@ -50,16 +51,19 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<SendRoomTransferRespone> SendRequest(SendRoomTransferRequest request)
         {
-            //Check if room exist
-            var room = await _repoWrapper.Room.FindByIdAsync(request.RoomId);
+            var roomTypes = await _paramService.FindAllByParamType(GlobalParams.ParamTypeRoomType);
 
-            if (room == null)
+            if (!roomTypes.Exists(t=>t.ParamId == request.TargetRoomType))
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Room not found");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Room Type is not found");
             }
 
             //Find student in database
-            await _studentService.FindById(request.StudentId);
+            var student = await _studentService.FindById(request.StudentId);
+            if (student.RoomId == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Student doesn't have any room'");
+            }
 
             //Check if there's active room transfer request
             var transfers = (List<RoomTransferRequestForm>)

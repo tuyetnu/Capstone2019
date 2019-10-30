@@ -11,6 +11,7 @@ using DormyWebService.Services.ParamServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
+using DormyWebService.ViewModels.UserModelViews.CheckStudentForRenewContract;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
 using DormyWebService.ViewModels.UserModelViews.ImportStudent;
@@ -76,6 +77,27 @@ namespace DormyWebService.Services.UserServices
             var sortedStudents = _sieveProcessor.Apply(sieveModel, students.AsQueryable()).ToList();
 
             return sortedStudents.Select(student => _mapper.Map<GetAllStudentResponse>(student)).ToList();
+        }
+
+        public async Task<CheckStudentForRenewContractResponse> CheckStudentForRenewContract(int id)
+        {
+            var student = await FindById(id);
+
+            var contractRenewalEvaluationScoreMargin = await 
+                _paramService.FindById(GlobalParams.ParamContractRenewalEvaluationPointMargin);
+
+            var maxYearForStaying = await
+                _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
+            
+            var startDate = new DateTime(student.StartedSchoolYear,9,1 );
+            var maxYear = startDate.AddYears(5);
+            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+
+            return new CheckStudentForRenewContractResponse()
+            {
+                HasInValidTrainingPoint = student.EvaluationScore < contractRenewalEvaluationScoreMargin.Value,
+                HasStayedMoreThanPermittedYear = now > maxYear
+            };
         }
 
         public async Task<Student> FindById(int id)
