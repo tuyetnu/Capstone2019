@@ -50,9 +50,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetI
                 CreatedDate = issueTicket.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = issueTicket.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
                 EquipmentId = equipment?.EquipmentId ?? -1,
-                EquipmentCode = equipment?.Code,
+                EquipmentCode = equipment?.Code ?? "null",
                 EquipmentType = equipmentType?.ParamId ?? -1,
-                EquipmentTypeName = equipmentType?.Name,
+                EquipmentTypeName = equipmentType?.Name ?? "null",
                 Description = issueTicket.Description,
                 OwnerId = issueTicket.OwnerId,
                 OwnerName = owner.Name,
@@ -62,7 +62,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetI
                 TypeName = type.Name,
                 IssueTicketId = issueTicket.IssueTicketId,
                 RoomId = equipment?.RoomId ?? -1,
-                RoomName = room?.Name
+                RoomName = room?.Name ?? "null"
             };
         }
     }
