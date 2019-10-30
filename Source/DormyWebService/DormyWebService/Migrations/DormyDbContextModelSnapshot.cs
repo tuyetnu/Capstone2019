@@ -436,6 +436,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<decimal>("Price");
 
+                    b.Property<int?>("RoomGroupId");
+
                     b.Property<string>("RoomStatus")
                         .IsRequired();
 
@@ -443,10 +445,63 @@ namespace DormyWebService.Migrations
 
                     b.HasKey("RoomId");
 
+                    b.HasIndex("RoomGroupId");
+
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomTypes_EquipmentTypes", b =>
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomDivision", b =>
+                {
+                    b.Property<int>("RoomDivisionId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("RoomGroupNumber");
+
+                    b.Property<int>("RoomNumber");
+
+                    b.HasKey("RoomDivisionId");
+
+                    b.ToTable("RoomDivisions");
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomGroup", b =>
+                {
+                    b.Property<int>("RoomGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<int>("RoomDivisionId");
+
+                    b.Property<int>("RoomNumber");
+
+                    b.HasKey("RoomGroupId");
+
+                    b.HasIndex("RoomDivisionId");
+
+                    b.ToTable("RoomGroups");
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomGroupsAndStaff", b =>
+                {
+                    b.Property<int>("RoomGroupId");
+
+                    b.Property<int>("StaffId");
+
+                    b.HasKey("RoomGroupId", "StaffId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("RoomGroupsAndStaff");
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomTypesAndEquipmentTypes", b =>
                 {
                     b.Property<int>("EquipmentTypeId");
 
@@ -456,7 +511,7 @@ namespace DormyWebService.Migrations
 
                     b.HasKey("EquipmentTypeId", "RoomTypeId");
 
-                    b.ToTable("RoomTypesEquipmentTypes");
+                    b.ToTable("RoomTypesAndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
@@ -736,6 +791,34 @@ namespace DormyWebService.Migrations
                     b.HasOne("DormyWebService.Entities.ParamEntities.ParamType", "ParamType")
                         .WithMany()
                         .HasForeignKey("ParamTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.Room", b =>
+                {
+                    b.HasOne("DormyWebService.Entities.RoomEntities.RoomGroup", "RoomGroup")
+                        .WithMany()
+                        .HasForeignKey("RoomGroupId");
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomGroup", b =>
+                {
+                    b.HasOne("DormyWebService.Entities.RoomEntities.RoomDivision", "RoomDivision")
+                        .WithMany()
+                        .HasForeignKey("RoomDivisionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomGroupsAndStaff", b =>
+                {
+                    b.HasOne("DormyWebService.Entities.RoomEntities.RoomGroup", "RoomGroup")
+                        .WithMany()
+                        .HasForeignKey("RoomGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

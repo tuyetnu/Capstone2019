@@ -53,12 +53,26 @@ namespace DormyWebService.Services.ParamServices
                 (List<Param>) await _repoWrapper.Param.FindAllAsyncWithCondition(param =>
                     param.ParamTypeId == paramTypeId);
 
-            if (!paramList.Any())
+            if (!paramList.Any() || paramList == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "There are no param type in database");
             }
 
             return paramList.Select(param => _mapper.Map<ParamModelView>(param)).ToList();
+        }
+
+        public async Task<List<Param>> FindAllParamEntitiesByParamType(int paramTypeId)
+        {
+            var paramList =
+                (List<Param>)await _repoWrapper.Param.FindAllAsyncWithCondition(param =>
+                    param.ParamTypeId == paramTypeId);
+
+            if (!paramList.Any() || paramList == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ParamThere are no param type in database");
+            }
+
+            return paramList;
         }
 
         public async Task<List<Param>> FindAllByParamTypeWithoutWarning(int paramTypeId)

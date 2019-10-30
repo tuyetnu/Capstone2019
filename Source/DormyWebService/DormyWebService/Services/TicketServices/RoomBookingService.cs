@@ -69,7 +69,7 @@ namespace DormyWebService.Services.TicketServices
             var student = await _studentService.FindById(request.StudentId);
 
             //Forbid if student already has a room
-            if (student != null)
+            if (student.RoomId != null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: Student already has a room");
             }

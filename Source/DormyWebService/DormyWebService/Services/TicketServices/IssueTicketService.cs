@@ -173,10 +173,11 @@ namespace DormyWebService.Services.TicketServices
             }
 
             var resultResponses = new List<GetIssueTicketResponse>();
+            var types =await _paramService.FindAllParamEntitiesByParamType(GlobalParams.ParamTypeIssueType);
 
             foreach (var issueTicket in issueTickets)
             {
-                var type = await _repoWrapper.Param.FindByIdAsync(issueTicket.Type);
+                var type = types.Find(t => t.ParamId == issueTicket.Type);
 
                 var owner = await _repoWrapper.Student.FindByIdAsync(issueTicket.OwnerId);
 

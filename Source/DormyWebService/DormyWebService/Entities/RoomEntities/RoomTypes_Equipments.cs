@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DormyWebService.Entities.RoomEntities
 {
-    public class RoomTypes_EquipmentTypes
+    public class RoomTypesAndEquipmentTypes
     {
         [Key]
         public int RoomTypeId { get; set; }

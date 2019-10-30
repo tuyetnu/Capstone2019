@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.MoneyEntities;
@@ -13,6 +14,11 @@ namespace DormyWebService.Entities.RoomEntities
         [Key]
         [Sieve(CanFilter = true, CanSort = true)]
         public int RoomId { get; set; }
+
+        [ForeignKey("RoomGroup")]
+        public int? RoomGroupId { get; set; }
+
+        public RoomGroup RoomGroup {get;set; }
 
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]

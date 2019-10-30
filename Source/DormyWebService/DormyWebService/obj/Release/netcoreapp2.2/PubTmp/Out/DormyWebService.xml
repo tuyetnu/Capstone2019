@@ -4,6 +4,16 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.ContractRenewalController.AdvancedGetRenewContract(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get ContractRenewalForms with conditions, for staff and admin
+            </summary>
+            <param name="sorts"></param>
+            <param name="filters"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.ContractRenewalController.SendRenewContract(DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest.SendRenewContractRequestRequest)">
             <summary>
             Send contract renewal request, for student
