@@ -245,7 +245,7 @@ namespace DormyWebService.Services.UserServices
             //Check if there are duplicate email in request
             foreach (var student in requestModel)
             {
-                if (requestModel.Exists(s => s.Email == student.Email))
+                if (requestModel.FindAll(s => s.Email == student.Email).Count >= 2)
                 {
                     throw new HttpStatusCodeException(HttpStatusCode.NotFound,
                         "StudentService: there are duplicate email of: " + student.Email);
