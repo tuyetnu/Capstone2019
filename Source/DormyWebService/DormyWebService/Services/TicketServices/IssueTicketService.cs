@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Entities.TicketEntities;
@@ -79,6 +80,8 @@ namespace DormyWebService.Services.TicketServices
 
             var issueTickets = await _repoWrapper.IssueTicket.FindAllAsyncWithCondition(i => i.OwnerId == id);
 
+            
+
             //Check if issue ticket is found
             if (issueTickets == null || !issueTickets.Any())
             {
@@ -94,7 +97,33 @@ namespace DormyWebService.Services.TicketServices
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: Types are not found.");
             }
 
-            return issueTickets.Select(issueTicket => GetIssueTicketResponse.ResponseFromEntity(issueTicket, student, issueTicketTypes.Find(t => t.ParamId == issueTicket.Type))).ToList();
+            var result = new List<GetIssueTicketResponse>();
+            var types = await _paramService.FindAllParamEntitiesByParamType(GlobalParams.ParamTypeIssueType);
+            foreach (var issueTicket in issueTickets)
+            {
+                var type = types.Find(t => t.ParamId == issueTicket.Type);
+
+                Equipment equipment = null;
+                if (issueTicket.EquipmentId != null)
+                {
+                    equipment = await _repoWrapper.Equipment.FindByIdAsync(issueTicket.EquipmentId.Value);
+                }
+                Param equipmentType = null;
+                Room room = null;
+                if (equipment != null)
+                {
+                    equipmentType = await _repoWrapper.Param.FindByIdAsync(equipment.EquipmentTypeId);
+
+                    if (equipment.RoomId != null)
+                    {
+                        room = await _repoWrapper.Room.FindByIdAsync(equipment.RoomId.Value);
+                    }
+                }
+
+                result.Add(GetIssueTicketResponse.ResponseFromEntity(issueTicket,student,type,equipment,equipmentType,room));
+            }
+
+            return result;
         }
 
         public async Task<SendIssueTicketResponse> SendTicket(SendIssueTicketRequest request)
@@ -181,7 +210,25 @@ namespace DormyWebService.Services.TicketServices
 
                 var owner = await _repoWrapper.Student.FindByIdAsync(issueTicket.OwnerId);
 
-                resultResponses.Add(GetIssueTicketResponse.ResponseFromEntity(issueTicket, owner, type));
+                Equipment equipment = null;
+                if (issueTicket.EquipmentId != null)
+                {
+                    equipment = await _repoWrapper.Equipment.FindByIdAsync(issueTicket.EquipmentId.Value);
+                }
+
+                Param equipmentType = null;
+                Room room = null;
+                if (equipment != null)
+                {
+                    equipmentType = await _repoWrapper.Param.FindByIdAsync(equipment.EquipmentTypeId);
+
+                    if (equipment.RoomId != null)
+                    {
+                        room = await _repoWrapper.Room.FindByIdAsync(equipment.RoomId.Value);
+                    }
+                }
+
+                resultResponses.Add(GetIssueTicketResponse.ResponseFromEntity(issueTicket, owner, type, equipment, equipmentType, room));
             }
 
             //Apply filter, sort
