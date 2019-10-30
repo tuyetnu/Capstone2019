@@ -18,7 +18,7 @@ namespace DormyWebService.Controllers
     [ApiController]
     public class ParamTypesController : ControllerBase
     {
-        private IParamTypeService _paramTypeService;
+        private readonly IParamTypeService _paramTypeService;
 
         public ParamTypesController(IParamTypeService paramTypeService)
         {
@@ -30,7 +30,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <remarks>authorization disabled for debug purposes</remarks>
         /// See how many Param Types there are, have to be logged in to see
-//        [Authorize(Roles = Role.Admin)]
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<ParamType>>> GetAllParamTypes()
         {
@@ -41,7 +41,7 @@ namespace DormyWebService.Controllers
         /// Find Param Type by Id, have to be logged in to see
         /// </summary>
         /// <remarks>authorization disabled for debug purposes</remarks>
-        /// //        [Authorize(Roles = Role.Admin)]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<ParamType>> FindById(int id)
         {

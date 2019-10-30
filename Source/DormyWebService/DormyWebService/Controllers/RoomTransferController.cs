@@ -26,7 +26,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-//        [Authorize(Roles = Role.Student)]
+        [Authorize(Roles = Role.Student)]
         [HttpPost]
         public async Task<ActionResult<SendRoomTransferRespone>> SendRoomTransfer(SendRoomTransferRequest request)
         {

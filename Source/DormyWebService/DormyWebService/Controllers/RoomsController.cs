@@ -29,13 +29,14 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
-        /// Get list of room with pagination and condition, Authorization is not determined yet
+        /// Get list of room with pagination and condition, for admin and staff
         /// </summary>
         /// <param name="sorts">Ex:"Name,Description,-CreatedDate" sort by Name, then Description, then descendingly by CreatedDate</param>
         /// <param name="filters">Ex:"Price>10, Name@=roomName" filter to room with price more than 10, and a name that contains roomName</param>
         /// <param name="page">Ex: 1 get the first page...</param>
         /// <param name="pageSize">Ex: 10 ...which contains 10 room</param>
         /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet]
         public async Task<ActionResult<List<Room>>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize)
         {

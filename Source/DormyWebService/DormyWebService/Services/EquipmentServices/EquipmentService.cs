@@ -69,7 +69,11 @@ namespace DormyWebService.Services.EquipmentServices
             }
 
             var equipment = await _repoWrapper.Equipment.CreateAsync(
-                CreateEquipmentRequest.NewEquipmentFromRequest(requestModel));
+                CreateEquipmentRequest.NewEquipmentFromRequest(requestModel, equipmentType.TextValue));
+
+            equipment.Code += equipment.EquipmentId;
+
+            equipment = await _repoWrapper.Equipment.UpdateAsync(equipment, equipment.EquipmentId);
 
             return CreateEquipmentResponse.CreateFromEquipment(equipment);
         }

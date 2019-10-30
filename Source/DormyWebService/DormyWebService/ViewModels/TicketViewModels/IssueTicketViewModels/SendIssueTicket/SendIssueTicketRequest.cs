@@ -15,7 +15,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Send
 
         public int EquipmentId { get; set; }
 
-        public int TargetStudentId { get; set; }
+//        public int TargetStudentId { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -25,17 +25,17 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Send
         public static IssueTicket EntityFromRequest(SendIssueTicketRequest request)
         {
             int? equipmentId = null;
-            int? targetStudentId = null;
+//            int? targetStudentId = null;
 
             if (request.EquipmentId >= 0)
             {
                 equipmentId = request.EquipmentId;
             }
 
-            if (request.TargetStudentId >= 0)
-            {
-                targetStudentId = request.TargetStudentId;
-            }
+//            if (request.TargetStudentId >= 0)
+//            {
+//                targetStudentId = request.TargetStudentId;
+//            }
 
             return new IssueTicket()
             {
@@ -48,7 +48,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Send
                 //Set Status to pending
                 Status = IssueStatus.Pending,
                 Type = request.Type,
-                TargetStudentId = targetStudentId
+//                TargetStudentId = targetStudentId
             };
         }
     }

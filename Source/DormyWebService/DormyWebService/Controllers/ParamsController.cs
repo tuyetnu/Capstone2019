@@ -42,7 +42,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="paramTypeId"></param>
         /// <returns></returns>
-        //TODO: Authorization
+        [Authorize]
         [HttpGet("GetAllByParamType/{paramTypeId}")]
         public async Task<ActionResult<List<ParamModelView>>> GetAllByParamType(int paramTypeId)
         {
@@ -62,7 +62,7 @@ namespace DormyWebService.Controllers
         /// <remarks>authorization disabled for debug purposes</remarks>
         /// <param name="id"></param>
         /// <returns></returns>
-        //TODO: Authorization
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Param>> FindById(int id)
         {
@@ -74,6 +74,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <remarks>authorization disabled for debug purposes</remarks>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("UserStatus")]
         public ActionResult<List<string>> GetUserStatus()
         {

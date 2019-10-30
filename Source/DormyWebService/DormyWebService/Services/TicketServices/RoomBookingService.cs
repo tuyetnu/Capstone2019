@@ -66,7 +66,13 @@ namespace DormyWebService.Services.TicketServices
             }
 
             //Find student in database
-            await _studentService.FindById(request.StudentId);
+            var student = await _studentService.FindById(request.StudentId);
+
+            //Forbid if student already has a room
+            if (student != null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: Student already has a room");
+            }
 
             //Check for active requests
             var bookings = (List<RoomBookingRequestForm>)
@@ -110,12 +116,6 @@ namespace DormyWebService.Services.TicketServices
             if (roomBooking.Status == RequestStatus.Approved || roomBooking.Status == RequestStatus.Complete)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: Can't not edit Approved and Completed Room Booking Requests'");
-            }
-
-            //Check if StudentId matches
-            if (roomBooking.StudentId != request.StudentId)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: this student is not permitted to change this request");
             }
 
             //Update data

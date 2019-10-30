@@ -17,7 +17,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Edit
 
         public int EquipmentId { get; set; }
 
-        public int TargetStudentId { get; set; }
+//        public int TargetStudentId { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -29,7 +29,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.Edit
             issueTicket.Type = request.Type;
             issueTicket.EquipmentId = request.EquipmentId < 0 ? (int?) null : request.EquipmentId;
             issueTicket.LastUpdated = DateTime.Now.AddHours(7);
-            issueTicket.TargetStudentId = request.TargetStudentId < 0 ? (int?)null : request.TargetStudentId;
+//            issueTicket.TargetStudentId = request.TargetStudentId < 0 ? (int?)null : request.TargetStudentId;
             issueTicket.Description = request.Description;
             //If image in request is null, don't change
             if (request.ImageUrl != null)

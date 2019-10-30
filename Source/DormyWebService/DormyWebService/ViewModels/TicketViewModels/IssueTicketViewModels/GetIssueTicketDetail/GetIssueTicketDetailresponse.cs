@@ -27,8 +27,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetI
         public string CreatedDate { get; set; }
         public string LastUpdated { get; set; }
 
-        public static GetIssueTicketDetailResponse ResponseFromEntity(IssueTicket issueTicket, Student owner,
-            Student targetStudent, Entities.ParamEntities.Param type)
+        public static GetIssueTicketDetailResponse ResponseFromEntity(IssueTicket issueTicket, Student owner, Entities.ParamEntities.Param type)
         {
             return new GetIssueTicketDetailResponse()
             {
@@ -47,9 +46,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.IssueTicketViewModels.GetI
                 OwnerEmail = owner.Email,
                 OwnerName = owner.Name,
 
-                TargetStudentId = targetStudent?.StudentId,
-                TargetStudentEmail = targetStudent?.Email,
-                TargetStudentName = targetStudent?.Name
+//                TargetStudentId = targetStudent?.StudentId,
+//                TargetStudentEmail = targetStudent?.Email,
+//                TargetStudentName = targetStudent?.Name
             };
         }
     }

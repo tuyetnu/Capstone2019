@@ -53,7 +53,7 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
         [EmailAddress]
         public string Email { get; set; }
 
-        public static Student NewStudentFromRequest(ImportStudentRequest request)
+        public static Student NewStudentFromRequest(ImportStudentRequest request, int evaluationPoint)
         {
             return new Student()
             {
@@ -66,7 +66,7 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
                 Gender = request.Gender,
                 PhoneNumber = request.PhoneNumber,
                 BirthDay = DateTime.ParseExact(request.BirthDay, GlobalParams.BirthDayFormat, CultureInfo.InvariantCulture),
-                EvaluationScore = 0,
+                EvaluationScore = evaluationPoint,
                 AccountBalance = 0,
                 User = new User()
                 {

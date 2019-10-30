@@ -161,7 +161,7 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(32);
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -496,19 +496,24 @@ namespace DormyWebService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("EndTime");
+                    b.Property<int>("ContractId");
+
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("Month");
 
                     b.Property<int?>("StaffId");
 
-                    b.Property<DateTime>("StartTime");
-
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired();
 
                     b.Property<int>("StudentId");
 
                     b.HasKey("ContractRenewalFormId");
+
+                    b.HasIndex("ContractId");
 
                     b.HasIndex("StaffId");
 
@@ -538,8 +543,6 @@ namespace DormyWebService.Migrations
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<int?>("TargetStudentId");
-
                     b.Property<int>("Type");
 
                     b.HasKey("IssueTicketId");
@@ -547,8 +550,6 @@ namespace DormyWebService.Migrations
                     b.HasIndex("EquipmentId");
 
                     b.HasIndex("OwnerId");
-
-                    b.HasIndex("TargetStudentId");
 
                     b.ToTable("IssueTickets");
                 });
@@ -752,6 +753,11 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.ContractRenewalForm", b =>
                 {
+                    b.HasOne("DormyWebService.Entities.ContractEntities.Contract", "Contract")
+                        .WithMany("ContractRenewalForms")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
                         .WithMany()
                         .HasForeignKey("StaffId");
@@ -772,10 +778,6 @@ namespace DormyWebService.Migrations
                         .WithMany()
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Student", "TargetStudent")
-                        .WithMany()
-                        .HasForeignKey("TargetStudentId");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.RoomBookingRequestForm", b =>

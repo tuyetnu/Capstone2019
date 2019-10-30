@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.TicketEntities;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DormyWebService.Entities.ContractEntities
@@ -33,5 +35,7 @@ namespace DormyWebService.Entities.ContractEntities
         [Required]
         public DateTime EndDate { get; set; }
 
+
+        public virtual ICollection<ContractRenewalForm> ContractRenewalForms { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Staff + "," + Role.Admin)]
         [HttpGet("AdvancedGet")]
-        public async Task<ActionResult<List<GetIssueTicketResponse>>> AdvancedGetRoomBooking(string sorts, string filters, int? page, int? pageSize)
+        public async Task<ActionResult<AdvancedGetIssueTicketResponse>> AdvancedGetIssueTicket(string sorts, string filters, int? page, int? pageSize)
         {
             return await _issueTicketService.AdvancedGetIssueTicket(sorts, filters, page, pageSize);
         }

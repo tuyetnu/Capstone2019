@@ -4,6 +4,13 @@
         <name>DormyWebService</name>
     </assembly>
     <members>
+        <member name="M:DormyWebService.Controllers.ContractRenewalController.SendRenewContract(DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest.SendRenewContractRequestRequest)">
+            <summary>
+            Send contract renewal request, for student
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.ContractsController.GetByStudentId(System.Int32)">
             <summary>
             Get Contract by StudentId, for authorized users
@@ -68,7 +75,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.IssueTicketsController.AdvancedGetRoomBooking(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:DormyWebService.Controllers.IssueTicketsController.AdvancedGetIssueTicket(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
             Find IssueTickets with condition for staff and admin
             </summary>
@@ -193,7 +200,6 @@
             Find Param Type by Id, have to be logged in to see
             </summary>
             <remarks>authorization disabled for debug purposes</remarks>
-            //        [Authorize(Roles = Role.Admin)]
         </member>
         <member name="M:DormyWebService.Controllers.RoomBookingsController.AdvancedGetRoomBooking(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
@@ -235,7 +241,7 @@
         </member>
         <member name="M:DormyWebService.Controllers.RoomsController.AdvancedGetRooms(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
-            Get list of room with pagination and condition, Authorization is not determined yet
+            Get list of room with pagination and condition, for admin and staff
             </summary>
             <param name="sorts">Ex:"Name,Description,-CreatedDate" sort by Name, then Description, then descendingly by CreatedDate</param>
             <param name="filters">Ex:"Price>10, Name@=roomName" filter to room with price more than 10, and a name that contains roomName</param>
@@ -261,6 +267,13 @@
             <summary>
             Arrange all students with approved room booking requests, for staff and admin
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomTransferController.SendRoomTransfer(DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer.SendRoomTransferRequest)">
+            <summary>
+            send room transfer request for student
+            </summary>
+            <param name="request"></param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.StudentController.AdvancedGetStudent(System.String,System.String,System.Nullable{System.Int32},System.Nullable{System.Int32})">

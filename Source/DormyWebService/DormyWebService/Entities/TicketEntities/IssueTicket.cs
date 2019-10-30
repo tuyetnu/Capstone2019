@@ -36,10 +36,10 @@ namespace DormyWebService.Entities.TicketEntities
         public int? EquipmentId { get; set; }
         public Equipment Equipment { get; set; }
 
-        [ForeignKey("TargetStudent")]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public int? TargetStudentId { get; set; }
-        public Student TargetStudent { get; set; }
+//        [ForeignKey("TargetStudent")]
+//        [Sieve(CanFilter = true, CanSort = true)]
+//        public int? TargetStudentId { get; set; }
+//        public Student TargetStudent { get; set; }
 
         public string Description { get; set; }
 

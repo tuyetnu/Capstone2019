@@ -15,10 +15,14 @@
         public const int ParamTypeDepositMoneyParam = 5;
         public const int ParamTypeIssueType = 6;
         public const int ParamTypeEquipmentType = 7;
+        public const int ParamTypeEvaluationParam = 8;
+        public const int ParamTypeContractParam = 9;
 
         //Room Type Param
         public const int ParamStandardRoomType = 11;
         public const int ParamServiceRoomType = 12;
+        public const int ParamDefaultEvaluationPoint = 19;
+        public const int ParamContractRenewalEvaluationScoreMargin = 20;
 
         //DepositMoney Param
         public const int ParamTransactionTypeDepositMoney = 13;
@@ -35,5 +39,12 @@
         public const int TimeZone = 7;
         public const string DateTimeResponseFormat = "dd/MM/yyyy HH:mm:ss";
         public const string BirthDayFormat = "dd/MM/yyyy";
+
+        //GUID Format, used for generating equipmentId
+        public const string GuidFormat = "N";
+
+        //Default Evaluation Point
+        public const int DefaultEvaluationPoint = 100;
+        public const int DefaultContractRenewalEvaluationPointMargin = 50;
     }
 }

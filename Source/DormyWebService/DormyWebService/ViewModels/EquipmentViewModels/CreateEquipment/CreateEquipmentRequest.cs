@@ -8,8 +8,6 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
 {
     public class CreateEquipmentRequest
     {
-        [Required]
-        public string Code { get; set; }
         public int? RoomId { get; set; }
         public string ImageUrl { get; set; }
         [Required]
@@ -19,11 +17,11 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment
         [Required]
         public int EquipmentTypeId { get; set; }
 
-        public static Equipment NewEquipmentFromRequest(CreateEquipmentRequest request)
+        public static Equipment NewEquipmentFromRequest(CreateEquipmentRequest request, string codePrefix)
         {
             var result = new Equipment()
             {
-                Code = request.Code,
+                Code = codePrefix,
                 Status = request.Status,
                 CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),

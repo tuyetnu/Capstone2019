@@ -17,7 +17,7 @@ namespace DormyWebService.Services.TicketServices
         Task<IssueTicket> FindById(int id);
         Task<GetIssueTicketDetailResponse> GetIssueTicketDetail(int id);
         Task<List<GetIssueTicketResponse>> GetByStudent(int id);
-        Task<List<GetIssueTicketResponse>> AdvancedGetIssueTicket(string sorts, string filters, int? page,
+        Task<AdvancedGetIssueTicketResponse> AdvancedGetIssueTicket(string sorts, string filters, int? page,
             int? pageSize);
         Task<SendIssueTicketResponse> SendTicket(SendIssueTicketRequest request);
 

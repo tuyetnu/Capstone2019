@@ -47,8 +47,8 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.GetEquipment
             return new GetEquipmentResponse()
             {
                 Status = equipment.Status,
-                RoomId = room?.RoomId,
-                RoomName = room?.Name,
+                RoomId = room?.RoomId ?? -1,
+                RoomName = room?.Name ?? "null",
                 CreatedDate = equipment.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = equipment.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
                 EquipmentId = equipment.EquipmentId,

@@ -13,7 +13,7 @@ namespace DormyWebService.Entities.EquipmentEntities
         public int EquipmentId { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(32)]
         [Sieve(CanFilter = true, CanSort = true)]
         public string Code { get; set; }
 

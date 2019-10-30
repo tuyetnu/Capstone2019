@@ -140,8 +140,10 @@ namespace DormyWebService.Services.UserServices
                         "StudentService: Email: " + s.Email + " Already Existed");
                 }
 
+                var defaultEvaluationPoint = (await _paramService.FindById(GlobalParams.ParamDefaultEvaluationPoint))?.Value ?? GlobalParams.DefaultEvaluationPoint;
+
                 //Add student to pending changes
-                students.Add(_repoWrapper.Student.CreateWithoutSave(ImportStudentRequest.NewStudentFromRequest(s)));
+                students.Add(_repoWrapper.Student.CreateWithoutSave(ImportStudentRequest.NewStudentFromRequest(s, defaultEvaluationPoint)));
             }
 
             try
