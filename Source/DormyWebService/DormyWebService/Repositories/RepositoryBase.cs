@@ -82,5 +82,28 @@ namespace DormyWebService.Repositories
             Context.Set<T>().Remove(entity);
             return await Context.SaveChangesAsync();
         }
+
+        public virtual async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await Context.Set<T>().Where(predicate).ToListAsync();
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return Context.Set<T>();
+        }
+
+        public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        {
+
+            IQueryable<T> queryable = GetAll();
+            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+            {
+
+                queryable = queryable.Include<T, object>(includeProperty);
+            }
+
+            return queryable;
+        }
     }
 }

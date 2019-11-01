@@ -16,7 +16,7 @@ namespace DormyWebService.Repositories
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private readonly DormyDbContext _context;
+        public readonly DormyDbContext Context;
         private IUserRepository _user;
         private IStudentRepository _student;
         private IAdminRepository _admin;
@@ -38,18 +38,18 @@ namespace DormyWebService.Repositories
 
         public RepositoryWrapper(DormyDbContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         //For saving multiple changes
         public async Task Save()
         { 
-            await _context.SaveChangesAsync();
+            await Context.SaveChangesAsync();
         }
 
         public void DeleteChanges()
         {
-            var changedEntriesCopy = _context.ChangeTracker.Entries()
+            var changedEntriesCopy = Context.ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added ||
                             e.State == EntityState.Modified ||
                             e.State == EntityState.Deleted)
@@ -60,23 +60,23 @@ namespace DormyWebService.Repositories
         }
 
         //Create concrete repositories if there aren't
-        public IUserRepository User => _user ?? (_user = new UserRepository(_context));
-        public IStudentRepository Student => _student ?? (_student = new StudentRepository(_context));
-        public IAdminRepository Admin => _admin ?? (_admin = new AdminRepository(_context));
-        public IStaffRepository Staff => _staff ?? (_staff = new StaffRepository(_context));
-        public INewsRepository News => _news ?? (_news = new NewsRepository(_context));
-        public IParamRepository Param => _param ?? (_param = new ParamRepositories.ParamRepository(_context));
-        public IParamTypeRepository ParamType => _paramType ?? (_paramType = new ParamTypeRepository(_context));
-        public IEquipmentRepository Equipment => _equipment ?? (_equipment = new EquipmentRepositories.EquipmentRepository(_context));
-        public IRoomRepository Room => _room ?? (_room = new RoomRepository(_context));
-        public IContractRepository Contract => _contract ?? (_contract = new ContractRepository(_context));
-        public IRenewContractRepository RenewContract => _renewContract ?? (_renewContract = new RenewContractRepository(_context));
-        public ICancelContractRepository CancelContract => _cancelContract ?? (_cancelContract = new CancelContractRepository(_context));
-        public IRoomBookingRepository RoomBooking => _roomBooking ?? (_roomBooking = new RoomBookingRepository(_context));
-        public IRoomTransferRepository RoomTransfer => _roomTransfer ?? (_roomTransfer = new RoomTransferRepository(_context));
-        public IIssueTicketRepository IssueTicket => _issueTicket ?? (_issueTicket = new IssueTicketRepository(_context));
-        public IMoneyTransactionRepository MoneyTransaction => _moneyTransaction ?? (_moneyTransaction = new MoneyTransactionRepository(_context));
-        public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(_context));
-        public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(_context));
+        public IUserRepository User => _user ?? (_user = new UserRepository(Context));
+        public IStudentRepository Student => _student ?? (_student = new StudentRepository(Context));
+        public IAdminRepository Admin => _admin ?? (_admin = new AdminRepository(Context));
+        public IStaffRepository Staff => _staff ?? (_staff = new StaffRepository(Context));
+        public INewsRepository News => _news ?? (_news = new NewsRepository(Context));
+        public IParamRepository Param => _param ?? (_param = new ParamRepositories.ParamRepository(Context));
+        public IParamTypeRepository ParamType => _paramType ?? (_paramType = new ParamTypeRepository(Context));
+        public IEquipmentRepository Equipment => _equipment ?? (_equipment = new EquipmentRepositories.EquipmentRepository(Context));
+        public IRoomRepository Room => _room ?? (_room = new RoomRepository(Context));
+        public IContractRepository Contract => _contract ?? (_contract = new ContractRepository(Context));
+        public IRenewContractRepository RenewContract => _renewContract ?? (_renewContract = new RenewContractRepository(Context));
+        public ICancelContractRepository CancelContract => _cancelContract ?? (_cancelContract = new CancelContractRepository(Context));
+        public IRoomBookingRepository RoomBooking => _roomBooking ?? (_roomBooking = new RoomBookingRepository(Context));
+        public IRoomTransferRepository RoomTransfer => _roomTransfer ?? (_roomTransfer = new RoomTransferRepository(Context));
+        public IIssueTicketRepository IssueTicket => _issueTicket ?? (_issueTicket = new IssueTicketRepository(Context));
+        public IMoneyTransactionRepository MoneyTransaction => _moneyTransaction ?? (_moneyTransaction = new MoneyTransactionRepository(Context));
+        public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(Context));
+        public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(Context));
     }
 }

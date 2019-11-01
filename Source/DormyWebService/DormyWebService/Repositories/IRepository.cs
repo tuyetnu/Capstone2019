@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -19,5 +20,8 @@ namespace DormyWebService.Repositories
         Task<T> UpdateAsync(T entity, object key);
         Task<T> UpdateAsyncWithoutSave(T entity, object key);
         Task<int> DeleteAsync(T entity);
+        Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate);
+        IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties);
+        IQueryable<T> GetAll();
     }
 }
