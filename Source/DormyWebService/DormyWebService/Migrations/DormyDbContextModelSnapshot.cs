@@ -677,15 +677,13 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("StudentId");
 
-                    b.Property<int>("TargetRoomId");
+                    b.Property<int>("TargetRoomType");
 
                     b.HasKey("RoomTransferRequestFormId");
 
                     b.HasIndex("StaffId");
 
                     b.HasIndex("StudentId");
-
-                    b.HasIndex("TargetRoomId");
 
                     b.ToTable("RoomTransferRequestForms");
                 });
@@ -888,11 +886,6 @@ namespace DormyWebService.Migrations
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "TargetRoom")
-                        .WithMany()
-                        .HasForeignKey("TargetRoomId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

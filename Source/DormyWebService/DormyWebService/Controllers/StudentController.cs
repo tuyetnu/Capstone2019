@@ -69,7 +69,7 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [Authorize]
+//        [Authorize]
         [HttpGet("CheckStudentForRenewContract/{id}")]
         public async Task<ActionResult<CheckStudentForRenewContractResponse>>
             CheckStudentForRenewContractResponse(int id)

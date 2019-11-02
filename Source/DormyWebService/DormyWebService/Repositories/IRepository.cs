@@ -22,6 +22,7 @@ namespace DormyWebService.Repositories
         Task<int> DeleteAsync(T entity);
         Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate);
         IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties);
+        IQueryable<T> GetAllIncludingWithCondition(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties);
         IQueryable<T> GetAll();
     }
 }

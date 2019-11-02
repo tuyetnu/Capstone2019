@@ -15,15 +15,15 @@ namespace DormyWebService.ViewModels.RoomViewModels.ArrangeRoom
         {
             var result = new ArrangeRoomResponse();
 
-            for (var i = 0; i < arrangedStudents.Count; i++)
-            {
-                System.Diagnostics.Debug.WriteLine("StudentId: " + arrangedStudents[i].StudentId);
-                System.Diagnostics.Debug.WriteLine("Name: " + arrangedStudents[i].Name);
-                System.Diagnostics.Debug.WriteLine("Email " + arrangedStudents[i].Email);
-                System.Diagnostics.Debug.WriteLine("RoomId " + arrangedStudents[i].RoomId);
-                System.Diagnostics.Debug.WriteLine("RoomName " + rooms.Find(r => arrangedStudents[i].RoomId != null && r.RoomId == arrangedStudents[i].RoomId.Value).Name);
-
-            }
+//            for (var i = 0; i < arrangedStudents.Count; i++)
+//            {
+//                System.Diagnostics.Debug.WriteLine("StudentId: " + arrangedStudents[i].StudentId);
+//                System.Diagnostics.Debug.WriteLine("Name: " + arrangedStudents[i].Name);
+//                System.Diagnostics.Debug.WriteLine("Email " + arrangedStudents[i].Email);
+//                System.Diagnostics.Debug.WriteLine("RoomId " + arrangedStudents[i].RoomId);
+//                System.Diagnostics.Debug.WriteLine("RoomName " + rooms.Find(r => arrangedStudents[i].RoomId != null && r.RoomId == arrangedStudents[i].RoomId.Value).Name);
+//
+//            }
 
             result.ArrangedStudents = arrangedStudents.Select(s => new ArrangeRoomResponseStudent()
             {

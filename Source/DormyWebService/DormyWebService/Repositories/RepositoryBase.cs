@@ -105,5 +105,18 @@ namespace DormyWebService.Repositories
 
             return queryable;
         }
+
+        public IQueryable<T> GetAllIncludingWithCondition(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
+        {
+
+            IQueryable<T> queryable = GetAll().Where(match);
+            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+            {
+
+                queryable = queryable.Include<T, object>(includeProperty);
+            }
+
+            return queryable;
+        }
     }
 }

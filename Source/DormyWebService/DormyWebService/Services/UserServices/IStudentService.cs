@@ -22,5 +22,7 @@ namespace DormyWebService.Services.UserServices
         Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel);
         Task<ChangeStudentStatusResponse> ChangeStudentStatus(int id, string status);
         Task<bool> HasARoom(int studentId);
+        Task<bool> AutoResetEvaluationPoint();
+        Task<bool> ResetEvaluationPoint();
     }
 }

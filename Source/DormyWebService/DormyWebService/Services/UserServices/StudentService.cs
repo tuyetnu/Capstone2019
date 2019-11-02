@@ -5,7 +5,9 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Utilities;
@@ -39,6 +41,10 @@ namespace DormyWebService.Services.UserServices
             _sieveProcessor = sieveProcessor;
         }
 
+        /// <summary>
+        /// Get all students in database
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<GetAllStudentResponse>> GetAllStudent()
         {
             //Get all student in database
@@ -56,6 +62,14 @@ namespace DormyWebService.Services.UserServices
             return result;
         }
 
+        /// <summary>
+        /// Get list of students with condition
+        /// </summary>
+        /// <param name="sorts"></param>
+        /// <param name="filters"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public async Task<List<GetAllStudentResponse>> AdvancedGetStudent(string sorts, string filters, int? page,
             int? pageSize)
         {
@@ -79,25 +93,98 @@ namespace DormyWebService.Services.UserServices
             return sortedStudents.Select(student => _mapper.Map<GetAllStudentResponse>(student)).ToList();
         }
 
+        /// <summary>
+        /// Performs general checks if student can renew contract for front end
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<CheckStudentForRenewContractResponse> CheckStudentForRenewContract(int id)
         {
+            //Find Student, including checking if student is found or not
             var student = await FindById(id);
-
-            var contractRenewalEvaluationScoreMargin = await 
-                _paramService.FindById(GlobalParams.ParamContractRenewalEvaluationPointMargin);
-
-            var maxYearForStaying = await
-                _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
-            
-            var startDate = new DateTime(student.StartedSchoolYear,9,1 );
-            var maxYear = startDate.AddYears(5);
-            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
 
             return new CheckStudentForRenewContractResponse()
             {
-                HasInValidTrainingPoint = student.EvaluationScore < contractRenewalEvaluationScoreMargin.Value,
-                HasStayedMoreThanPermittedYear = now > maxYear
+                HasInValidTrainingPoint = await CheckEvaluationScoreForRenewContract(student),
+                HasStayedMoreThanPermittedYear = await CheckMaxYearForStayingForRenewContract(student),
+                ContractIsActiveNextMonth = await CheckContractNextMonthForRenewContract(student),
+                NumberOfRoomTransferRequest = await GetNumberOfRoomTransferRequest(student)
             };
+        }
+
+        private async Task<int> GetNumberOfRoomTransferRequest(Student student)
+        {
+            var result = 0;
+
+            var transferRequests = (List<RoomTransferRequestForm>) await 
+                _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(r => r.StudentId == student.StudentId);
+
+            if (transferRequests != null)
+            {
+                result = transferRequests.Count;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check if a student's contract is active next month
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        private async Task<bool> CheckContractNextMonthForRenewContract(Student student)
+        {
+            var result = false;
+            //Get current active contract of user
+            var contracts = (List<Contract>) await _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == student.StudentId && c.Status == ContractStatus.Active);
+
+            if (contracts != null && contracts.Count == 1)
+            {
+                var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+                result = (now.Month + 1) <= contracts[0].EndDate.Month;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Check if student have staying for too long in dormitory
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        private async Task<bool> CheckMaxYearForStayingForRenewContract(Student student)
+        {
+            //Get max year for students to be staying
+            var maxYearForStaying = await
+                _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
+
+            //Get student's startdate, beginning at September
+            var startDate = new DateTime(student.StartedSchoolYear, 9, 1);
+            // student's startdate = maxYearForStaying
+            if (maxYearForStaying.Value != null)
+            {
+                var maxYear = startDate.AddYears(maxYearForStaying.Value.Value);
+                // Get Now Time
+                var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+
+                return now > maxYear;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Check if student has valid evaluation score for renewing contract
+        /// </summary>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        private async Task<bool> CheckEvaluationScoreForRenewContract(Student student)
+        {
+            //Get get minimum evaluation score for student to be considered invalid
+            var contractRenewalEvaluationScoreMargin = await
+                _paramService.FindById(GlobalParams.ParamContractRenewalEvaluationPointMargin);
+
+            return student.EvaluationScore < contractRenewalEvaluationScoreMargin.Value;
         }
 
         public async Task<Student> FindById(int id)
@@ -113,6 +200,11 @@ namespace DormyWebService.Services.UserServices
             return student;
         }
 
+        /// <summary>
+        /// Get student's profile for viewing
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<GetStudentProfileResponse> GetProfile(int id)
         {
             var student = await _repoWrapper.Student.FindByIdAsync(id);
@@ -135,6 +227,11 @@ namespace DormyWebService.Services.UserServices
             return GetStudentProfileResponse.MapFromStudent(student, priorityType, user, room);
         }
 
+        /// <summary>
+        /// Import a list of students into database
+        /// </summary>
+        /// <param name="requestModel"></param>
+        /// <returns></returns>
         public async Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel)
         {
             //check if request is empty
@@ -184,6 +281,11 @@ namespace DormyWebService.Services.UserServices
             return students.Select(ImportStudentResponse.CreateFromStudent).ToList();
         }
 
+        /// <summary>
+        /// Update student's information
+        /// </summary>
+        /// <param name="requestModel"></param>
+        /// <returns></returns>
         public async Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel)
         {
             //Find User with the same id in database
@@ -240,6 +342,8 @@ namespace DormyWebService.Services.UserServices
             return student.RoomId != null;
         }
 
+       
+
         private void CheckImportStudentRecords(List<ImportStudentRequest> requestModel)
         {
             //Check if there are duplicate email in request
@@ -251,6 +355,39 @@ namespace DormyWebService.Services.UserServices
                         "StudentService: there are duplicate email of: " + student.Email);
                 }
             }
+        }
+
+        public Task<bool> AutoResetEvaluationPoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> ResetEvaluationPoint()
+        {
+            //Get default training point to know what to reset point to
+            var defaultEvaluationPoint = await _paramService.FindById(GlobalParams.ParamDefaultEvaluationPoint);
+
+            var activeStudents =(List<Student>)
+                await _repoWrapper.Student.FindAllAsyncWithCondition(s => s.User.Status == UserStatus.Active);
+
+            //if students are found
+            if (activeStudents != null && activeStudents.Any())
+            {
+                //go through every active students
+                foreach (var student in activeStudents)
+                {
+                    if (defaultEvaluationPoint.Value != null)
+                    {
+                        student.EvaluationScore = defaultEvaluationPoint.Value.Value;
+                        await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+                    }
+                }
+
+                //Save all changes
+                await _repoWrapper.Save();
+            }
+
+            return true;
         }
     }
 }

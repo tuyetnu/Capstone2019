@@ -9,6 +9,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels;
 using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
+using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -41,6 +42,17 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<List<Room>>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize)
         {
                 return await _room.AdvancedGetRooms(sorts,filters,page,pageSize);
+        }
+
+        /// <summary>
+        /// Get general information about a room type, for authorized users
+        /// </summary>
+        /// <returns></returns>
+//        [Authorize]
+        [HttpGet("GetRoomTypeInfo")]
+        public async Task<ActionResult<List<GetRoomTypeInfoResponse>>> GetRoomTypeInfo()
+        {
+            return await _room.GetRoomTypeInfo();
         }
 
         /// <summary>

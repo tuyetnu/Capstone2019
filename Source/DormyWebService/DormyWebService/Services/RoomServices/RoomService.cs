@@ -17,6 +17,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels;
 using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
+using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using Microsoft.EntityFrameworkCore.Internal;
 using Sieve.Models;
@@ -242,6 +243,52 @@ namespace DormyWebService.Services.RoomServices
 
             //If save is successful, preparing response message
             return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents,unArrangedStudents,arrangedRooms);
+        }
+
+        public async Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo()
+        {
+            //Get All active rooms with vacancy in database
+            var rooms = (List<Room>) await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.RoomStatus == RoomStatus.Active && r.CurrentNumberOfStudent < r.Capacity);
+
+            if (rooms == null || !rooms.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Couldn't find any room");
+            }
+
+            //Get All Room Types
+            var roomTypes =
+                (List<Param>) await _repoWrapper.Param.FindAllAsyncWithCondition(p =>
+                    p.ParamTypeId == GlobalParams.ParamTypeRoomType);
+
+            if (roomTypes == null || !roomTypes.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Couldn't find any room type");
+            }
+
+            var result = new List<GetRoomTypeInfoResponse>();
+
+            foreach (var room in rooms)
+            {
+                //If result list doesn't have this room type
+                if (!result.Exists(t=>t.RoomTypeId == room.RoomType))
+                {
+                    var roomType = roomTypes.Find(t => t.ParamId == room.RoomType);
+                    result.Add(new GetRoomTypeInfoResponse()
+                    {
+                        RoomTypeId = room.RoomType,
+                        RoomTypeName = roomType.Name,
+                        RoomTypePrice = roomType.DecimalValue,
+                        RoomTypeVacancy = 0 + (room.Capacity - room.CurrentNumberOfStudent)
+                    });
+                }
+                else
+                {
+                    var resultRoomType = result.Find(t => t.RoomTypeId == room.RoomType);
+                    resultRoomType.RoomTypeVacancy += (room.Capacity - room.CurrentNumberOfStudent);
+                }
+            }
+
+            return result;
         }
 //
 //        private List<Room> SplitRoomByGender(List<Room> src, bool gender)
