@@ -10,11 +10,6 @@ namespace DormyWebService.Entities.RoomEntities
         public int RoomGroupId { get; set; }
 
         [Required]
-        [ForeignKey("RoomDivision")]
-        public int RoomDivisionId { get; set; }
-        public RoomDivision RoomDivision { get; set; }
-
-        [Required]
         public string Name { get; set; }
 
         [Required]

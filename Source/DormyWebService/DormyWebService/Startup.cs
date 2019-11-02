@@ -123,7 +123,7 @@ namespace DormyWebService
             services.AddScoped<INewsServices, NewsService>();
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<IRoomDivisionService, RoomDivisionService>();
+            services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IRoomGroupService, RoomGroupService>();
             services.AddScoped<IRoomTypesAndEquipmentTypesService, RoomTypesAndEquipmentTypesService>();
             services.AddScoped<IRoomGroupsAndStaffService, RoomGroupsAndStaffService>();
@@ -141,8 +141,6 @@ namespace DormyWebService
             services.AddScoped<IMoneyTransactionService, MoneyTransactionService>();
             services.AddScoped<IRoomMonthlyBillService, RoomMonthlyBillService>();
             services.AddScoped<IStudentMonthlyBillService, StudentMonthlyBillService>();
-
-            //Dependency Injection for fluent validation
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

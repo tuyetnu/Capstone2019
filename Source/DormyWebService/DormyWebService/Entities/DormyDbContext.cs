@@ -26,7 +26,7 @@ namespace DormyWebService.Entities
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<RoomGroup> RoomGroups { get; set; }
-        public DbSet<RoomDivision> RoomDivisions { get; set; }
+        public DbSet<Building> Buildings { get; set; }
         public DbSet<RoomGroupsAndStaff> RoomGroupsAndStaff { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<RoomTypesAndEquipmentTypes> RoomTypesAndEquipmentTypes { get; set; }

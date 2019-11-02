@@ -196,8 +196,6 @@ namespace DormyWebService.Services.TicketServices
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
         }
 
-        public async 
-
         public async Task<AdvancedGetRoomBookingResponse> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize)
         {
             //Build model for SieveProcessor

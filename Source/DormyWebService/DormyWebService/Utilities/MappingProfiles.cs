@@ -40,9 +40,6 @@ namespace DormyWebService.Utilities
 
             //Resolve Room Booking
             CreateMap<ResolveRoomBookingRequest, RoomBookingRequestForm>();
-            CreateMap<RoomBookingRequestForm, ResolveRoomBookingResponse>()
-                .ForMember(dest => dest.CreatedDate, o => o.MapFrom(src => src.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat)))
-                .ForMember(dest => dest.LastUpdated, o => o.MapFrom(src => src.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat)));
 
             //GetEquipment
             CreateMap<Equipment, GetEquipmentResponse>();
