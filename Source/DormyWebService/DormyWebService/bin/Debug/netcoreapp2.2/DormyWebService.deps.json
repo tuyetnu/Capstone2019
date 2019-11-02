@@ -27,6 +27,7 @@
           "AutoMapper": "9.0.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "7.0.0",
           "FluentValidation.AspNetCore": "8.5.0",
+          "Hangfire": "1.7.7",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "2.2.6",
@@ -116,6 +117,78 @@
         },
         "compile": {
           "lib/netstandard2.0/FluentValidation.DependencyInjectionExtensions.dll": {}
+        }
+      },
+      "Hangfire/1.7.7": {
+        "dependencies": {
+          "Hangfire.AspNetCore": "1.7.7",
+          "Hangfire.Core": "1.7.7",
+          "Hangfire.SqlServer": "1.7.7"
+        }
+      },
+      "Hangfire.AspNetCore/1.7.7": {
+        "dependencies": {
+          "Hangfire.Core": "1.7.7",
+          "Microsoft.AspNetCore.Antiforgery": "2.2.0",
+          "Microsoft.AspNetCore.Hosting.Abstractions": "2.2.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.2.0",
+          "Microsoft.Extensions.Logging.Abstractions": "2.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Hangfire.AspNetCore.dll": {
+            "assemblyVersion": "1.7.7.0",
+            "fileVersion": "1.7.7.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Hangfire.AspNetCore.dll": {}
+        }
+      },
+      "Hangfire.Core/1.7.7": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Hangfire.Core.dll": {
+            "assemblyVersion": "1.7.7.0",
+            "fileVersion": "1.7.7.0"
+          }
+        },
+        "resources": {
+          "lib/netstandard2.0/es/Hangfire.Core.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/nl/Hangfire.Core.resources.dll": {
+            "locale": "nl"
+          },
+          "lib/netstandard2.0/pt-BR/Hangfire.Core.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll": {
+            "locale": "zh-TW"
+          },
+          "lib/netstandard2.0/zh/Hangfire.Core.resources.dll": {
+            "locale": "zh"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Hangfire.Core.dll": {}
+        }
+      },
+      "Hangfire.SqlServer/1.7.7": {
+        "dependencies": {
+          "Hangfire.Core": "1.7.7",
+          "System.Data.SqlClient": "4.6.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Hangfire.SqlServer.dll": {
+            "assemblyVersion": "1.7.7.0",
+            "fileVersion": "1.7.7.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Hangfire.SqlServer.dll": {}
         }
       },
       "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
@@ -3861,6 +3934,34 @@
       "sha512": "sha512-C06aJuXUO15IDWoIXwZlRMNguk19jhyDU5uWUvjhp4692dOTnHSDqwJ9xpeuuo0l0Th+uzdgP5+BXZSRZnR5Gw==",
       "path": "fluentvalidation.dependencyinjectionextensions/8.5.0",
       "hashPath": "fluentvalidation.dependencyinjectionextensions.8.5.0.nupkg.sha512"
+    },
+    "Hangfire/1.7.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-n1guL2fP1dNdGJXz9624qw8xciObbZBm4mXyFL5C3B91rU9VpLFbeSQcl4SRQ88q0HUrBGMnsvg4jygktblSNA==",
+      "path": "hangfire/1.7.7",
+      "hashPath": "hangfire.1.7.7.nupkg.sha512"
+    },
+    "Hangfire.AspNetCore/1.7.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-z8XAB2X6sghme09kMeKwcyo7AOt9JeS6beaPITFKs5luRZ6Ouje9MifCSUeg9+Bu772C5amI0lv6Od1rIk5ojQ==",
+      "path": "hangfire.aspnetcore/1.7.7",
+      "hashPath": "hangfire.aspnetcore.1.7.7.nupkg.sha512"
+    },
+    "Hangfire.Core/1.7.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jV/2bmwaPqQwOKJnZsaen/G1tQdmbkJl5HkFYVAZIf/JFRRXaIFkRHAiGaZUvaRja4EvCrtLxCwggdBeTGz3xQ==",
+      "path": "hangfire.core/1.7.7",
+      "hashPath": "hangfire.core.1.7.7.nupkg.sha512"
+    },
+    "Hangfire.SqlServer/1.7.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2Nyn9VYCcNc8JObHO8/1ox3JxTes+0yVxB2GP9XADowKdqE07lTBCFdt+Cr2pDpWwFCubO7NqLG/oIvrXGDGKA==",
+      "path": "hangfire.sqlserver/1.7.7",
+      "hashPath": "hangfire.sqlserver.1.7.7.nupkg.sha512"
     },
     "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
       "type": "package",

@@ -17,6 +17,7 @@ using DormyWebService.Services.TicketServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using FluentValidation.AspNetCore;
+using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,10 @@ namespace DormyWebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //SQL server for HangFire
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration["ConnectionString:HangFireDB"]));
+            services.AddHangfireServer();
+
             //Allow Cross Origins
             services.AddCors();
 
@@ -162,9 +167,17 @@ namespace DormyWebService
             //Exception Handler
             app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new MyAuthorizationFilter() }
+            });
+
             //For JWT
             app.UseAuthentication();
             app.UseHttpsRedirection();
+
+            
+
             app.UseMvc();
         }
     }

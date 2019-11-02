@@ -71,6 +71,25 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.HangFireController.StartAutoRejectJob(System.String)">
+            <summary>
+            Start or update auto reject room bookings, for admin, go to /hangfire for HangFire's dashboard
+            </summary>
+            <param name="time">
+            "* * * * *" Every Minute
+            "0 18 * * *" Everyday at 6pm
+            </param>
+            <remarks>Authentication disabled for debug purposes</remarks>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.HangFireController.CancelRecurringJob(System.String)">
+            <summary>
+            To cancel a job by it's name, for admin, go to /hangfire for HangFire's dashboard
+            </summary>
+            <param name="recurringJobName"></param>
+            <remarks>Authentication disabled for debug purposes</remarks>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.HomeController.GetInitialValues(System.Int32)">
             <summary>
             Get values of a student for home screen of the mobile app, for authorized users
@@ -364,6 +383,16 @@
             <summary>
             Change user role for debug
             </summary>
+        </member>
+        <member name="M:DormyWebService.Utilities.DateHelper.BusinessDaysUntil(System.DateTime,System.DateTime)">
+            <summary>
+            Calculates number of business days, taking into account:
+             - weekends (Saturdays and Sundays)
+             - bank holidays in the middle of the week
+            </summary>
+            <param name="firstDay">First day in the time interval</param>
+            <param name="lastDay">Last day in the time interval</param>
+            <returns>Number of business days during the 'span'</returns>
         </member>
     </members>
 </doc>

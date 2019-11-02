@@ -26,5 +26,7 @@ namespace DormyWebService.Services.TicketServices
         Task<bool> StudentHasRoomRequestWithStatus(int studentId, List<string> statuses);
 
         Task<GetRoomBookingDetailResponse> GetRoomBookingDetail(int id);
+
+        Task<bool> AutoRejectRoomBooking();
     }
 }

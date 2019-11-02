@@ -18,6 +18,7 @@ using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
+using Hangfire;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -298,6 +299,27 @@ namespace DormyWebService.Services.TicketServices
             }
 
             return roomBooking.Any();
+        }
+
+        [AutomaticRetry(Attempts = 3)]
+        public async Task<bool> AutoRejectRoomBooking()
+        {
+            var roomBookings =  (List<RoomBookingRequestForm>) await
+                _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Rejected);
+
+            if (roomBookings != null && roomBookings.Any())
+            {
+                foreach (var roomBooking in roomBookings)
+                {
+                    roomBooking.Status = RequestStatus.Pending;
+                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+                        roomBooking.RoomBookingRequestFormId);
+                }
+
+                await _repoWrapper.Save();
+            }
+
+            return true;
         }
 
         //Used to check request for Send and edit room booking
