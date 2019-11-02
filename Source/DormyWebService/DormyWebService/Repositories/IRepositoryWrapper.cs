@@ -36,6 +36,7 @@ namespace DormyWebService.Repositories
         IEquipmentRepository Equipment { get; }
 
         IRoomRepository Room { get; }
+        IBuildingRepository Building { get; }
         IContractRepository Contract { get; }
         IRenewContractRepository RenewContract { get;}
         ICancelContractRepository CancelContract { get;}

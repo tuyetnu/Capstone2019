@@ -20,6 +20,10 @@ namespace DormyWebService.Entities.RoomEntities
 
         public RoomGroup RoomGroup {get;set; }
 
+        [ForeignKey("Building")] 
+        public int? BuildingId { get; set; }
+        public Building Building { get; set; }
+
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public string Name { get; set; }

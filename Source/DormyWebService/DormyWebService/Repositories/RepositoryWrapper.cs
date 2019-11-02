@@ -26,6 +26,7 @@ namespace DormyWebService.Repositories
         private IParamTypeRepository _paramType;
         private IEquipmentRepository _equipment;
         private IRoomRepository _room;
+        private IBuildingRepository _building;
         private IContractRepository _contract;
         private IRenewContractRepository _renewContract;
         private ICancelContractRepository _cancelContract;
@@ -69,6 +70,7 @@ namespace DormyWebService.Repositories
         public IParamTypeRepository ParamType => _paramType ?? (_paramType = new ParamTypeRepository(Context));
         public IEquipmentRepository Equipment => _equipment ?? (_equipment = new EquipmentRepositories.EquipmentRepository(Context));
         public IRoomRepository Room => _room ?? (_room = new RoomRepository(Context));
+        public IBuildingRepository Building => _building ?? (_building = new BuildingRepository(Context));
         public IContractRepository Contract => _contract ?? (_contract = new ContractRepository(Context));
         public IRenewContractRepository RenewContract => _renewContract ?? (_renewContract = new RenewContractRepository(Context));
         public ICancelContractRepository CancelContract => _cancelContract ?? (_cancelContract = new CancelContractRepository(Context));

@@ -443,6 +443,8 @@ namespace DormyWebService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("BuildingId");
+
                     b.Property<int>("Capacity");
 
                     b.Property<DateTime>("CreatedDate");
@@ -469,6 +471,8 @@ namespace DormyWebService.Migrations
                     b.Property<int>("RoomType");
 
                     b.HasKey("RoomId");
+
+                    b.HasIndex("BuildingId");
 
                     b.HasIndex("RoomGroupId");
 
@@ -797,6 +801,10 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.RoomEntities.Room", b =>
                 {
+                    b.HasOne("DormyWebService.Entities.RoomEntities.Building", "Building")
+                        .WithMany("Rooms")
+                        .HasForeignKey("BuildingId");
+
                     b.HasOne("DormyWebService.Entities.RoomEntities.RoomGroup", "RoomGroup")
                         .WithMany()
                         .HasForeignKey("RoomGroupId");

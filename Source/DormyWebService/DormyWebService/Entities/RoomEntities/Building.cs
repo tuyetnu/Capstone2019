@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DormyWebService.Entities.RoomEntities
@@ -28,6 +29,8 @@ namespace DormyWebService.Entities.RoomEntities
 
         [Required]
         public DateTime LastUpdated { get; set; }
+
+        public virtual ICollection<Room> Rooms { get; set; }
 
     }
 }
