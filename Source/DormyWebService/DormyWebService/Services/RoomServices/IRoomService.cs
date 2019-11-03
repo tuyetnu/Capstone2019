@@ -18,5 +18,6 @@ namespace DormyWebService.Services.RoomServices
         Task<UpdateRoomResponse> UpdateRoom(UpdateRoomRequest requestModel);
         Task<ArrangeRoomResponse> ArrangeRoomForAllApprovedRequests();
         Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo();
+        Task<ArrangeRoomResponseStudent> ArrangeOneApprovedRequest(int requestId);
     }
 }

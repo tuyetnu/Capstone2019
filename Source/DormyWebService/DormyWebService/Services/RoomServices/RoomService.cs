@@ -148,6 +148,44 @@ namespace DormyWebService.Services.RoomServices
             return UpdateRoomResponse.ResponseFromRoom(room, equipmentIds);
         }
 
+        /// <summary>
+        /// arrange room for one request, and return result without saving to database
+        /// </summary>
+        /// <param name="requestId">RoomBooking id</param>
+        /// <returns></returns>
+        public async Task<ArrangeRoomResponseStudent> ArrangeOneApprovedRequest(int requestId)
+        {
+            //Get room booking from id
+            var roomBooking = await _repoWrapper.RoomBooking.FindByIdAsync(requestId);
+
+            if (roomBooking == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Room booking not found");
+            }
+
+            //Check if room request
+            if (roomBooking.Status != RequestStatus.Approved)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomService: Request is not approved yet");
+            }
+
+            //Get student by id in room booking
+            var student = await _repoWrapper.Student.FindByIdAsync(roomBooking.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Student not found");
+            }
+
+            //Get active room sorted by ascending room vacancy
+            var rooms = await _repoWrapper.Room.GetAllActiveRoomSortedByVacancy();
+            if (rooms == null || !rooms.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Room not found");
+            }
+
+            return ArrangeRoomResponseStudent.ResponseFromEntity(student, rooms[0], roomBooking);
+        }
+
         public async Task<ArrangeRoomResponse> ArrangeRoomForAllApprovedRequests()
         {
             //Get all approve request

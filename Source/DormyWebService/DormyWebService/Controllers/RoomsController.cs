@@ -103,11 +103,23 @@ namespace DormyWebService.Controllers
         /// Arrange all students with approved room booking requests, for staff and admin
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = Role.Admin + "," + Role.Student)]
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("ArrangeAllApprovedRequest")]
         public async Task<ActionResult<ArrangeRoomResponse>> ArrangeAllApprovedRequest()
         {
             return await _room.ArrangeRoomForAllApprovedRequests();
+        }
+
+        /// <summary>
+        /// Arrange one approved room booking request and return result without changing database, for staff and admin
+        /// </summary>
+        /// <param name="roomBookingId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("ArrangeOneApprovedRequest/{roomBookingId}")]
+        public async Task<ActionResult<ArrangeRoomResponseStudent>> ArrangeOneApprovedRequest(int roomBookingId)
+        {
+            return await _room.ArrangeOneApprovedRequest(roomBookingId);
         }
     }
 }

@@ -279,7 +279,7 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.RoomBookingsController.ChangeRoomBookingStatus(DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking.ResolveRoomBookingRequest)">
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.DeleteRoomBooking(System.Int32)">
             <summary>
             Change status of a Room Booking Request, for staff
             </summary>
@@ -294,6 +294,12 @@
             <param name="filters">Ex:"Price>10, Name@=roomName" filter to room with price more than 10, and a name that contains roomName</param>
             <param name="page">Ex: 1 get the first page...</param>
             <param name="pageSize">Ex: 10 ...which contains 10 room</param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomsController.GetRoomTypeInfo">
+            <summary>
+            Get general information about a room type, for authorized users
+            </summary>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.RoomsController.CreateRoom(DormyWebService.ViewModels.RoomViewModels.CreateRoom.CreateRoomRequest)">
@@ -314,6 +320,13 @@
             <summary>
             Arrange all students with approved room booking requests, for staff and admin
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomsController.ArrangeOneApprovedRequest(System.Int32)">
+            <summary>
+            Arrange one approved room booking request and return result without changing database, for staff and admin
+            </summary>
+            <param name="roomBookingId"></param>
             <returns></returns>
         </member>
         <member name="M:DormyWebService.Controllers.RoomTransferController.SendRoomTransfer(DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer.SendRoomTransferRequest)">
@@ -401,6 +414,13 @@
             <summary>
             Change user role for debug
             </summary>
+        </member>
+        <member name="M:DormyWebService.Services.RoomServices.RoomService.ArrangeOneApprovedRequest(System.Int32)">
+            <summary>
+            arrange room for one request, and return result without saving to database
+            </summary>
+            <param name="requestId">RoomBooking id</param>
+            <returns></returns>
         </member>
         <member name="M:DormyWebService.Services.UserServices.StudentService.GetAllStudent">
             <summary>
