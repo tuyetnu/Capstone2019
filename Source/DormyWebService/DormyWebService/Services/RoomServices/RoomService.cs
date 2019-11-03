@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.RoomEntities;
@@ -184,6 +185,53 @@ namespace DormyWebService.Services.RoomServices
             }
 
             return ArrangeRoomResponseStudent.ResponseFromEntity(student, rooms[0], roomBooking);
+        }
+
+        public async Task<bool> SaveArrangeOneApprovedRequest(ArrangeRoomResponseStudent request)
+        {
+            //Get student by id in request
+            var student = await _repoWrapper.Student.FindByIdAsync(request.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Student not found");
+            }
+
+            var room = await _repoWrapper.Room.FindByIdAsync(request.RoomId);
+            if (room == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Room not found");
+            }
+
+            var roomBooking = await _repoWrapper.RoomBooking.FindByIdAsync(request.RoomBookingId);
+            if (roomBooking == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Room Booking not found");
+            }
+
+            student.RoomId = request.RoomId;
+            await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+            room.CurrentNumberOfStudent++;
+            await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+            roomBooking.Status = RequestStatus.Complete;
+            roomBooking.RoomId = room.RoomId;
+            await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
+
+            //Create new contract
+            var tempEndTime = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(roomBooking.Month);
+            var contract = new Contract()
+            {
+                CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                LastUpdate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                StartDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                EndDate = new DateTime(tempEndTime.Year, tempEndTime.Month, DateTime.DaysInMonth(tempEndTime.Year, tempEndTime.Month)),
+                Status = ContractStatus.Active,
+                StudentId = student.StudentId,
+            };
+            _repoWrapper.Contract.CreateAsyncWithoutSave(contract);
+
+            await _repoWrapper.Save();
+
+            return true;
         }
 
         public async Task<ArrangeRoomResponse> ArrangeRoomForAllApprovedRequests()

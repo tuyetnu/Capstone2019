@@ -121,5 +121,17 @@ namespace DormyWebService.Controllers
         {
             return await _room.ArrangeOneApprovedRequest(roomBookingId);
         }
+
+        /// <summary>
+        /// Save result of ArrangeOneApprovedRequest and create a new contract, for staff and admin 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpPost("SaveArrangeOneApprovedRequest")]
+        public async Task<ActionResult<bool>> SaveArrangeOneApprovedRequest(ArrangeRoomResponseStudent request)
+        {
+            return await _room.SaveArrangeOneApprovedRequest(request);
+        }
     }
 }

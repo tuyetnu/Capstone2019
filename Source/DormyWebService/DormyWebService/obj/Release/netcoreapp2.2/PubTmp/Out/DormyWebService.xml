@@ -329,6 +329,13 @@
             <param name="roomBookingId"></param>
             <returns></returns>
         </member>
+        <member name="M:DormyWebService.Controllers.RoomsController.SaveArrangeOneApprovedRequest(DormyWebService.ViewModels.RoomViewModels.ArrangeRoom.ArrangeRoomResponseStudent)">
+            <summary>
+            Save result of ArrangeOneApprovedRequest and create a new contract, for staff and admin 
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
         <member name="M:DormyWebService.Controllers.RoomTransferController.SendRoomTransfer(DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer.SendRoomTransferRequest)">
             <summary>
             send room transfer request for student

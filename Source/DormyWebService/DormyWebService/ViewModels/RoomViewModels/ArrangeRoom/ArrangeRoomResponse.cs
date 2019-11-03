@@ -29,7 +29,7 @@ namespace DormyWebService.ViewModels.RoomViewModels.ArrangeRoom
             {
                 StudentId = s.StudentId,
                 Email = s.Email,
-                RoomId = s.RoomId,
+                RoomId = s.RoomId ?? -1,
                 RoomName = rooms.Find(r => s.RoomId != null && r.RoomId == s.RoomId.Value).Name,
                 StudentName = s.Name,
             }).ToList();
