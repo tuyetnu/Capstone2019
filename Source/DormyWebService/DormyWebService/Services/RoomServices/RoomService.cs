@@ -209,6 +209,10 @@ namespace DormyWebService.Services.RoomServices
             }
 
             student.RoomId = request.RoomId;
+            student.IdentityCardImageUrl = roomBooking.IdentityCardImageUrl;
+            student.PriorityImageUrl = roomBooking.IdentityCardImageUrl;
+            student.StudentCardImageUrl = roomBooking.StudentCardImageUrl;
+            student.PriorityType = roomBooking.PriorityType;
             await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
             room.CurrentNumberOfStudent++;
             await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
@@ -217,13 +221,13 @@ namespace DormyWebService.Services.RoomServices
             await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
 
             //Create new contract
-            var tempEndTime = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(roomBooking.Month);
+            var tempEndTime = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(roomBooking.Month - 1);
             var contract = new Contract()
             {
                 CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 LastUpdate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 StartDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
-                EndDate = new DateTime(tempEndTime.Year, tempEndTime.Month, DateTime.DaysInMonth(tempEndTime.Year, tempEndTime.Month)),
+                EndDate = new DateTime(tempEndTime.Year, tempEndTime.Month, DateTime.DaysInMonth(tempEndTime.Year, tempEndTime.Month), 23,59,59),
                 Status = ContractStatus.Active,
                 StudentId = student.StudentId,
             };

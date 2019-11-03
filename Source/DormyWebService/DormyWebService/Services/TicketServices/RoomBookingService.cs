@@ -159,38 +159,7 @@ namespace DormyWebService.Services.TicketServices
 
             //Update to database
             roomBooking =
-                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
-
-            //If request is changed to complete
-            if (request.Status == RequestStatus.Complete)
-            {
-                //Get contract that have the same studentId
-                System.Diagnostics.Debug.WriteLine("roomBooking.StudentId: " + roomBooking.StudentId);
-                var tempContractList = (List<Contract>)await
-                    _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == roomBooking.StudentId);
-
-                //Create new contract if this student doesn't have any active contract
-                if (tempContractList != null && !tempContractList.Exists(c=>c.Status == ContractStatus.Active))
-                {
-                    var contract = new Contract()
-                    {
-                        StudentId = roomBooking.StudentId,
-                        CreatedDate = DateTime.Now.AddHours(7),
-                        LastUpdate = DateTime.Now.AddHours(7),
-                        //Set to Start of next month
-                        StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month +1, 1,
-                            0, 0, 0, DateTime.Now.Kind),
-                        Status = ContractStatus.NotActiveYet,
-                    };
-                    //Set end to StartDate + RoomBooking.Month
-                    contract.EndDate = contract.StartDate.AddMonths(roomBooking.Month);
-
-                    _repoWrapper.Contract.CreateAsyncWithoutSave(contract);
-                }
-            }
-
-            //Save to database at once
-            await _repoWrapper.Save();
+                    await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
 
             //Return mapped response
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
@@ -301,21 +270,26 @@ namespace DormyWebService.Services.TicketServices
             return roomBooking.Any();
         }
 
+        //Retry up to three times if fail
         [AutomaticRetry(Attempts = 3)]
         public async Task<bool> AutoRejectRoomBooking()
         {
+            var maxDay = await _repoWrapper.Param.FindByIdAsync(GlobalParams.ParamMaxDayForRoomBooking);
+
             var roomBookings =  (List<RoomBookingRequestForm>) await
-                _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Rejected);
+                _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved);
 
             if (roomBookings != null && roomBookings.Any())
             {
                 foreach (var roomBooking in roomBookings)
                 {
-                    roomBooking.Status = RequestStatus.Pending;
-                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
-                        roomBooking.RoomBookingRequestFormId);
+                    if (DateHelper.BusinessDaysUntil(roomBooking.CreatedDate, DateTime.Now.AddHours(GlobalParams.TimeZone)) > maxDay.Value)
+                    {
+                        roomBooking.Status = RequestStatus.Rejected;
+                        await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+                            roomBooking.RoomBookingRequestFormId);
+                    }
                 }
-
                 await _repoWrapper.Save();
             }
 

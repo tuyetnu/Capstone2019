@@ -100,24 +100,23 @@ namespace DormyWebService.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-//        [Authorize(Roles = Role.Staff)]
-//        [HttpPut("ChangeRoomBookingStatus")]
-//        public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(
-//            ResolveRoomBookingRequest request)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return BadRequest(ModelState);
-//            }
-//
-//            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected &&
-//                request.Status != RequestStatus.Complete)
-//            {
-//                return BadRequest("Status is Invalid, has to be Approved, Rejected or Complete");
-//            }
-//
-//            return await _roomBookingService.ResolveRequest(request);
-//        }
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ChangeRoomBookingStatus")]
+        public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(
+            ResolveRoomBookingRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected)
+            {
+                return BadRequest("Status is Invalid, has to be Approved, Rejected");
+            }
+
+            return await _roomBookingService.ResolveRequest(request);
+        }
 
         [HttpDelete("Debug/{RequestId}")]
         public async Task<ActionResult<bool>> DeleteRoomBooking(int RequestId)

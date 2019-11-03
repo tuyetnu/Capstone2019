@@ -279,7 +279,7 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.RoomBookingsController.DeleteRoomBooking(System.Int32)">
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.ChangeRoomBookingStatus(DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking.ResolveRoomBookingRequest)">
             <summary>
             Change status of a Room Booking Request, for staff
             </summary>
