@@ -66,7 +66,7 @@ namespace DormyWebService.Entities
             });
             modelBuilder.Entity<RoomsAndEquipmentTypes>().HasKey(x => new {
                 x.RoomId,
-                x.RoomTypeId
+                x.EquipmentTypeId
             });
 
             //Seed ParamType Table

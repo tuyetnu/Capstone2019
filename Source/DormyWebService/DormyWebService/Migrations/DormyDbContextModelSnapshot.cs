@@ -525,13 +525,15 @@ namespace DormyWebService.Migrations
                 {
                     b.Property<int>("RoomId");
 
-                    b.Property<int>("RoomTypeId");
+                    b.Property<int>("EquipmentTypeId");
 
                     b.Property<int>("Quantity");
 
                     b.Property<int>("RealQuantity");
 
-                    b.HasKey("RoomId", "RoomTypeId");
+                    b.HasKey("RoomId", "EquipmentTypeId");
+
+                    b.HasAlternateKey("EquipmentTypeId", "RoomId");
 
                     b.ToTable("AndEquipmentTypes");
                 });

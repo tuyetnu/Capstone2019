@@ -11,7 +11,7 @@ namespace DormyWebService.Entities.RoomEntities
         public Room Room { get; set; }
 
         [Key]
-        public int RoomTypeId { get; set; }
+        public int EquipmentTypeId { get; set; }
 
         [Required]
         public int Quantity { get; set; }
