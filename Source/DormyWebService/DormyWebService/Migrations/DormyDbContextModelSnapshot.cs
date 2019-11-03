@@ -521,6 +521,21 @@ namespace DormyWebService.Migrations
                     b.ToTable("RoomTypesAndEquipmentTypes");
                 });
 
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomsAndEquipmentTypes", b =>
+                {
+                    b.Property<int>("RoomId");
+
+                    b.Property<int>("RoomTypeId");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<int>("RealQuantity");
+
+                    b.HasKey("RoomId", "RoomTypeId");
+
+                    b.ToTable("AndEquipmentTypes");
+                });
+
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
                 {
                     b.Property<int>("CancelContractFormId")
@@ -820,6 +835,14 @@ namespace DormyWebService.Migrations
                     b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
                         .WithMany()
                         .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DormyWebService.Entities.RoomEntities.RoomsAndEquipmentTypes", b =>
+                {
+                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
