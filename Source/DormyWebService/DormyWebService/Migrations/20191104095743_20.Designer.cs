@@ -4,14 +4,16 @@ using DormyWebService.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    partial class DormyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191104095743_20")]
+    partial class _20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -535,7 +537,7 @@ namespace DormyWebService.Migrations
 
                     b.HasAlternateKey("EquipmentTypeId", "RoomId");
 
-                    b.ToTable("RoomsAndEquipmentTypes");
+                    b.ToTable("AndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>

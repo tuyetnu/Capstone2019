@@ -4,14 +4,16 @@ using DormyWebService.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    partial class DormyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191103170437_17")]
+    partial class _17
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,17 +527,15 @@ namespace DormyWebService.Migrations
                 {
                     b.Property<int>("RoomId");
 
-                    b.Property<int>("EquipmentTypeId");
+                    b.Property<int>("RoomTypeId");
 
                     b.Property<int>("Quantity");
 
                     b.Property<int>("RealQuantity");
 
-                    b.HasKey("RoomId", "EquipmentTypeId");
+                    b.HasKey("RoomId", "RoomTypeId");
 
-                    b.HasAlternateKey("EquipmentTypeId", "RoomId");
-
-                    b.ToTable("RoomsAndEquipmentTypes");
+                    b.ToTable("AndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
@@ -641,19 +641,19 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("IdentityCardImageUrl");
+                    b.Property<string>("IdentityCardImageUrl")
+                        .IsRequired();
 
                     b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("Month");
 
-                    b.Property<string>("PriorityImageUrl");
+                    b.Property<string>("PriorityImageUrl")
+                        .IsRequired();
 
                     b.Property<int>("PriorityType");
 
                     b.Property<string>("Reason");
-
-                    b.Property<DateTime>("RejectDate");
 
                     b.Property<int?>("RoomId");
 
@@ -662,7 +662,8 @@ namespace DormyWebService.Migrations
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<string>("StudentCardImageUrl");
+                    b.Property<string>("StudentCardImageUrl")
+                        .IsRequired();
 
                     b.Property<int>("StudentId");
 

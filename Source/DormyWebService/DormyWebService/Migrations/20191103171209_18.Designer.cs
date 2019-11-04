@@ -4,14 +4,16 @@ using DormyWebService.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    partial class DormyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191103171209_18")]
+    partial class _18
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -535,7 +537,7 @@ namespace DormyWebService.Migrations
 
                     b.HasAlternateKey("EquipmentTypeId", "RoomId");
 
-                    b.ToTable("RoomsAndEquipmentTypes");
+                    b.ToTable("AndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
@@ -641,19 +643,19 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("IdentityCardImageUrl");
+                    b.Property<string>("IdentityCardImageUrl")
+                        .IsRequired();
 
                     b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("Month");
 
-                    b.Property<string>("PriorityImageUrl");
+                    b.Property<string>("PriorityImageUrl")
+                        .IsRequired();
 
                     b.Property<int>("PriorityType");
 
                     b.Property<string>("Reason");
-
-                    b.Property<DateTime>("RejectDate");
 
                     b.Property<int?>("RoomId");
 
@@ -662,7 +664,8 @@ namespace DormyWebService.Migrations
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<string>("StudentCardImageUrl");
+                    b.Property<string>("StudentCardImageUrl")
+                        .IsRequired();
 
                     b.Property<int>("StudentId");
 

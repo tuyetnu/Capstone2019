@@ -138,10 +138,10 @@ namespace DormyWebService.Services.UserServices
             //Get current active contract of user
             var contracts = (List<Contract>) await _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == student.StudentId && c.Status == ContractStatus.Active);
 
-            if (contracts != null && contracts.Count == 1)
+            if (contracts != null && contracts.Count > 0)
             {
                 var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
-                result = (now.Month + 1) <= contracts[0].EndDate.Month;
+                result = now.AddMonths(1) <= contracts[0].EndDate;
             }
 
             return result;
@@ -357,9 +357,32 @@ namespace DormyWebService.Services.UserServices
             }
         }
 
-        public Task<bool> AutoResetEvaluationPoint()
+        public async Task<bool> AutoResetEvaluationPoint()
         {
-            throw new NotImplementedException();
+            //Get default training point to know what to reset point to
+            var defaultEvaluationPoint = await _paramService.FindById(GlobalParams.ParamDefaultEvaluationPoint);
+
+            var activeStudents = (List<Student>)
+                await _repoWrapper.Student.FindAllAsyncWithCondition(s => s.User.Status == UserStatus.Active);
+
+            //if students are found
+            if (activeStudents != null && activeStudents.Any())
+            {
+                //go through every active students
+                foreach (var student in activeStudents)
+                {
+                    if (defaultEvaluationPoint.Value != null)
+                    {
+                        student.EvaluationScore = defaultEvaluationPoint.Value.Value;
+                        await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+                    }
+                }
+
+                //Save all changes
+                await _repoWrapper.Save();
+            }
+
+            return true;
         }
 
         public async Task<bool> ResetEvaluationPoint()

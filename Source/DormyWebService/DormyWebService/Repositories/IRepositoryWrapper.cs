@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.NewsEntities;
 using DormyWebService.Repositories.ContractRepositories;
 using DormyWebService.Repositories.EquipmentRepositories;
@@ -37,6 +38,10 @@ namespace DormyWebService.Repositories
 
         IRoomRepository Room { get; }
         IBuildingRepository Building { get; }
+        IRoomGroupRepository RoomGroup { get; }
+        IRoomTypesAndEquipmentTypesRepository RoomTypesAndEquipmentTypes { get; }
+        IRoomGroupsAndStaffRepository RoomGroupsAndStaff { get; }
+        IRoomsAndEquipmentTypesRepository RoomsAndEquipmentTypes { get; }
         IContractRepository Contract { get; }
         IRenewContractRepository RenewContract { get;}
         ICancelContractRepository CancelContract { get;}
@@ -52,7 +57,5 @@ namespace DormyWebService.Repositories
         IRoomMonthlyBillRepository RoomMonthlyBill { get; }
 
         IStudentMonthlyBillRepository StudentMonthlyBill { get; }
-
-        IRoomTypesAndEquipmentTypesRepository RoomTypesAndEquipmentTypes { get; }
     }
 }

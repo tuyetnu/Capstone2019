@@ -11,6 +11,7 @@ using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Microsoft.AspNetCore.Authorization;
@@ -96,28 +97,56 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
+        /// Reject a room booking, for staff
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("RejectRoomBooking")]
+        public async Task<ActionResult<bool>> RejectRoomBooking(RejectRoomBookingRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _roomBookingService.RejectRoomBookingRequest(request);
+        }
+
+        /// <summary>
+        /// Complete a room booking and create new contract, for staff
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("CompleteRoomBooking/{id}")]
+        public async Task<ActionResult<bool>> CompleteRoomBooking(int id)
+        {
+            return await _roomBookingService.CompleteRoomBookingRequest(id);
+        }
+
+        /// <summary>
         /// Change status of a Room Booking Request, for staff
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-//        [Authorize(Roles = Role.Staff)]
-//        [HttpPut("ChangeRoomBookingStatus")]
-//        public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(
-//            ResolveRoomBookingRequest request)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return BadRequest(ModelState);
-//            }
-//
-//            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected &&
-//                request.Status != RequestStatus.Complete)
-//            {
-//                return BadRequest("Status is Invalid, has to be Approved, Rejected or Complete");
-//            }
-//
-//            return await _roomBookingService.ResolveRequest(request);
-//        }
+        //        [Authorize(Roles = Role.Staff)]
+        //        [HttpPut("ChangeRoomBookingStatus")]
+        //        public async Task<ActionResult<ResolveRoomBookingResponse>> ChangeRoomBookingStatus(
+        //            ResolveRoomBookingRequest request)
+        //        {
+        //            if (!ModelState.IsValid)
+        //            {
+        //                return BadRequest(ModelState);
+        //            }
+        //
+        //            if (request.Status != RequestStatus.Approved && request.Status != RequestStatus.Rejected)
+        //            {
+        //                return BadRequest("Status is Invalid, has to be Approved, Rejected");
+        //            }
+        //
+        //            return await _roomBookingService.ResolveRequest(request);
+        //        }
 
         [HttpDelete("Debug/{RequestId}")]
         public async Task<ActionResult<bool>> DeleteRoomBooking(int RequestId)

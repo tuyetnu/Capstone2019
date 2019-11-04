@@ -5,6 +5,7 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Utilities;
+using Microsoft.Extensions.Logging.Debug;
 using Sieve.Attributes;
 
 namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
@@ -57,6 +58,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
         [Sieve(CanFilter = true, CanSort = true)]
         public string RoomName { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string RejectDate { get; set; }
+
         public static GetRoomBookingResponse ResponseFromEntity(RoomBookingRequestForm roomBooking, Student student, Entities.ParamEntities.Param roomType, Room room) 
         {
             return new GetRoomBookingResponse(){
@@ -71,8 +75,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 Month = roomBooking.Month,
                 StudentCardNumber = student.StudentCardNumber,
                 TargetRoomTypeName = roomType.Name,
-                RoomId = room?.RoomId,
-                RoomName = room?.Name
+                RoomId = room?.RoomId ?? -1,
+                RoomName = room?.Name ?? "null",
+                RejectDate = roomBooking.RejectDate.ToString(GlobalParams.DateTimeResponseFormat)
             };
         }
     }

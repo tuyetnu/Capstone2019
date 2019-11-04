@@ -4,6 +4,7 @@ using DormyWebService.Entities.TicketEntities;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 
@@ -16,6 +17,10 @@ namespace DormyWebService.Services.TicketServices
         Task<SendRoomBookingResponse> SendRequest(SendRoomBookingRequest request);
 
         Task<bool> EditRoomRequest(EditRoomBookingRequest request);
+
+        Task<bool> RejectRoomBookingRequest(RejectRoomBookingRequest request);
+
+        Task<bool> CompleteRoomBookingRequest(int id);
 
         Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request);
 

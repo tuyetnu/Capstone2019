@@ -27,6 +27,10 @@ namespace DormyWebService.Repositories
         private IEquipmentRepository _equipment;
         private IRoomRepository _room;
         private IBuildingRepository _building;
+        private IRoomGroupRepository _roomGroup;
+        private IRoomGroupsAndStaffRepository _roomGroupsAndStaff;
+        private IRoomTypesAndEquipmentTypesRepository _roomTypesAndEquipmentTypes;
+        private IRoomsAndEquipmentTypesRepository _roomsAndEquipmentTypes;
         private IContractRepository _contract;
         private IRenewContractRepository _renewContract;
         private ICancelContractRepository _cancelContract;
@@ -36,7 +40,6 @@ namespace DormyWebService.Repositories
         private IMoneyTransactionRepository _moneyTransaction;
         private IRoomMonthlyBillRepository _roomMonthlyBill;
         private IStudentMonthlyBillRepository _studentMonthlyBill;
-        private IRoomTypesAndEquipmentTypesRepository _roomTypesAndEquipmentTypes;
         public RepositoryWrapper(DormyDbContext context)
         {
             Context = context;
@@ -71,6 +74,10 @@ namespace DormyWebService.Repositories
         public IEquipmentRepository Equipment => _equipment ?? (_equipment = new EquipmentRepositories.EquipmentRepository(Context));
         public IRoomRepository Room => _room ?? (_room = new RoomRepository(Context));
         public IBuildingRepository Building => _building ?? (_building = new BuildingRepository(Context));
+        public IRoomGroupRepository RoomGroup => _roomGroup ?? (_roomGroup = new RoomGroupRepository(Context));
+        public IRoomsAndEquipmentTypesRepository RoomsAndEquipmentTypes => _roomsAndEquipmentTypes ?? (_roomsAndEquipmentTypes = new RoomsAndEquipmentTypesRepository(Context));
+        public IRoomGroupsAndStaffRepository RoomGroupsAndStaff => _roomGroupsAndStaff ?? (_roomGroupsAndStaff = new RoomGroupsAndStaffRepository(Context));
+        public IRoomTypesAndEquipmentTypesRepository RoomTypesAndEquipmentTypes => _roomTypesAndEquipmentTypes ?? (_roomTypesAndEquipmentTypes = new RoomTypesAndEquipmentTypesRepository(Context));
         public IContractRepository Contract => _contract ?? (_contract = new ContractRepository(Context));
         public IRenewContractRepository RenewContract => _renewContract ?? (_renewContract = new RenewContractRepository(Context));
         public ICancelContractRepository CancelContract => _cancelContract ?? (_cancelContract = new CancelContractRepository(Context));
@@ -80,6 +87,5 @@ namespace DormyWebService.Repositories
         public IMoneyTransactionRepository MoneyTransaction => _moneyTransaction ?? (_moneyTransaction = new MoneyTransactionRepository(Context));
         public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(Context));
         public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(Context));
-        public IRoomTypesAndEquipmentTypesRepository RoomTypesAndEquipmentTypes => _roomTypesAndEquipmentTypes ?? (_roomTypesAndEquipmentTypes = new RoomTypesAndEquipmentTypesRepository(Context));
     }
 }

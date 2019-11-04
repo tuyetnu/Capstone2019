@@ -5,7 +5,6 @@ _ReSharper.*/
 *.sdf
 bin/
 obj/
-Debug/
 Release/
 *.opensdf
 *.tlog

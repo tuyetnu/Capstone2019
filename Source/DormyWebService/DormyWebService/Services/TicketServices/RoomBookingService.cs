@@ -16,6 +16,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Hangfire;
@@ -87,8 +88,16 @@ namespace DormyWebService.Services.TicketServices
                 }
             }
 
+            //Get max day for approving room booking
+            var maxDayForApproveRoomBookingParam =
+                await _repoWrapper.Param.FindByIdAsync(GlobalParams.MaxDayForApproveRoomBooking);
+            if (maxDayForApproveRoomBookingParam?.Value == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: There are already active booking requests for this account");
+            }
+
             //Create new room booking from request
-            var result = SendRoomBookingRequest.NewEntityFromRequest(request);
+            var result = SendRoomBookingRequest.NewEntityFromRequest(request, maxDayForApproveRoomBookingParam.Value.Value);
 
             //Create in database
             result = await _repoWrapper.RoomBooking.CreateAsync(result);
@@ -128,6 +137,75 @@ namespace DormyWebService.Services.TicketServices
             return true;
         }
 
+        public async Task<bool> RejectRoomBookingRequest(RejectRoomBookingRequest request)
+        {
+            var roomBooking = await FindById(request.RoomBookingId);
+
+            switch (roomBooking.Status)
+            {
+                case RequestStatus.Complete:
+                case RequestStatus.Rejected:
+                    return false;
+                case RequestStatus.Approved:
+                {
+                    var student = await _studentService.FindById(roomBooking.StudentId);
+                    if (student.RoomId == null)
+                    {
+                        return false;
+                    }
+
+                    var room = await _repoWrapper.Room.FindByIdAsync(student.RoomId.Value);
+                    student.RoomId = null;
+                    room.CurrentNumberOfStudent--;
+                    roomBooking.RoomId = null;
+                    await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+                    await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+                    break;
+                }
+            }
+
+            roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            roomBooking.Status = RequestStatus.Rejected;
+            roomBooking.Reason = request.Reason;
+
+            await _repoWrapper.Save();
+
+            return true;
+        }
+
+        public async Task<bool> CompleteRoomBookingRequest(int id)
+        {
+            var roomBooking = await FindById(id);
+            switch (roomBooking.Status)
+            {
+                case RequestStatus.Approved:
+                    roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
+                    roomBooking.Status = RequestStatus.Complete;
+                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
+                    break;
+                //If request status is not approved, return false
+                default:
+                    return false;
+            }
+
+            //Create new contract
+            var tempEndTime = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(roomBooking.Month - 1);
+            var contract = new Contract()
+            {
+                CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                LastUpdate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                StartDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                EndDate = new DateTime(tempEndTime.Year, tempEndTime.Month, DateTime.DaysInMonth(tempEndTime.Year, tempEndTime.Month), 23, 59, 59),
+                Status = ContractStatus.Active,
+                StudentId = roomBooking.StudentId,
+            };
+            _repoWrapper.Contract.CreateAsyncWithoutSave(contract);
+
+            await _repoWrapper.Save();
+
+            return true;
+        }
+
         public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)
         {
             //Check if this staff exist
@@ -159,38 +237,7 @@ namespace DormyWebService.Services.TicketServices
 
             //Update to database
             roomBooking =
-                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
-
-            //If request is changed to complete
-            if (request.Status == RequestStatus.Complete)
-            {
-                //Get contract that have the same studentId
-                System.Diagnostics.Debug.WriteLine("roomBooking.StudentId: " + roomBooking.StudentId);
-                var tempContractList = (List<Contract>)await
-                    _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == roomBooking.StudentId);
-
-                //Create new contract if this student doesn't have any active contract
-                if (tempContractList != null && !tempContractList.Exists(c=>c.Status == ContractStatus.Active))
-                {
-                    var contract = new Contract()
-                    {
-                        StudentId = roomBooking.StudentId,
-                        CreatedDate = DateTime.Now.AddHours(7),
-                        LastUpdate = DateTime.Now.AddHours(7),
-                        //Set to Start of next month
-                        StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month +1, 1,
-                            0, 0, 0, DateTime.Now.Kind),
-                        Status = ContractStatus.NotActiveYet,
-                    };
-                    //Set end to StartDate + RoomBooking.Month
-                    contract.EndDate = contract.StartDate.AddMonths(roomBooking.Month);
-
-                    _repoWrapper.Contract.CreateAsyncWithoutSave(contract);
-                }
-            }
-
-            //Save to database at once
-            await _repoWrapper.Save();
+                    await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
 
             //Return mapped response
             return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
@@ -301,22 +348,59 @@ namespace DormyWebService.Services.TicketServices
             return roomBooking.Any();
         }
 
+        //Retry up to three times if fail
         [AutomaticRetry(Attempts = 3)]
         public async Task<bool> AutoRejectRoomBooking()
         {
             var roomBookings =  (List<RoomBookingRequestForm>) await
-                _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Rejected);
+                _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved);
 
             if (roomBookings != null && roomBookings.Any())
             {
+                var hasChanged = false;
                 foreach (var roomBooking in roomBookings)
                 {
-                    roomBooking.Status = RequestStatus.Pending;
-                    await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
-                        roomBooking.RoomBookingRequestFormId);
+                    //If now is after reject date, reject room booking
+                    if (DateTime.Now.AddHours(GlobalParams.TimeZone) > roomBooking.RejectDate)
+                    {
+                        //If request is already approve, get student out of the room
+                        if (roomBooking.Status == RequestStatus.Approved && roomBooking.RoomId != null)
+                        {
+                            //Get student and room from room booking
+                            var student = await _repoWrapper.Student.FindByIdAsync(roomBooking.StudentId);
+                            var room = await _repoWrapper.Room.FindByIdAsync(roomBooking.RoomId.Value);
+
+                            if (student!=null && room !=null)
+                            {
+                                student.RoomId = null;
+                                room.CurrentNumberOfStudent--;
+                                roomBooking.Status = RequestStatus.Rejected;
+                                roomBooking.Reason = GlobalParams.DefaultAutoRejectRoomBookingReason;
+                                await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+                                await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+                                await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+                                    roomBooking.RoomBookingRequestFormId);
+                                hasChanged = true;
+                            }
+                        }
+                        //If request is not approved
+                        else
+                        {
+                            roomBooking.Status = RequestStatus.Rejected;
+                            roomBooking.Reason = GlobalParams.DefaultAutoRejectRoomBookingReason;
+                            await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+                                roomBooking.RoomBookingRequestFormId);
+                            hasChanged = true;
+                        }
+                    }
                 }
 
-                await _repoWrapper.Save();
+                //If there was change, save
+                if (hasChanged)
+                {
+                    await _repoWrapper.Save();
+                }
+                
             }
 
             return true;
