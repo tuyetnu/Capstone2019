@@ -57,46 +57,51 @@ namespace DormyWebService.Services.RoomServices
             return result;
         }
 
-        public async Task<CreateRoomResponse> CreateRoom(CreateRoomRequest requestModel)
+        public async Task<List<Room>> ParseRoomAsync(List<CreateRoomRequest> createRoomRequests)
         {
-            //Check if room type exists
-            if (!await _param.IsOfParamType(requestModel.RoomType, GlobalParams.ParamTypeRoomType))
+            List<Room> rooms = new List<Room>();
+            foreach (CreateRoomRequest createRoomRequest in createRoomRequests)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: RoomType is not valid");
-            }
-
-            var room = await _repoWrapper.Room.CreateAsync(CreateRoomRequest.NewRoomFromRequest(requestModel));
-
-            //If there are equipments
-            if (EnumerableExtensions.Any(requestModel.EquipmentIds))
-            {
-                foreach (var equipmentId in requestModel.EquipmentIds)
+                Room room = CreateRoomRequest.NewRoomFromRequest(createRoomRequest);
+                Param param = await _repoWrapper.Param.FindByIdAsync(createRoomRequest.RoomType);
+                if (param.Name == "Standard Room")
                 {
-                    //Find if equipment exists
-                    var equipment = await _repoWrapper.Equipment.FindByIdAsync(equipmentId);
-                    if (equipment == null)
-                    {
-                        throw new HttpStatusCodeException(HttpStatusCode.NotFound,
-                            "RoomService: Equipment with id " + equipmentId + " Is not found");
-                    }
-
-                    //Update room id for the found equipment
-                    if (equipment.RoomId != room.RoomId)
-                    {
-                        equipment.RoomId = room.RoomId;
-                        await _repoWrapper.Equipment.UpdateAsyncWithoutSave(equipment,
-                            equipment.EquipmentId);
-                    }
+                    room.Capacity = 8;
                 }
-
-                //Save multiple records
-                await _repoWrapper.Save();
+                else
+                {
+                    room.Capacity = 4;
+                }
+                room.Price = param.DecimalValue.Value;
+                List<RoomTypesAndEquipmentTypes> roomTypesAndEquipmentTypes = (await _repoWrapper.RoomTypesAndEquipmentTypes.FindAllAsyncWithCondition(x => x.RoomTypeId == param.ParamId)).ToList();
+               foreach(RoomTypesAndEquipmentTypes roomTypesAndEquipmentType in roomTypesAndEquipmentTypes)
+                {
+                    List<Equipment> equipments= (await _repoWrapper.Equipment.FindAllAsyncWithCondition(x => x.EquipmentTypeId == roomTypesAndEquipmentType.EquipmentTypeId && x.RoomId == null)).Take(roomTypesAndEquipmentType.Amount).ToList();
+                    room.Equipments = equipments;
+                }
+                rooms.Add(room);
             }
+            return rooms;
+        }
 
-            return new CreateRoomResponse()
+        public async Task<BuildingResponse> CreateBuilding(CreateBuildingRequest requestModel)
+        {
+            try
             {
-                RoomId = room.RoomId
-            };
+                Building building = CreateBuildingRequest.NewBuildingAndRoomsFromRequest(requestModel);
+                building.Rooms = await ParseRoomAsync(requestModel.CreateRoomRequests);
+                var result = await _repoWrapper.Building.CreateAsync(building);
+                await _repoWrapper.Save();
+                return new BuildingResponse()
+                {
+                    BuildingId = result.BuildingId
+                };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
         }
 
         public async Task<List<Room>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize)
@@ -139,7 +144,7 @@ namespace DormyWebService.Services.RoomServices
             room = await _repoWrapper.Room.UpdateAsync(room, room.RoomId);
 
             var equipments =
-                (List<Equipment>) await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => e.RoomId == room.RoomId);
+                (List<Equipment>)await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => e.RoomId == room.RoomId);
             List<int> equipmentIds = null;
 
             if (EnumerableExtensions.Any(equipments))
@@ -190,7 +195,7 @@ namespace DormyWebService.Services.RoomServices
             }
 
             //Sort room list sorted by available spot
-            availableRooms.Sort((x,y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
+            availableRooms.Sort((x, y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
 
             var arrangedStudents = new List<ImportStudentAndRequest>();
             var unArrangedStudents = new List<Student>();
@@ -261,13 +266,13 @@ namespace DormyWebService.Services.RoomServices
             await _repoWrapper.Save();
 
             //If save is successful, preparing response message
-            return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents,unArrangedStudents,arrangedRooms);
+            return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents, unArrangedStudents, arrangedRooms);
         }
 
         public async Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo()
         {
             //Get All active rooms with vacancy in database
-            var rooms = (List<Room>) await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.RoomStatus == RoomStatus.Active && r.CurrentNumberOfStudent < r.Capacity);
+            var rooms = (List<Room>)await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.RoomStatus == RoomStatus.Active && r.CurrentNumberOfStudent < r.Capacity);
 
             if (rooms == null || !rooms.Any())
             {
@@ -276,8 +281,8 @@ namespace DormyWebService.Services.RoomServices
 
             //Get All Room Types
             var roomTypes =
-                (List<Param>) await _repoWrapper.Param.FindAllAsyncWithCondition(p =>
-                    p.ParamTypeId == GlobalParams.ParamTypeRoomType);
+                (List<Param>)await _repoWrapper.Param.FindAllAsyncWithCondition(p =>
+                   p.ParamTypeId == GlobalParams.ParamTypeRoomType);
 
             if (roomTypes == null || !roomTypes.Any())
             {
@@ -310,19 +315,25 @@ namespace DormyWebService.Services.RoomServices
 
             return result;
         }
-//
-//        private List<Room> SplitRoomByGender(List<Room> src, bool gender)
-//        {
-//            return src.Where(room => room.Gender == gender).ToList();
-//        }
 
-//        private List<Student> ArrangRoom(List<Room> rooms, List<Student> students)
-//        {
-//            //Go through each room
-//            foreach (var room in rooms)
-//            {
-//                if
-//            }
-//        }
+        public async Task<List<Building>> GetAllBuilding()
+        {
+            return (await _repoWrapper.Building.FindAllAsync()).ToList();
+        }
+
+        //
+        //        private List<Room> SplitRoomByGender(List<Room> src, bool gender)
+        //        {
+        //            return src.Where(room => room.Gender == gender).ToList();
+        //        }
+
+        //        private List<Student> ArrangRoom(List<Room> rooms, List<Student> students)
+        //        {
+        //            //Go through each room
+        //            foreach (var room in rooms)
+        //            {
+        //                if
+        //            }
+        //        }
     }
 }

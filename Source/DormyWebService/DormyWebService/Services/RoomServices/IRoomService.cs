@@ -14,10 +14,14 @@ namespace DormyWebService.Services.RoomServices
     public interface IRoomService
     {
         Task<Room> FindById(int id);
-        Task<CreateRoomResponse> CreateRoom(CreateRoomRequest requestModel);
+        Task<List<Room>> ParseRoomAsync(List<CreateRoomRequest> createRoomRequests);
+        Task<BuildingResponse> CreateBuilding(CreateBuildingRequest requestModel);
         Task<List<Room>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize);
         Task<UpdateRoomResponse> UpdateRoom(UpdateRoomRequest requestModel);
         Task<ArrangeRoomResponse> ImportRoomBookingRequests(List<ImportRoomBookingRequest> requests);
         Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo();
+        Task<List<Building>> GetAllBuilding();
+        Task<ArrangeRoomResponseStudent> ApproveOneRequest(int requestId);
+        Task<bool> SaveArrangeOneApprovedRequest(ArrangeRoomResponseStudent request);
     }
 }

@@ -57,25 +57,26 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
-        /// Create Room with multiple existing equipments, For Admin
+        /// Create Building with rooms, For Admin
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [Authorize(Roles = Role.Admin)]
-        [HttpPost]
-        public async Task<ActionResult<CreateRoomResponse>> CreateRoom(CreateRoomRequest request)
+        [HttpPost("Building")]
+        public async Task<ActionResult<BuildingResponse>> CreateBuilding(CreateBuildingRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            return await _room.CreateBuilding(request);
+        }
 
-            if (!RoomStatus.IsRoomStatus(request.RoomStatus))
-            {
-                return BadRequest("RoomsController: RoomStatus is invalid. Must be: " + RoomStatus.ListAllStatuses());
-            }
-
-            return await _room.CreateRoom(request);
+        [Authorize(Roles = Role.Admin)]
+        [HttpGet("Building")]
+        public async Task<List<Building>> GetAllBuilding()
+        {
+            return await _room.GetAllBuilding();
         }
 
         /// <summary>

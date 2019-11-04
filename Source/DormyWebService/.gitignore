@@ -1,0 +1,19 @@
+/build/
+*.suo
+*.user
+_ReSharper.*/
+*.sdf
+bin/
+obj/
+Release/
+*.opensdf
+*.tlog
+*.log
+TestResult.xml
+*.VisualState.xml
+Version.cs
+Version.h
+Version.cpp
+
+# Visual Studo 2015 cache/options directory
+.vs/

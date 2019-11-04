@@ -40,7 +40,6 @@ namespace DormyWebService.Repositories
         private IMoneyTransactionRepository _moneyTransaction;
         private IRoomMonthlyBillRepository _roomMonthlyBill;
         private IStudentMonthlyBillRepository _studentMonthlyBill;
-
         public RepositoryWrapper(DormyDbContext context)
         {
             Context = context;
