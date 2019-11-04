@@ -7,5 +7,6 @@ namespace DormyWebService.Repositories.RoomRepositories
     public interface IRoomRepository : IRepository<Room>
     {
         Task<List<Room>> GetAllActiveRoomSortedByVacancy();
+        Task<List<Room>> GetAllActiveRoomWithSpecificGenderSortedByVacancy(bool gender);
     }
 }

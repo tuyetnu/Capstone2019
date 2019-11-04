@@ -13,6 +13,7 @@ using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
@@ -132,9 +133,50 @@ namespace DormyWebService.Services.TicketServices
             roomBooking = EditRoomBookingRequest.UpdateFromRequest(roomBooking,request);
 
             //Save to database
-            roomBooking = await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
+            await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
 
             return true;
+        }
+
+        public async Task<ArrangeRoomResponseStudent> ApproveRoomBookingRequest(int id)
+        {
+            var roomBooking = await FindById(id);
+
+            //Check if room request
+            if (roomBooking.Status != RequestStatus.Pending)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomService: Request is not a pending request");
+            }
+
+            //Get student by id in room booking
+            var student = await _repoWrapper.Student.FindByIdAsync(roomBooking.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Student not found");
+            }
+
+            //Get active room with appropriate gender sorted by ascending room vacancy
+            var rooms = await _repoWrapper.Room.GetAllActiveRoomWithSpecificGenderSortedByVacancy(student.Gender);
+            if (rooms == null || !rooms.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Suitable Room not found");
+            }
+
+            var room = rooms[0];
+
+            //Attach room's id to student
+            student.RoomId = room.RoomId;
+            room.CurrentNumberOfStudent++;
+            roomBooking.Status = RequestStatus.Approved;
+            var maxDayForCompleteRoomBooking = await _paramService.FindById(GlobalParams.MaxDayForCompleteRoomBooking);
+            if (maxDayForCompleteRoomBooking?.Value == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: MaxDayForCompleteRoomBooking not found");
+            }
+            var rejectDate = DateHelper.AddBusinessDays(DateTime.Now.AddHours(GlobalParams.TimeZone), maxDayForCompleteRoomBooking.Value.Value);
+            roomBooking.RejectDate = DateTime.Now.AddHours(GlobalParams.TimeZone);
+
+            return ArrangeRoomResponseStudent.ResponseFromEntity(student, rooms[0], roomBooking);
         }
 
         public async Task<bool> RejectRoomBookingRequest(RejectRoomBookingRequest request)
@@ -204,43 +246,6 @@ namespace DormyWebService.Services.TicketServices
             await _repoWrapper.Save();
 
             return true;
-        }
-
-        public async Task<ResolveRoomBookingResponse> ResolveRequest(ResolveRoomBookingRequest request)
-        {
-            //Check if this staff exist
-            var staff = await _repoWrapper.Staff.FindByIdAsync(request.StaffId);
-
-            if (staff == null)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: Provide StaffId is not a staff");
-            }
-
-            //Check if Room Booking Request Exists
-            var roomBooking = await FindById(request.RoomBookingRequestFormId);
-
-            if (roomBooking.Status == request.Status)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: This request already has this status");
-            }
-
-            if (roomBooking.Status == RequestStatus.Complete)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomBookingService: This request is already completed, can't change it to anything else''");
-            }
-
-            //Update information into DataSet
-            roomBooking = _mapper.Map(request, roomBooking);
-
-            //Update Last Updated Date
-            roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
-
-            //Update to database
-            roomBooking =
-                    await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
-
-            //Return mapped response
-            return _mapper.Map<ResolveRoomBookingResponse>(roomBooking);
         }
 
         public async Task<AdvancedGetRoomBookingResponse> AdvancedGetRoomRequest(string sorts, string filters, int? page, int? pageSize)
@@ -313,11 +318,6 @@ namespace DormyWebService.Services.TicketServices
             }
 
             return GetRoomBookingDetailResponse.ResponseFromEntity(roomBooking, student, roomType, priorityType, room);
-        }
-
-        public async Task<bool> DeleteRoomBooking(int id)
-        {
-            return await _repoWrapper.RoomBooking.DeleteAsync(await FindById(id)) > 0;
         }
 
         public async Task<bool> StudentHasRoomRequestWithStatus(int studentId, List<string> statuses)
