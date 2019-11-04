@@ -36,7 +36,7 @@ namespace DormyWebService.Repositories
         private IMoneyTransactionRepository _moneyTransaction;
         private IRoomMonthlyBillRepository _roomMonthlyBill;
         private IStudentMonthlyBillRepository _studentMonthlyBill;
-
+        private IRoomTypesAndEquipmentTypesRepository _roomTypesAndEquipmentTypes;
         public RepositoryWrapper(DormyDbContext context)
         {
             Context = context;
@@ -80,5 +80,6 @@ namespace DormyWebService.Repositories
         public IMoneyTransactionRepository MoneyTransaction => _moneyTransaction ?? (_moneyTransaction = new MoneyTransactionRepository(Context));
         public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(Context));
         public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(Context));
+        public IRoomTypesAndEquipmentTypesRepository RoomTypesAndEquipmentTypes => _roomTypesAndEquipmentTypes ?? (_roomTypesAndEquipmentTypes = new RoomTypesAndEquipmentTypesRepository(Context));
     }
 }

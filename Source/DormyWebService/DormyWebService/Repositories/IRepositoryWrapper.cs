@@ -52,5 +52,7 @@ namespace DormyWebService.Repositories
         IRoomMonthlyBillRepository RoomMonthlyBill { get; }
 
         IStudentMonthlyBillRepository StudentMonthlyBill { get; }
+
+        IRoomTypesAndEquipmentTypesRepository RoomTypesAndEquipmentTypes { get; }
     }
 }
