@@ -9,6 +9,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels;
 using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
+using DormyWebService.ViewModels.RoomViewModels.GetAllMissingEquipmentRoom;
 using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
@@ -24,10 +25,12 @@ namespace DormyWebService.Controllers
     public class RoomsController : ControllerBase
     {
         private readonly IRoomService _room;
+        private readonly IRoomsAndEquipmentTypesService _roomsAndEquipmentTypes;
 
-        public RoomsController(IRoomService room)
+        public RoomsController(IRoomService room, IRoomsAndEquipmentTypesService roomsAndEquipmentTypes)
         {
             _room = room;
+            _roomsAndEquipmentTypes = roomsAndEquipmentTypes;
         }
 
         /// <summary>
@@ -54,6 +57,22 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<List<GetRoomTypeInfoResponse>>> GetRoomTypeInfo()
         {
             return await _room.GetRoomTypeInfo();
+        }
+
+        /// <summary>
+        /// Get list of missing equipment type, for admin and staff
+        /// </summary>
+        /// <param name="sorts"></param>
+        /// <param name="filters"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("GetAllMissingEquipmentRoom")]
+        public async Task<ActionResult<AdvancedGetAllMissingEquipmentRoomResponse>> GetAllMissingEquipmentRoom(
+            string sorts, string filters, int? page, int? pageSize)
+        {
+            return await _roomsAndEquipmentTypes.GetAllMissingEquipmentRoom(sorts, filters, page, pageSize);
         }
 
         /// <summary>
