@@ -79,6 +79,13 @@ namespace DormyWebService.Controllers
             return await _room.GetAllBuilding();
         }
 
+        [Authorize(Roles = Role.Admin)]
+        [HttpGet("MissingEquipmentRoom")]
+        public async Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom()
+        {
+            return await _room.GetAllMissingEquipmentRoom();
+        }
+
         /// <summary>
         /// Update Room information, for admin, equipment is updated separately
         /// </summary>
