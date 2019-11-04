@@ -154,7 +154,7 @@ namespace DormyWebService.Services.RoomServices
         /// </summary>
         /// <param name="requestId">RoomBooking id</param>
         /// <returns></returns>
-        public async Task<ArrangeRoomResponseStudent> ArrangeOneApprovedRequest(int requestId)
+        public async Task<ArrangeRoomResponseStudent> ApproveOneRequest(int requestId)
         {
             //Get room booking from id
             var roomBooking = await _repoWrapper.RoomBooking.FindByIdAsync(requestId);
@@ -360,7 +360,7 @@ namespace DormyWebService.Services.RoomServices
             foreach (var room in rooms)
             {
                 //If result list doesn't have this room type
-                if (!result.Exists(t=>t.RoomTypeId == room.RoomType))
+                if (!result.Exists(t=>t.RoomTypeId == room.RoomType && t.Gender == room.Gender))
                 {
                     var roomType = roomTypes.Find(t => t.ParamId == room.RoomType);
                     result.Add(new GetRoomTypeInfoResponse()
@@ -368,7 +368,8 @@ namespace DormyWebService.Services.RoomServices
                         RoomTypeId = room.RoomType,
                         RoomTypeName = roomType.Name,
                         RoomTypePrice = roomType.DecimalValue,
-                        RoomTypeVacancy = 0 + (room.Capacity - room.CurrentNumberOfStudent)
+                        RoomTypeVacancy = 0 + (room.Capacity - room.CurrentNumberOfStudent),
+                        Gender = room.Gender
                     });
                 }
                 else

@@ -116,14 +116,14 @@ namespace DormyWebService.Controllers
         /// <param name="roomBookingId"></param>
         /// <returns></returns>
         [Authorize(Roles = Role.Admin + "," + Role.Staff)]
-        [HttpGet("ArrangeOneApprovedRequest/{roomBookingId}")]
+        [HttpGet("ApproveOneRequest/{roomBookingId}")]
         public async Task<ActionResult<ArrangeRoomResponseStudent>> ArrangeOneApprovedRequest(int roomBookingId)
         {
-            return await _room.ArrangeOneApprovedRequest(roomBookingId);
+            return await _room.ApproveOneRequest(roomBookingId);
         }
 
         /// <summary>
-        /// Save result of ArrangeOneApprovedRequest and create a new contract, for staff and admin 
+        /// Save result of ApproveOneRequest and create a new contract, for staff and admin 
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
