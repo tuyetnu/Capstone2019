@@ -46,7 +46,7 @@ namespace DormyWebService.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("AdvancedGet")]
         public async Task<ActionResult<AdvancedGetEquipmentResponse>> AdvancedGetEquipment(string sorts, string filters, int? page, int? pageSize)
         {

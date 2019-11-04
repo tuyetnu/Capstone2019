@@ -111,28 +111,28 @@ namespace DormyWebService.Controllers
             return await _room.ImportRoomBookingRequests(requests);
         }
 
-//        /// <summary>
-//        /// Arrange one approved room booking request and return result without changing database, for staff and admin
-//        /// </summary>
-//        /// <param name="roomBookingId"></param>
-//        /// <returns></returns>
-//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
-//        [HttpGet("ApproveOneRequest/{roomBookingId}")]
-//        public async Task<ActionResult<ArrangeRoomResponseStudent>> ArrangeOneApprovedRequest(int roomBookingId)
-//        {
-//            return await _room.ApproveOneRequest(roomBookingId);
-//        }
-//
-//        /// <summary>
-//        /// Save result of ApproveOneRequest and create a new contract, for staff and admin 
-//        /// </summary>
-//        /// <param name="request"></param>
-//        /// <returns></returns>
-//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
-//        [HttpPost("SaveArrangeOneApprovedRequest")]
-//        public async Task<ActionResult<bool>> SaveArrangeOneApprovedRequest(ArrangeRoomResponseStudent request)
-//        {
-//            return await _room.SaveArrangeOneApprovedRequest(request);
-//        }
+        /// <summary>
+        /// Arrange one approved room booking request and return result without changing database, for staff and admin
+        /// </summary>
+        /// <param name="roomBookingId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("ApproveOneRequest/{roomBookingId}")]
+        public async Task<ActionResult<ArrangeRoomResponseStudent>> ArrangeOneApprovedRequest(int roomBookingId)
+        {
+            return await _room.ApproveOneRequest(roomBookingId);
+        }
+
+        /// <summary>
+        /// Save result of ApproveOneRequest and create a new contract, for staff and admin 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpPost("SaveArrangeOneApprovedRequest")]
+        public async Task<ActionResult<bool>> SaveArrangeOneApprovedRequest(ArrangeRoomResponseStudent request)
+        {
+            return await _room.SaveArrangeOneApprovedRequest(request);
+        }
     }
 }

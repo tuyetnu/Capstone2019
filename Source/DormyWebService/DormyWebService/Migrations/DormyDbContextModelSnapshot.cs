@@ -535,7 +535,7 @@ namespace DormyWebService.Migrations
 
                     b.HasAlternateKey("EquipmentTypeId", "RoomId");
 
-                    b.ToTable("RoomsAndEquipmentTypes");
+                    b.ToTable("AndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
