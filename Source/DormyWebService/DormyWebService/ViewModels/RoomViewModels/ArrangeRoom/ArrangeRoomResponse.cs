@@ -2,6 +2,7 @@
 using System.Linq;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 
 namespace DormyWebService.ViewModels.RoomViewModels.ArrangeRoom
 {
@@ -11,7 +12,7 @@ namespace DormyWebService.ViewModels.RoomViewModels.ArrangeRoom
         public List<ArrangeRoomResponseUnArrangedStudent> UnArrangedStudents { get; set; }
 
 
-        public static ArrangeRoomResponse ArrangeRoomListFromEntities(List<Student> arrangedStudents, List<Student> unArrangedStudents, List<Room> rooms)
+        public static ArrangeRoomResponse ArrangeRoomListFromEntities(List<ImportStudentAndRequest> arrangedStudents, List<Student> unArrangedStudents, List<Room> rooms)
         {
             var result = new ArrangeRoomResponse();
 
@@ -27,11 +28,12 @@ namespace DormyWebService.ViewModels.RoomViewModels.ArrangeRoom
 
             result.ArrangedStudents = arrangedStudents.Select(s => new ArrangeRoomResponseStudent()
             {
-                StudentId = s.StudentId,
-                Email = s.Email,
-                RoomId = s.RoomId ?? -1,
-                RoomName = rooms.Find(r => s.RoomId != null && r.RoomId == s.RoomId.Value).Name,
-                StudentName = s.Name,
+                StudentId = s.Student.StudentId,
+                Email = s.Student.Email,
+                RoomId = s.Student.RoomId ?? -1,
+                RoomName = rooms.Find(r => s.Student.RoomId != null && r.RoomId == s.Student.RoomId.Value).Name,
+                StudentName = s.Student.Name,
+                RoomBookingId = s.RoomBooking.RoomBookingRequestFormId
             }).ToList();
 
             result.UnArrangedStudents = unArrangedStudents.Select(s => new ArrangeRoomResponseUnArrangedStudent()

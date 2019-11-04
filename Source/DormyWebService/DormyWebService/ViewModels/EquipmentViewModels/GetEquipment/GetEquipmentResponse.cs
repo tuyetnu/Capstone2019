@@ -40,7 +40,13 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.GetEquipment
         public string CreatedDate { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime CreatedDateTime { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string LastUpdated { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime LastUpdatedDateTime { get; set; }
 
         public static GetEquipmentResponse ResponseFromEntity(Equipment equipment, Entities.ParamEntities.Param equipmentType, Room room)
         {
@@ -49,6 +55,8 @@ namespace DormyWebService.ViewModels.EquipmentViewModels.GetEquipment
                 Status = equipment.Status,
                 RoomId = room?.RoomId ?? -1,
                 RoomName = room?.Name ?? "null",
+                CreatedDateTime = equipment.CreatedDate,
+                LastUpdatedDateTime = equipment.LastUpdated,
                 CreatedDate = equipment.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = equipment.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
                 EquipmentId = equipment.EquipmentId,

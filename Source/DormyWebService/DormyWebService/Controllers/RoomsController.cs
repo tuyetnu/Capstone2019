@@ -11,6 +11,7 @@ using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
 using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -100,14 +101,14 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
-        /// Arrange all students with approved room booking requests, for staff and admin
+        /// Import list of roomBooking and arrange room for students, for staff and admin
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
-        [HttpGet("ArrangeAllApprovedRequest")]
-        public async Task<ActionResult<ArrangeRoomResponse>> ArrangeAllApprovedRequest()
+//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpPost("ImportRoomBooking")]
+        public async Task<ActionResult<ArrangeRoomResponse>> ImportRoomBooking(List<ImportRoomBookingRequest> requests)
         {
-            return await _room.ArrangeRoomForAllApprovedRequests();
+            return await _room.ImportRoomBookingRequests(requests);
         }
 
         /// <summary>

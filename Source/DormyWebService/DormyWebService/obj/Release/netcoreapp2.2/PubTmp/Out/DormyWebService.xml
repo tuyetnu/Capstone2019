@@ -279,7 +279,21 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.RoomBookingsController.ChangeRoomBookingStatus(DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking.ResolveRoomBookingRequest)">
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.RejectRoomBooking(DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking.RejectRoomBookingRequest)">
+            <summary>
+            Reject a room booking, for staff
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.CompleteRoomBooking(System.Int32)">
+            <summary>
+            Complete a room booking and create new contract, for staff
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DormyWebService.Controllers.RoomBookingsController.DeleteRoomBooking(System.Int32)">
             <summary>
             Change status of a Room Booking Request, for staff
             </summary>
@@ -316,9 +330,9 @@
             <param name="request"></param>
             <returns></returns>
         </member>
-        <member name="M:DormyWebService.Controllers.RoomsController.ArrangeAllApprovedRequest">
+        <member name="M:DormyWebService.Controllers.RoomsController.ImportRoomBooking(System.Collections.Generic.List{DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking.ImportRoomBookingRequest})">
             <summary>
-            Arrange all students with approved room booking requests, for staff and admin
+            Import list of roomBooking and arrange room for students, for staff and admin
             </summary>
             <returns></returns>
         </member>

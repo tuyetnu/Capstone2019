@@ -641,15 +641,13 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("IdentityCardImageUrl")
-                        .IsRequired();
+                    b.Property<string>("IdentityCardImageUrl");
 
                     b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("Month");
 
-                    b.Property<string>("PriorityImageUrl")
-                        .IsRequired();
+                    b.Property<string>("PriorityImageUrl");
 
                     b.Property<int>("PriorityType");
 
@@ -664,8 +662,7 @@ namespace DormyWebService.Migrations
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<string>("StudentCardImageUrl")
-                        .IsRequired();
+                    b.Property<string>("StudentCardImageUrl");
 
                     b.Property<int>("StudentId");
 

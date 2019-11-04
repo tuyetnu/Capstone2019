@@ -51,5 +51,7 @@
         //Default Evaluation Point
         public const int DefaultEvaluationPoint = 100;
         public const int DefaultContractRenewalEvaluationPointMargin = 50;
+
+        public const string DefaultAutoRejectRoomBookingReason = "Time expired";
     }
 }

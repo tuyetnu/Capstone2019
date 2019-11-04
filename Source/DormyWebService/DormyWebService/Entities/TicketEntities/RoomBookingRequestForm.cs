@@ -53,17 +53,14 @@ namespace DormyWebService.Entities.TicketEntities
 
         public string Reason { get; set; }
 
-        [Required]
         public string IdentityCardImageUrl { get; set; }
 
-        [Required]
         public string StudentCardImageUrl { get; set; }
 
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public int PriorityType { get; set; }
 
-        [Required]
         public string PriorityImageUrl { get; set; }
 
         [ForeignKey("Room")]
