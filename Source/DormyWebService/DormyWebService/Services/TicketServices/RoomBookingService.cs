@@ -174,9 +174,14 @@ namespace DormyWebService.Services.TicketServices
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: MaxDayForCompleteRoomBooking not found");
             }
             var rejectDate = DateHelper.AddBusinessDays(DateTime.Now.AddHours(GlobalParams.TimeZone), maxDayForCompleteRoomBooking.Value.Value);
-            roomBooking.RejectDate = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            roomBooking.RejectDate = new DateTime(rejectDate.Year, rejectDate.Month, rejectDate.Day, 17, 59, 0);
 
-            return ArrangeRoomResponseStudent.ResponseFromEntity(student, rooms[0], roomBooking);
+            await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+            await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+            await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
+            await _repoWrapper.Save();
+
+            return ArrangeRoomResponseStudent.ResponseFromEntity(student, room, roomBooking);
         }
 
         public async Task<bool> RejectRoomBookingRequest(RejectRoomBookingRequest request)

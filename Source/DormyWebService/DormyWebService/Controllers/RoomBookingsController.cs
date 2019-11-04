@@ -97,6 +97,18 @@ namespace DormyWebService.Controllers
         }
 
         /// <summary>
+        /// Approve a room booking and arrange room, for staff
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+//        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ApproveRoomBooking/{id}")]
+        public async Task<ActionResult<ArrangeRoomResponseStudent>> ApproveRoomBooking(int id)
+        {
+            return await _roomBookingService.ApproveRoomBookingRequest(id);
+        }
+
+        /// <summary>
         /// Reject a room booking, for staff
         /// </summary>
         /// <param name="request"></param>
