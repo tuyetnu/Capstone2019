@@ -225,6 +225,7 @@ namespace DormyWebService.Services.TicketServices
             var roomBooking = await FindById(id);
             switch (roomBooking.Status)
             {
+                //If the request is approved, update status
                 case RequestStatus.Approved:
                     roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
                     roomBooking.Status = RequestStatus.Complete;
@@ -234,6 +235,25 @@ namespace DormyWebService.Services.TicketServices
                 default:
                     return false;
             }
+
+            //Update images to student profile and 
+            var student = await _studentService.FindById(roomBooking.StudentId);
+            student.PriorityType = roomBooking.PriorityType;
+            if (roomBooking.IdentityCardImageUrl != null)
+            {
+                student.IdentityCardImageUrl = roomBooking.IdentityCardImageUrl;
+            }
+
+            if (roomBooking.PriorityImageUrl != null)
+            {
+                student.PriorityImageUrl = roomBooking.PriorityImageUrl;
+            }
+            if (roomBooking.StudentCardImageUrl != null)
+            {
+                student.IdentityCardImageUrl = roomBooking.StudentCardImageUrl;
+            }
+
+            await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
 
             //Create new contract
             var tempEndTime = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(roomBooking.Month - 1);
