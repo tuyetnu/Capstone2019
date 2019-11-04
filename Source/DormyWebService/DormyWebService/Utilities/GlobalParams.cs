@@ -20,6 +20,7 @@
         public const int ParamTypeRoomBookingParam = 10;
 
         //Param
+        public const int ParamNoPriorityType = 3;
         public const int ParamStandardRoomType = 11;
         public const int ParamServiceRoomType = 12;
         //DepositMoney Param
@@ -31,11 +32,8 @@
         public const int ParamDefaultEvaluationPoint = 19;
         public const int ParamContractRenewalEvaluationPointMargin = 20;
         public const int ParamMaxYearForStaying = 24;
-        public const int ParamMaxDayForRoomBooking = 25;
-
-        
-
-        
+        public const int MaxDayForApproveRoomBooking = 25;
+        public const int MaxDayForCompleteRoomBooking = 26;
 
         //Acceptable Decimal Mistake use for calculating money
         public const decimal AcceptableDecimalMistake = (decimal) 0.0001;
@@ -44,6 +42,8 @@
         public const int TimeZone = 7;
         public const string DateTimeResponseFormat = "dd/MM/yyyy HH:mm:ss";
         public const string BirthDayFormat = "dd/MM/yyyy";
+        public const int DefaultMaxDayForApproveRoomBooking = 2;
+        public const int DefaultMaxDayForCompleteRoomBooking = 2;
 
         //GUID Format, used for generating equipmentId
         public const string GuidFormat = "N";

@@ -9,9 +9,6 @@ namespace DormyWebService.Entities.TicketEntities
 {
     public class RoomBookingRequestForm
     {
-        //TODO: Nhớ làm đc đăng ký trong khoảng tg, ngày nào trong tuần, và khi nào thì request hết hạn.
-        //TODO: Nhớ làm bảng cho tùy chỉnh các khoản TG là khi nào.
-
         [Key]
         [Sieve(CanFilter = true, CanSort = true)]
         public int RoomBookingRequestFormId { get; set; }
@@ -23,6 +20,10 @@ namespace DormyWebService.Entities.TicketEntities
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public DateTime LastUpdated { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime RejectDate { get; set; }
 
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
@@ -69,5 +70,6 @@ namespace DormyWebService.Entities.TicketEntities
         public int? RoomId { get; set; }
 
         public Room Room { get; set; }
+
     }
 }

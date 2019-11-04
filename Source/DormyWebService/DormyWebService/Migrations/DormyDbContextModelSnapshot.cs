@@ -655,6 +655,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<string>("Reason");
 
+                    b.Property<DateTime>("RejectDate");
+
                     b.Property<int?>("RoomId");
 
                     b.Property<int?>("StaffId");

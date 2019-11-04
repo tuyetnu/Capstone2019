@@ -58,6 +58,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
         [Sieve(CanFilter = true, CanSort = true)]
         public string RoomName { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string RejectDate { get; set; }
+
         public static GetRoomBookingResponse ResponseFromEntity(RoomBookingRequestForm roomBooking, Student student, Entities.ParamEntities.Param roomType, Room room) 
         {
             return new GetRoomBookingResponse(){
@@ -74,7 +77,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 TargetRoomTypeName = roomType.Name,
                 RoomId = room?.RoomId ?? -1,
                 RoomName = room?.Name ?? "null",
-                
+                RejectDate = roomBooking.RejectDate.ToString(GlobalParams.DateTimeResponseFormat)
             };
         }
     }

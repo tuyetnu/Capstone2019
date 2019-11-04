@@ -87,8 +87,16 @@ namespace DormyWebService.Services.TicketServices
                 }
             }
 
+            //Get max day for approving room booking
+            var maxDayForApproveRoomBookingParam =
+                await _repoWrapper.Param.FindByIdAsync(GlobalParams.MaxDayForApproveRoomBooking);
+            if (maxDayForApproveRoomBookingParam?.Value == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomBookingService: There are already active booking requests for this account");
+            }
+
             //Create new room booking from request
-            var result = SendRoomBookingRequest.NewEntityFromRequest(request);
+            var result = SendRoomBookingRequest.NewEntityFromRequest(request, maxDayForApproveRoomBookingParam.Value.Value);
 
             //Create in database
             result = await _repoWrapper.RoomBooking.CreateAsync(result);
@@ -274,23 +282,53 @@ namespace DormyWebService.Services.TicketServices
         [AutomaticRetry(Attempts = 3)]
         public async Task<bool> AutoRejectRoomBooking()
         {
-            var maxDay = await _repoWrapper.Param.FindByIdAsync(GlobalParams.ParamMaxDayForRoomBooking);
-
             var roomBookings =  (List<RoomBookingRequestForm>) await
                 _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved);
 
             if (roomBookings != null && roomBookings.Any())
             {
+                var hasChanged = false;
                 foreach (var roomBooking in roomBookings)
                 {
-                    if (DateHelper.BusinessDaysUntil(roomBooking.CreatedDate, DateTime.Now.AddHours(GlobalParams.TimeZone)) > maxDay.Value)
+                    //If now is after reject date, reject room booking
+                    if (DateTime.Now.AddHours(GlobalParams.TimeZone) > roomBooking.RejectDate)
                     {
-                        roomBooking.Status = RequestStatus.Rejected;
-                        await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
-                            roomBooking.RoomBookingRequestFormId);
+                        //If request is already approve, get student out of the room
+                        if (roomBooking.Status == RequestStatus.Approved && roomBooking.RoomId != null)
+                        {
+                            //Get student and room from room booking
+                            var student = await _repoWrapper.Student.FindByIdAsync(roomBooking.StudentId);
+                            var room = await _repoWrapper.Room.FindByIdAsync(roomBooking.RoomId.Value);
+
+                            if (student!=null && room !=null)
+                            {
+                                student.RoomId = null;
+                                room.CurrentNumberOfStudent--;
+                                roomBooking.Status = RequestStatus.Rejected;
+                                await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+                                await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+                                await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+                                    roomBooking.RoomBookingRequestFormId);
+                                hasChanged = true;
+                            }
+                        }
+                        //If request is not approved
+                        else
+                        {
+                            roomBooking.Status = RequestStatus.Rejected;
+                            await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+                                roomBooking.RoomBookingRequestFormId);
+                            hasChanged = true;
+                        }
                     }
                 }
-                await _repoWrapper.Save();
+
+                //If there was change, save
+                if (hasChanged)
+                {
+                    await _repoWrapper.Save();
+                }
+                
             }
 
             return true;

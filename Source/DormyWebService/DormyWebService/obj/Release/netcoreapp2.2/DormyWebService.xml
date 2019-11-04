@@ -331,7 +331,7 @@
         </member>
         <member name="M:DormyWebService.Controllers.RoomsController.SaveArrangeOneApprovedRequest(DormyWebService.ViewModels.RoomViewModels.ArrangeRoom.ArrangeRoomResponseStudent)">
             <summary>
-            Save result of ArrangeOneApprovedRequest and create a new contract, for staff and admin 
+            Save result of ApproveOneRequest and create a new contract, for staff and admin 
             </summary>
             <param name="request"></param>
             <returns></returns>
@@ -422,7 +422,7 @@
             Change user role for debug
             </summary>
         </member>
-        <member name="M:DormyWebService.Services.RoomServices.RoomService.ArrangeOneApprovedRequest(System.Int32)">
+        <member name="M:DormyWebService.Services.RoomServices.RoomService.ApproveOneRequest(System.Int32)">
             <summary>
             arrange room for one request, and return result without saving to database
             </summary>

@@ -75,7 +75,7 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
                     Email = request.Email
                 },
                 Email = request.Email,
-                PriorityType = 3 
+                PriorityType = GlobalParams.ParamNoPriorityType 
         };
         }
     }

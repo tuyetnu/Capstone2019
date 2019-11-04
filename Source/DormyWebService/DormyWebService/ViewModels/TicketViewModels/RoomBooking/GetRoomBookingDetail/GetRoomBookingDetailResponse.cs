@@ -20,6 +20,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
         public string RoomType { get; set; }
         public string CreatedDate { get; set; }
         public string LastUpdated { get; set; }
+        public string RestrictDate { get; set; }
 
         public int RoomBookingId { get; set; }
         public int Month { get; set; }
@@ -53,6 +54,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 RoomBookingId = roomBooking.RoomBookingRequestFormId,
                 RoomId = room?.RoomId,
                 RoomName = room?.Name,
+                RestrictDate = roomBooking.RejectDate.ToString(GlobalParams.DateTimeResponseFormat)
             };
         }
     }
