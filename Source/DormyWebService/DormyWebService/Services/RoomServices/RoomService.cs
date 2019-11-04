@@ -74,10 +74,18 @@ namespace DormyWebService.Services.RoomServices
                 }
                 room.Price = param.DecimalValue.Value;
                 List<RoomTypesAndEquipmentTypes> roomTypesAndEquipmentTypes = (await _repoWrapper.RoomTypesAndEquipmentTypes.FindAllAsyncWithCondition(x => x.RoomTypeId == param.ParamId)).ToList();
-               foreach(RoomTypesAndEquipmentTypes roomTypesAndEquipmentType in roomTypesAndEquipmentTypes)
+                foreach (RoomTypesAndEquipmentTypes roomTypesAndEquipmentType in roomTypesAndEquipmentTypes)
                 {
-                    List<Equipment> equipments= (await _repoWrapper.Equipment.FindAllAsyncWithCondition(x => x.EquipmentTypeId == roomTypesAndEquipmentType.EquipmentTypeId && x.RoomId == null)).Take(roomTypesAndEquipmentType.Amount).ToList();
+                    List<Equipment> equipments = (await _repoWrapper.Equipment.FindAllAsyncWithCondition(x => x.EquipmentTypeId == roomTypesAndEquipmentType.EquipmentTypeId && x.RoomId == null)).Take(roomTypesAndEquipmentType.Amount).ToList();
                     room.Equipments = equipments;
+                    RoomsAndEquipmentTypes roomsAndEquipmentTypes = new RoomsAndEquipmentTypes
+                    {
+                        Room = room,
+                        EquipmentTypeId = roomTypesAndEquipmentType.EquipmentTypeId,
+                        Quantity = roomTypesAndEquipmentType.Amount,
+                        RealQuantity = equipments.Count
+                    };
+                    await _repoWrapper.RoomsAndEquipmentTypes.CreateAsync(roomsAndEquipmentTypes);
                 }
                 rooms.Add(room);
             }
@@ -233,7 +241,7 @@ namespace DormyWebService.Services.RoomServices
                 CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 LastUpdate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 StartDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
-                EndDate = new DateTime(tempEndTime.Year, tempEndTime.Month, DateTime.DaysInMonth(tempEndTime.Year, tempEndTime.Month), 23,59,59),
+                EndDate = new DateTime(tempEndTime.Year, tempEndTime.Month, DateTime.DaysInMonth(tempEndTime.Year, tempEndTime.Month), 23, 59, 59),
                 Status = ContractStatus.Active,
                 StudentId = student.StudentId,
             };
@@ -248,8 +256,8 @@ namespace DormyWebService.Services.RoomServices
         {
             //Get all students from email in request
             var students =
-                (List<Student>) await _repoWrapper.Student.FindAllAsyncWithCondition(s =>
-                    requests.Exists(r => r.Email == s.Email));
+                (List<Student>)await _repoWrapper.Student.FindAllAsyncWithCondition(s =>
+                   requests.Exists(r => r.Email == s.Email));
             if (students == null || !students.Any())
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No student is found");
@@ -270,7 +278,7 @@ namespace DormyWebService.Services.RoomServices
                 var roomBooking = await _repoWrapper.RoomBooking.CreateAsync(
                     ImportRoomBookingRequest.EntityFromRequest(request, student.StudentId,
                         maxDayForApproveRoomBooking.Value.Value));
-                importStudentAndRequests.Add(new ImportStudentAndRequest() {Student = student, RoomBooking = roomBooking});
+                importStudentAndRequests.Add(new ImportStudentAndRequest() { Student = student, RoomBooking = roomBooking });
             }
 
             //Get list of available room
@@ -320,7 +328,7 @@ namespace DormyWebService.Services.RoomServices
                             //Increase current student number of room
                             currentRoom.CurrentNumberOfStudent++;
                             //add student to arrangedStudentList to save to database 
-                            arrangedStudents.Add(new ImportStudentAndRequest(){Student = student, RoomBooking = roomBooking});
+                            arrangedStudents.Add(new ImportStudentAndRequest() { Student = student, RoomBooking = roomBooking });
                             //add room Id into request;
                             roomBooking.RoomId = currentRoom.RoomId;
                             //Pend request update
@@ -382,7 +390,7 @@ namespace DormyWebService.Services.RoomServices
             foreach (var room in rooms)
             {
                 //If result list doesn't have this room type
-                if (!result.Exists(t=>t.RoomTypeId == room.RoomType && t.Gender == room.Gender))
+                if (!result.Exists(t => t.RoomTypeId == room.RoomType && t.Gender == room.Gender))
                 {
                     var roomType = roomTypes.Find(t => t.ParamId == room.RoomType);
                     result.Add(new GetRoomTypeInfoResponse()
