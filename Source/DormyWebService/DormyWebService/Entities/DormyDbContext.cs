@@ -30,7 +30,7 @@ namespace DormyWebService.Entities
         public DbSet<RoomGroupsAndStaff> RoomGroupsAndStaff { get; set; }
         public DbSet<Equipment> Equipments { get; set; }
         public DbSet<RoomTypesAndEquipmentTypes> RoomTypesAndEquipmentTypes { get; set; }
-        public DbSet<RoomsAndEquipmentTypes> RoomsAndEquipmentTypes { get; set; }
+        public DbSet<RoomsAndEquipmentTypes> AndEquipmentTypes { get; set; }
         public DbSet<PricePerUnit> PricePerUnits { get; set; }
         public DbSet<MoneyTransaction> MoneyTransactions { get; set; }
         public DbSet<RoomMonthlyBill> RoomMonthlyBills { get; set; }
