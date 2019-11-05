@@ -12,7 +12,6 @@ using DormyWebService.ViewModels.NewsViewModels.CreateNews;
 using DormyWebService.ViewModels.NewsViewModels.GetNewsHeadlines;
 using DormyWebService.ViewModels.Param;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
-using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
@@ -37,9 +36,6 @@ namespace DormyWebService.Utilities
             CreateMap<News, CreateNewsResponse>();
             CreateMap<News, GetNewsHeadlinesResponse>();
             CreateMap<Param, ParamModelView>();
-
-            //Resolve Room Booking
-            CreateMap<ResolveRoomBookingRequest, RoomBookingRequestForm>();
 
             //GetEquipment
             CreateMap<Equipment, GetEquipmentResponse>();

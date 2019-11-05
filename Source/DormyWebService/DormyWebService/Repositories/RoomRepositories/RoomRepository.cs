@@ -31,5 +31,14 @@ namespace DormyWebService.Repositories.RoomRepositories
 
             return await rooms.AsNoTracking().ToListAsync();
         }
+
+        public async Task<List<Room>> GetAllActiveRoomWithSpecificGenderAndRoomTypeSortedByVacancy(bool gender, int roomType)
+        {
+            var rooms = from room in Context.Rooms where room.RoomStatus == RoomStatus.Active && (room.Capacity - room.CurrentNumberOfStudent) > 0 && room.Gender == gender && room.RoomType == roomType select room;
+
+            rooms = rooms.OrderBy(r => (r.Capacity - r.CurrentNumberOfStudent));
+
+            return await rooms.AsNoTracking().ToListAsync();
+        }
     }
 }

@@ -14,10 +14,9 @@ using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
-using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.ApproveRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer;
-using DormyWebService.ViewModels.TicketViewModels.RoomTransferRequestViewModels.ResolveRoomTransferRequest;
 using Hangfire;
 using Sieve.Models;
 using Sieve.Services;
@@ -160,6 +159,38 @@ namespace DormyWebService.Services.TicketServices
             {
                 RoomTransferFormId = result.RoomTransferRequestFormId
             };
+        }
+
+        public async Task<ApproveRoomTransferResponse> ApproveRoomTransfer(int id)
+        {
+            var roomTransfer = await _repoWrapper.RoomTransfer.FindByIdAsync(id);
+            if (roomTransfer == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Room transfer not found");
+            }
+
+            var student = await _repoWrapper.Student.FindByIdAsync(roomTransfer.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Student not found");
+            }
+
+            //Find Suitable room: not full, active, same room type, same gender
+            var rooms = await _repoWrapper.Room.GetAllActiveRoomWithSpecificGenderAndRoomTypeSortedByVacancy(
+                    student.Gender, roomTransfer.TargetRoomType);
+            if (rooms == null || !rooms.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: No suitable room is found");
+            }
+
+            roomTransfer.RoomId = rooms[0].RoomId;
+            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            roomTransfer.LastUpdated = now;
+            roomTransfer.Status = RequestStatus.Approved;
+            roomTransfer.TransferDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 17, 59, 0);
+            await _repoWrapper.RoomTransfer.UpdateAsync(roomTransfer, roomTransfer.RoomTransferRequestFormId);
+
+            return ApproveRoomTransferResponse.ResponseFromEntity(roomTransfer, student, rooms[0]);
         }
 
         [AutomaticRetry(Attempts = 3)]

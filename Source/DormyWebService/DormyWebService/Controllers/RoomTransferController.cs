@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.TicketServices;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.ApproveRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer;
 using Microsoft.AspNetCore.Authorization;
@@ -53,5 +54,18 @@ namespace DormyWebService.Controllers
 
             return await _roomTransferService.SendRequest(request);
         }
+
+        /// <summary>
+        /// Approve room transfer request and find room for student, for staff
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ApproveRoomTransfer/{id}")]
+        public async Task<ActionResult<ApproveRoomTransferResponse>> ApproveRoomTransfer(int id)
+        {
+            return await _roomTransferService.ApproveRoomTransfer(id);
+        }
+
     }
 }

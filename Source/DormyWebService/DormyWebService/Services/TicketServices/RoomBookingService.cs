@@ -19,7 +19,6 @@ using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
-using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
 using Hangfire;
 using Sieve.Models;
@@ -157,7 +156,7 @@ namespace DormyWebService.Services.TicketServices
             }
 
             //Get active room with appropriate gender sorted by ascending room vacancy
-            var rooms = await _repoWrapper.Room.GetAllActiveRoomWithSpecificGenderSortedByVacancy(student.Gender);
+            var rooms = await _repoWrapper.Room.GetAllActiveRoomWithSpecificGenderAndRoomTypeSortedByVacancy(student.Gender, roomBooking.TargetRoomType);
             if (rooms == null || !rooms.Any())
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Suitable Room not found");
