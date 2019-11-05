@@ -321,6 +321,11 @@ namespace DormyWebService.Services.RoomServices
             return (await _repoWrapper.Building.FindAllAsync()).ToList();
         }
 
+        public async Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom()
+        {
+            return (await _repoWrapper.RoomsAndEquipmentTypes.FindAllAsync()).ToList();   
+        }
+
         //
         //        private List<Room> SplitRoomByGender(List<Room> src, bool gender)
         //        {
