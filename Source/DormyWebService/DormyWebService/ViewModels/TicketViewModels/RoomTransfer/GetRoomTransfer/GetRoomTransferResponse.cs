@@ -59,7 +59,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
                 StudentName = student.Name,
                 StudentEmail = student.Email,
                 RoomId = roomTransfer.RoomId ?? -1,
-                RoomName = room.Name,
+                RoomName = room?.Name ?? "null",
                 Status = roomTransfer.Status,
                 CreatedDate = roomTransfer.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = roomTransfer.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
