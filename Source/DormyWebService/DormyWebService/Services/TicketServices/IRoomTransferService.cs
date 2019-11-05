@@ -10,10 +10,7 @@ namespace DormyWebService.Services.TicketServices
     {
         Task<RoomTransferRequestForm> FindById(int id);
         Task<SendRoomTransferRespone> SendRequest(SendRoomTransferRequest request);
-        Task<bool> DeleteRoomTransfer(int id);
         //Task<bool> EditRoomRequest(EditRoomTransferRequest request);
-
-        Task<ResolveRoomTransferResponse> ResolveRequest(ResolveRoomTransferRequest request);
 
 
     }

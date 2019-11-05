@@ -535,7 +535,7 @@ namespace DormyWebService.Migrations
 
                     b.HasAlternateKey("EquipmentTypeId", "RoomId");
 
-                    b.ToTable("AndEquipmentTypes");
+                    b.ToTable("RoomsAndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
@@ -657,8 +657,6 @@ namespace DormyWebService.Migrations
 
                     b.Property<int?>("RoomId");
 
-                    b.Property<int?>("StaffId");
-
                     b.Property<string>("Status")
                         .IsRequired();
 
@@ -671,8 +669,6 @@ namespace DormyWebService.Migrations
                     b.HasKey("RoomBookingRequestFormId");
 
                     b.HasIndex("RoomId");
-
-                    b.HasIndex("StaffId");
 
                     b.HasIndex("StudentId");
 
@@ -693,7 +689,9 @@ namespace DormyWebService.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<int?>("StaffId");
+                    b.Property<DateTime>("RejectDate");
+
+                    b.Property<int?>("RoomId");
 
                     b.Property<string>("Status")
                         .IsRequired();
@@ -704,7 +702,7 @@ namespace DormyWebService.Migrations
 
                     b.HasKey("RoomTransferRequestFormId");
 
-                    b.HasIndex("StaffId");
+                    b.HasIndex("RoomId");
 
                     b.HasIndex("StudentId");
 
@@ -894,10 +892,6 @@ namespace DormyWebService.Migrations
                         .WithMany()
                         .HasForeignKey("RoomId");
 
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId");
-
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
@@ -906,9 +900,9 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.RoomTransferRequestForm", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
+                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("RoomId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()

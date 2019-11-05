@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -70,7 +71,7 @@ namespace DormyWebService.Services.TicketServices
                 await _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(r => r.StudentId == request.StudentId);
             if (transfers != null)
             {
-                if (transfers.Exists(b => b.Status == RequestStatus.Pending))
+                if (transfers.Exists(b => b.Status == RequestStatus.Pending || b.Status == RequestStatus.Approved))
                 {
                     throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "RoomTransferService: There are already active transfer requests for this account");
                 }
@@ -78,7 +79,7 @@ namespace DormyWebService.Services.TicketServices
 
             //TODO: check if contract is valid
 
-            //Create new room reansfer from request
+            //Create new room transfer from request
             var result = SendRoomTransferRequest.NewEntityFromRequest(request);
 
             //Create in database
@@ -89,60 +90,60 @@ namespace DormyWebService.Services.TicketServices
             };
         }
 
-        public async Task<ResolveRoomTransferResponse> ResolveRequest(ResolveRoomTransferRequest request)
-        {
-            //Check if this staff exist
-            var staff = await _repoWrapper.Staff.FindByIdAsync(request.StaffId);
-
-            if (staff == null)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomTransferService: Provide StaffId is not a staff");
-            }
-
-            //Check if Room Transfer Request Exists
-            var roomTransfer = await FindById(request.RoomTransferRequestFormId);
-
-            if (roomTransfer.Status == request.Status)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomTransferService: This request already has this status");
-            }
-
-            if (roomTransfer.Status == RequestStatus.Complete)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomTransferService: This request is already completed, can't change it to anything else''");
-            }
-
-            //Update information into DataSet
-            roomTransfer = _mapper.Map(request, roomTransfer);
-
-            //Update Last Updated Date
-            roomTransfer.LastUpdated = DateTime.Now;
-
-            //Update to database
-            roomTransfer =
-                    await _repoWrapper.RoomTransfer.UpdateAsyncWithoutSave(roomTransfer, roomTransfer.RoomTransferRequestFormId);
-
-            //If request is changed to complete
-            if (request.Status == RequestStatus.Complete)
-            {
-                //Get contract that have the same studentId
-                System.Diagnostics.Debug.WriteLine("roomTransfer.StudentId: " + roomTransfer.StudentId);
-                var tempStudent = await
-                    _repoWrapper.Student.FindAllAsyncWithCondition(c => c.StudentId == roomTransfer.StudentId);
-                //TODO change student's room
-            }
-
-            //Save to database at once
-            //await _repoWrapper.Save();
-
-            //Return mapped response
-            //return _mapper.Map<ResolveRoomBookingResponse>(roomTransfer);
-            return null;
-        }
-
-        public async Task<bool> DeleteRoomTransfer(int id)
-        {
-            return await _repoWrapper.RoomTransfer.DeleteAsync(await FindById(id)) > 0;
-        }
+//        public async Task<bool> AutoRejectRoomTransfer()
+//        {
+//            var roomTransfers = (List<RoomTransferRequestForm>)await
+//                _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(r => r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved);
+//
+//            if (roomTransfers != null && roomTransfers.Any())
+//            {
+//                var hasChanged = false;
+//                foreach (var roomBooking in roomTransfers)
+//                {
+//                    //If now is after reject date, reject room booking
+//                    if (DateTime.Now.AddHours(GlobalParams.TimeZone) > roomBooking.RejectDate)
+//                    {
+//                        //If request is already approve, get student out of the room
+//                        if (roomBooking.Status == RequestStatus.Approved && roomBooking.RoomId != null)
+//                        {
+//                            //Get student and room from room booking
+//                            var student = await _repoWrapper.Student.FindByIdAsync(roomBooking.StudentId);
+//                            var room = await _repoWrapper.Room.FindByIdAsync(roomBooking.RoomId.Value);
+//
+//                            if (student != null && room != null)
+//                            {
+//                                student.RoomId = null;
+//                                room.CurrentNumberOfStudent--;
+//                                roomBooking.Status = RequestStatus.Rejected;
+//                                roomBooking.Reason = GlobalParams.DefaultAutoRejectRoomBookingReason;
+//                                await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+//                                await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+//                                await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+//                                    roomBooking.RoomBookingRequestFormId);
+//                                hasChanged = true;
+//                            }
+//                        }
+//                        //If request is not approved
+//                        else
+//                        {
+//                            roomBooking.Status = RequestStatus.Rejected;
+//                            roomBooking.Reason = GlobalParams.DefaultAutoRejectRoomBookingReason;
+//                            await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
+//                                roomBooking.RoomBookingRequestFormId);
+//                            hasChanged = true;
+//                        }
+//                    }
+//                }
+//
+//                //If there was change, save
+//                if (hasChanged)
+//                {
+//                    await _repoWrapper.Save();
+//                }
+//
+//            }
+//
+//            return true;
+//        }
     }
 }

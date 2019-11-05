@@ -8,7 +8,7 @@ namespace DormyWebService.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           
+            
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -18,9 +18,6 @@ namespace DormyWebService.Migrations
 
             migrationBuilder.DropTable(
                 name: "ContractRenewalForms");
-
-            migrationBuilder.DropTable(
-                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "IssueTickets");
@@ -44,13 +41,22 @@ namespace DormyWebService.Migrations
                 name: "RoomBookingRequestForm");
 
             migrationBuilder.DropTable(
+                name: "RoomGroupsAndStaff");
+
+            migrationBuilder.DropTable(
+                name: "RoomsAndEquipmentTypes");
+
+            migrationBuilder.DropTable(
                 name: "RoomTransferRequestForms");
 
             migrationBuilder.DropTable(
-                name: "RoomTypesEquipmentTypes");
+                name: "RoomTypesAndEquipmentTypes");
 
             migrationBuilder.DropTable(
                 name: "StudentMonthlyBills");
+
+            migrationBuilder.DropTable(
+                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "Equipments");
@@ -75,6 +81,12 @@ namespace DormyWebService.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Buildings");
+
+            migrationBuilder.DropTable(
+                name: "RoomGroups");
         }
     }
 }

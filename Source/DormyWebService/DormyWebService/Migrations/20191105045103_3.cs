@@ -4,15 +4,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DormyWebService.Migrations
 {
-    public partial class _13 : Migration
+    public partial class _3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "RoomTransferRequestForms");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "RoomTransferRequestForms",
@@ -22,20 +16,21 @@ namespace DormyWebService.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     LastUpdated = table.Column<DateTime>(nullable: false),
+                    RejectDate = table.Column<DateTime>(nullable: false),
                     Reason = table.Column<string>(maxLength: 500, nullable: false),
-                    StaffId = table.Column<int>(nullable: true),
-                    Status = table.Column<string>(nullable: false),
                     StudentId = table.Column<int>(nullable: false),
-                    TargetRoomId = table.Column<int>(nullable: false)
+                    TargetRoomType = table.Column<int>(nullable: false),
+                    RoomId = table.Column<int>(nullable: true),
+                    Status = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RoomTransferRequestForms", x => x.RoomTransferRequestFormId);
                     table.ForeignKey(
-                        name: "FK_RoomTransferRequestForms_Staff_StaffId",
-                        column: x => x.StaffId,
-                        principalTable: "Staff",
-                        principalColumn: "StaffId",
+                        name: "FK_RoomTransferRequestForms_Rooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "Rooms",
+                        principalColumn: "RoomId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_RoomTransferRequestForms_Students_StudentId",
@@ -43,28 +38,23 @@ namespace DormyWebService.Migrations
                         principalTable: "Students",
                         principalColumn: "StudentId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoomTransferRequestForms_Rooms_TargetRoomId",
-                        column: x => x.TargetRoomId,
-                        principalTable: "Rooms",
-                        principalColumn: "RoomId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomTransferRequestForms_StaffId",
+                name: "IX_RoomTransferRequestForms_RoomId",
                 table: "RoomTransferRequestForms",
-                column: "StaffId");
+                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoomTransferRequestForms_StudentId",
                 table: "RoomTransferRequestForms",
                 column: "StudentId");
+        }
 
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomTransferRequestForms_TargetRoomId",
-                table: "RoomTransferRequestForms",
-                column: "TargetRoomId");
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "RoomTransferRequestForms");
         }
     }
 }

@@ -23,6 +23,10 @@ namespace DormyWebService.Entities.TicketEntities
         public DateTime LastUpdated { get; set; }
 
         [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime RejectDate { get; set; }
+
+        [Required]
         [MinLength(3)]
         [MaxLength(500)]
         public string Reason { get; set; }
@@ -33,13 +37,12 @@ namespace DormyWebService.Entities.TicketEntities
         public int StudentId { get; set; }
         public Student Student { get; set; }
 
-        [ForeignKey("Staff")]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public int? StaffId { get; set; }
-        public Staff Staff { get; set; }
-
         [Required]
         public int TargetRoomType { get; set; }
+
+        [ForeignKey("Room")]
+        public int? RoomId { get; set; }
+        public Room Room { get; set; }
 
         //Param
         [Required]

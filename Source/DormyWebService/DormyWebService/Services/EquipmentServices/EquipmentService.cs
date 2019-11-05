@@ -137,7 +137,8 @@ namespace DormyWebService.Services.EquipmentServices
 
             if (equipments == null || equipments.Any() == false)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "EquipmentService: No equipment is found");
+                //return null if no equipment is found
+                return null;
             }
 
             var resultResponses = new List<GetEquipmentResponse>();

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    [Migration("20191103171209_18")]
-    partial class _18
+    [Migration("20191105044956_1")]
+    partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -537,7 +537,7 @@ namespace DormyWebService.Migrations
 
                     b.HasAlternateKey("EquipmentTypeId", "RoomId");
 
-                    b.ToTable("AndEquipmentTypes");
+                    b.ToTable("RoomsAndEquipmentTypes");
                 });
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.CancelContractForm", b =>
@@ -643,29 +643,26 @@ namespace DormyWebService.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("IdentityCardImageUrl")
-                        .IsRequired();
+                    b.Property<string>("IdentityCardImageUrl");
 
                     b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("Month");
 
-                    b.Property<string>("PriorityImageUrl")
-                        .IsRequired();
+                    b.Property<string>("PriorityImageUrl");
 
                     b.Property<int>("PriorityType");
 
                     b.Property<string>("Reason");
 
-                    b.Property<int?>("RoomId");
+                    b.Property<DateTime>("RejectDate");
 
-                    b.Property<int?>("StaffId");
+                    b.Property<int?>("RoomId");
 
                     b.Property<string>("Status")
                         .IsRequired();
 
-                    b.Property<string>("StudentCardImageUrl")
-                        .IsRequired();
+                    b.Property<string>("StudentCardImageUrl");
 
                     b.Property<int>("StudentId");
 
@@ -674,8 +671,6 @@ namespace DormyWebService.Migrations
                     b.HasKey("RoomBookingRequestFormId");
 
                     b.HasIndex("RoomId");
-
-                    b.HasIndex("StaffId");
 
                     b.HasIndex("StudentId");
 
@@ -696,7 +691,9 @@ namespace DormyWebService.Migrations
                         .IsRequired()
                         .HasMaxLength(500);
 
-                    b.Property<int?>("StaffId");
+                    b.Property<DateTime>("RejectDate");
+
+                    b.Property<int?>("RoomId");
 
                     b.Property<string>("Status")
                         .IsRequired();
@@ -707,7 +704,7 @@ namespace DormyWebService.Migrations
 
                     b.HasKey("RoomTransferRequestFormId");
 
-                    b.HasIndex("StaffId");
+                    b.HasIndex("RoomId");
 
                     b.HasIndex("StudentId");
 
@@ -897,10 +894,6 @@ namespace DormyWebService.Migrations
                         .WithMany()
                         .HasForeignKey("RoomId");
 
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId");
-
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
@@ -909,9 +902,9 @@ namespace DormyWebService.Migrations
 
             modelBuilder.Entity("DormyWebService.Entities.TicketEntities.RoomTransferRequestForm", b =>
                 {
-                    b.HasOne("DormyWebService.Entities.AccountEntities.Staff", "Staff")
+                    b.HasOne("DormyWebService.Entities.RoomEntities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("StaffId");
+                        .HasForeignKey("RoomId");
 
                     b.HasOne("DormyWebService.Entities.AccountEntities.Student", "Student")
                         .WithMany()

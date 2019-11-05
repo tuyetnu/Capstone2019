@@ -85,7 +85,8 @@ namespace DormyWebService.Services.TicketServices
             //Check if issue ticket is found
             if (issueTickets == null || !issueTickets.Any())
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicket: IssueTickets are not found.");
+                //Return null if no ticket is found;
+                return null;
             }
 
             var issueTicketTypes = (List<Param>)
@@ -198,7 +199,7 @@ namespace DormyWebService.Services.TicketServices
 
             if (issueTickets == null || issueTickets.Any() == false)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "IssueTicketService: No IssueTicket is found");
+                return null;
             }
 
             var resultResponses = new List<GetIssueTicketResponse>();

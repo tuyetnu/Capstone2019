@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using DormyWebService.Utilities;
 
 namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer
 {
@@ -23,9 +24,10 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
                 StudentId = request.StudentId,
                 Reason = request.Description,
                 TargetRoomType = request.TargetRoomType,
-                CreatedDate = DateTime.Now,
-                LastUpdated = DateTime.Now,
-                Status = RequestStatus.Pending
+                CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                RejectDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                Status = RequestStatus.Pending,
             };
         }
     }

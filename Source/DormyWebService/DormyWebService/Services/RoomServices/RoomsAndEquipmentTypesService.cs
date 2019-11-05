@@ -41,7 +41,8 @@ namespace DormyWebService.Services.RoomServices
 
             if (roomsAndEquipmentTypes == null || roomsAndEquipmentTypes.Any() == false)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomsAndEquipmentTypesService: No RoomsAndEquipmentTypes is found");
+                //Return null if no record is found
+                return null;
             }
 
             var resultResponses = new List<GetAllMissingEquipmentRoomResponse>();

@@ -41,12 +41,6 @@ namespace DormyWebService.Entities.TicketEntities
         
         public Student Student { get; set; }
 
-        [ForeignKey("Staff")]
-        [Sieve(CanFilter = true, CanSort = true)]
-        public int? StaffId { get; set; }
-
-        public virtual Staff Staff { get; set; }
-
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
         public int TargetRoomType { get; set; }
