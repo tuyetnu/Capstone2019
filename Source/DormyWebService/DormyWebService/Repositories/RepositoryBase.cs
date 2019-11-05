@@ -43,13 +43,6 @@ namespace DormyWebService.Repositories
             await Context.SaveChangesAsync();
             return entity;
         }
-
-        public virtual T CreateAsyncWithoutSave(T entity)
-        {
-            Context.Set<T>().Add(entity);
-            return entity;
-        }
-
         public T CreateWithoutSave(T t)
         {
             Context.Set<T>().Add(t);
@@ -81,6 +74,11 @@ namespace DormyWebService.Repositories
         {
             Context.Set<T>().Remove(entity);
             return await Context.SaveChangesAsync();
+        }
+
+        public virtual void DeleteWithoutSave(T entity)
+        {
+            Context.Set<T>().Remove(entity);
         }
 
         public virtual async Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate)

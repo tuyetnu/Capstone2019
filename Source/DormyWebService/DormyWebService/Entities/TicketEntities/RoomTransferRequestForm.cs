@@ -26,6 +26,9 @@ namespace DormyWebService.Entities.TicketEntities
         [Sieve(CanFilter = true, CanSort = true)]
         public DateTime RejectDate { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime TransferDate { get; set; }
+
         [Required]
         [MinLength(3)]
         [MaxLength(500)]

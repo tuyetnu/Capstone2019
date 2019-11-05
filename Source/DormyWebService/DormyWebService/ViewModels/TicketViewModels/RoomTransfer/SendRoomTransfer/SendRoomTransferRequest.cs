@@ -17,8 +17,13 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
         [Required]
         public string Description { get; set; }
 
-        internal static RoomTransferRequestForm NewEntityFromRequest(SendRoomTransferRequest request)
+        internal static RoomTransferRequestForm NewEntityFromRequest(SendRoomTransferRequest request, int maxDayForApproveRoomTransfer)
         {
+            var tempRejectDate =
+                    DateTime.Now.AddHours(GlobalParams.TimeZone).AddDays(maxDayForApproveRoomTransfer);
+            var rejectDate = new DateTime(tempRejectDate.Year, tempRejectDate.Month, tempRejectDate.Day, 17, 59, 0);
+            var transferDate = new DateTime(rejectDate.Year, rejectDate.Month,DateTime.DaysInMonth(rejectDate.Year, rejectDate.Month), 17, 59, 0);
+
             return new RoomTransferRequestForm()
             {
                 StudentId = request.StudentId,
@@ -26,7 +31,8 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
                 TargetRoomType = request.TargetRoomType,
                 CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
-                RejectDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                RejectDate = rejectDate,
+                TransferDate = transferDate,
                 Status = RequestStatus.Pending,
             };
         }

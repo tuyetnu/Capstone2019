@@ -52,7 +52,7 @@ namespace DormyWebService.Controllers
         /// Get general information about a room type, for authorized users
         /// </summary>
         /// <returns></returns>
-//        [Authorize]
+        [Authorize]
         [HttpGet("GetRoomTypeInfo")]
         public async Task<ActionResult<List<GetRoomTypeInfoResponse>>> GetRoomTypeInfo()
         {
@@ -127,15 +127,6 @@ namespace DormyWebService.Controllers
             return await _room.UpdateRoom(request);
         }
 
-        /// <summary>
-        /// Import list of roomBooking and arrange room for students, for staff and admin
-        /// </summary>
-        /// <returns></returns>
-//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
-        [HttpPost("ImportRoomBooking")]
-        public async Task<ActionResult<ArrangeRoomResponse>> ImportRoomBooking(List<ImportRoomBookingRequest> requests)
-        {
-            return await _room.ImportRoomBookingRequests(requests);
-        }
+        
     }
 }

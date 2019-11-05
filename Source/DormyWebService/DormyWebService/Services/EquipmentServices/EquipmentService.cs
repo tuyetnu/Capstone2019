@@ -138,7 +138,12 @@ namespace DormyWebService.Services.EquipmentServices
             if (equipments == null || equipments.Any() == false)
             {
                 //return null if no equipment is found
-                return null;
+                return new AdvancedGetEquipmentResponse()
+                {
+                    ResultList = null,
+                    CurrentPage = 1,
+                    TotalPage = 1
+                };
             }
 
             var resultResponses = new List<GetEquipmentResponse>();

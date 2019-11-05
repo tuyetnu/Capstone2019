@@ -5,6 +5,7 @@ using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
@@ -31,5 +32,7 @@ namespace DormyWebService.Services.TicketServices
         Task<GetRoomBookingDetailResponse> GetRoomBookingDetail(int id);
 
         Task<bool> AutoRejectRoomBooking();
+
+        Task<ArrangeRoomResponse> ImportRoomBookingRequests(List<ImportRoomBookingRequest> requests);
     }
 }

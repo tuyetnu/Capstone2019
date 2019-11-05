@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.ContractViewModels.GetContractViewModel;
@@ -22,7 +24,7 @@ namespace DormyWebService.Services.ContractServices
             _repoWrapper = repoWrapper;
         }
 
-        public async Task<List<GetContractResponse>> AdvancedGetContracts(string sorts, string filters, int? page, int? pageSize)
+        public async Task<AdvancedGetContractResponse> AdvancedGetContracts(string sorts, string filters, int? page, int? pageSize)
         {
             var sieveModel = new SieveModel()
             {
@@ -36,11 +38,36 @@ namespace DormyWebService.Services.ContractServices
 
             if (contracts == null || contracts.Any() == false)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractService: No contract is found");
+                //return null if no contract is found
+                return new AdvancedGetContractResponse()
+                {
+                    ResultList = null,
+                    CurrentPage = 1,
+                    TotalPage = 1
+                };
             }
 
-            var result = _sieveProcessor.Apply(sieveModel, contracts.AsQueryable()).ToList();
-            return result.Select(GetContractResponse.ResponseFromEntity).ToList();
+            var resultResponses = new List<GetContractResponse>();
+
+            foreach (var contract in contracts)
+            {
+                resultResponses.Add(GetContractResponse.ResponseFromEntity(contract));
+            }
+
+            //Apply filter, sort
+            var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable(), applyPagination: false).ToList();
+
+            var response = new AdvancedGetContractResponse()
+            {
+                CurrentPage = page ?? 1,
+                TotalPage = (int)Math.Ceiling((double)result.Count / pageSize ?? 1),
+                //Apply pagination
+                ResultList = _sieveProcessor
+                    .Apply(sieveModel, result.AsQueryable(), applyFiltering: false, applySorting: false).ToList()
+            };
+
+            //Return List of result
+            return response;
         }
 
         public async Task<List<GetContractResponse>> GetByStudentId(int id)

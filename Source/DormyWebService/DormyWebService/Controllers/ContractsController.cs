@@ -43,9 +43,9 @@ namespace DormyWebService.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("AdvancedGet")]
-        public async Task<ActionResult<List<GetContractResponse>>> AdvancedGetContracts(string sorts, string filters, int? page,
+        public async Task<ActionResult<AdvancedGetContractResponse>> AdvancedGetContracts(string sorts, string filters, int? page,
             int? pageSize)
         {
             return await _contractService.AdvancedGetContracts(sorts, filters, page, pageSize);

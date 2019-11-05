@@ -199,7 +199,12 @@ namespace DormyWebService.Services.TicketServices
 
             if (issueTickets == null || issueTickets.Any() == false)
             {
-                return null;
+                return new AdvancedGetIssueTicketResponse()
+                {
+                    ResultList = null,
+                    CurrentPage = 1,
+                    TotalPage = 1
+                };
             }
 
             var resultResponses = new List<GetIssueTicketResponse>();

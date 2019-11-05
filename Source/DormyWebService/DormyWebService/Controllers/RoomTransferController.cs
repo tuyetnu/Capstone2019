@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.TicketServices;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,6 +20,21 @@ namespace DormyWebService.Controllers
         public RoomTransferController(IRoomTransferService roomTransferService)
         {
             _roomTransferService = roomTransferService;
+        }
+
+        /// <summary>
+        /// Get Room Transfer Requests with conditions, for staff and admin
+        /// </summary>
+        /// <param name="sorts"></param>
+        /// <param name="filters"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("AdvancedGetRoomTransfer")]
+        public async Task<ActionResult<AdvancedGetRoomTransferResponse>> AdvancedGetRoomTransfer(string sorts, string filters, int? page, int? pageSize)
+        {
+            return await _roomTransferService.AdvancedGetRoomTransfer(sorts, filters, page, pageSize);
         }
 
         /// <summary>

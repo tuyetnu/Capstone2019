@@ -11,6 +11,7 @@ using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
@@ -135,6 +136,17 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<bool>> CompleteRoomBooking(int id)
         {
             return await _roomBookingService.CompleteRoomBookingRequest(id);
+        }
+
+        /// <summary>
+        /// Import list of roomBooking and arrange room for students, for staff and admin
+        /// </summary>
+        /// <returns></returns>
+//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpPost("ImportRoomBooking")]
+        public async Task<ActionResult<ArrangeRoomResponse>> ImportRoomBooking(List<ImportRoomBookingRequest> requests)
+        {
+            return await _roomBookingService.ImportRoomBookingRequests(requests);
         }
     }
 }

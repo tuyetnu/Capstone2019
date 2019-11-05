@@ -18,7 +18,7 @@ namespace DormyWebService.Services.RoomServices
         Task<BuildingResponse> CreateBuilding(CreateBuildingRequest requestModel);
         Task<List<Room>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize);
         Task<UpdateRoomResponse> UpdateRoom(UpdateRoomRequest requestModel);
-        Task<ArrangeRoomResponse> ImportRoomBookingRequests(List<ImportRoomBookingRequest> requests);
+        
         Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo();
         Task<List<Building>> GetAllBuilding();
         Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom();

@@ -17,6 +17,7 @@ using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.EditRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ResolveRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
@@ -266,7 +267,7 @@ namespace DormyWebService.Services.TicketServices
                 Status = ContractStatus.Active,
                 StudentId = roomBooking.StudentId,
             };
-            _repoWrapper.Contract.CreateAsyncWithoutSave(contract);
+            _repoWrapper.Contract.CreateWithoutSave(contract);
 
             await _repoWrapper.Save();
 
@@ -400,6 +401,7 @@ namespace DormyWebService.Services.TicketServices
                                 student.RoomId = null;
                                 room.CurrentNumberOfStudent--;
                                 roomBooking.Status = RequestStatus.Rejected;
+                                roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
                                 roomBooking.Reason = GlobalParams.DefaultAutoRejectRoomBookingReason;
                                 await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
                                 await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
@@ -412,6 +414,7 @@ namespace DormyWebService.Services.TicketServices
                         else
                         {
                             roomBooking.Status = RequestStatus.Rejected;
+                            roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
                             roomBooking.Reason = GlobalParams.DefaultAutoRejectRoomBookingReason;
                             await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking,
                                 roomBooking.RoomBookingRequestFormId);
@@ -454,6 +457,126 @@ namespace DormyWebService.Services.TicketServices
 
             //return ok
             return new HttpCodeReturn(HttpStatusCode.OK);
+        }
+
+        public async Task<ArrangeRoomResponse> ImportRoomBookingRequests(List<ImportRoomBookingRequest> requests)
+        {
+            //Get all students from email in request
+            var students =
+                (List<Student>)await _repoWrapper.Student.FindAllAsyncWithCondition(s =>
+                   requests.Exists(r => r.Email == s.Email));
+            if (students == null || !students.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No student is found");
+            }
+
+            if (students.Count != requests.Count)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomService: Some Student does not exist in database");
+            }
+
+            if (students.Find(s => s.RoomId != null) != null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomService: Some Student already has a room");
+            }
+
+            //Get max day to create new room booking
+            var maxDayForApproveRoomBooking = await _paramService.FindById(GlobalParams.MaxDayForApproveRoomBooking);
+            if (maxDayForApproveRoomBooking?.Value == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: maxDayForApproveRoomBooking not found");
+            }
+
+            // Create List of objects that contains a Student, created RoomBooking from that student
+            var importStudentAndRequests = new List<ImportStudentAndRequest>();
+            foreach (var request in requests)
+            {
+                var student = students.Find(s => s.Email == request.Email);
+                var roomBooking = ImportRoomBookingRequest.EntityFromRequest(request, student.StudentId, maxDayForApproveRoomBooking.Value.Value);
+                importStudentAndRequests.Add(new ImportStudentAndRequest() { Student = student, RoomBooking = roomBooking });
+            }
+
+            //Get list of available room
+            var availableRooms = (List<Room>)await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.CurrentNumberOfStudent < r.Capacity);
+
+            //Check if there are rooms available
+            if (availableRooms == null || !availableRooms.Any())
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No Room is Available");
+            }
+
+            //Sort room list sorted by available spot
+            availableRooms.Sort((x, y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
+
+            var arrangedStudents = new List<ImportStudentAndRequest>();
+            var unArrangedStudents = new List<Student>();
+            var arrangedRooms = new List<Room>();
+
+            //Go through every object
+            for (var i = 0; i < importStudentAndRequests.Count; i++)
+            {
+                //Get the student from object
+                var student = importStudentAndRequests[i].Student;
+                var roomBooking = importStudentAndRequests[i].RoomBooking;
+
+                //if already ran out of available room, add remaining students to unArrangedStudents
+                if (availableRooms.Count <= 0)
+                {
+                    unArrangedStudents.Add(student);
+                }
+                //If there's still room, try to arrange room for current student
+                else
+                {
+                    //Go through every available rooms, which has been previously sorted
+                    for (var j = 0; j < availableRooms.Count; j++)
+                    {
+                        var currentRoom = availableRooms[j];
+                        //If there's a room that satisfies student's requirements, add student to that room
+                        if (roomBooking.TargetRoomType == currentRoom.RoomType && student.Gender == currentRoom.Gender)
+                        {
+                            //add student to room
+                            student.RoomId = currentRoom.RoomId;
+                            if (!arrangedRooms.Contains(currentRoom))
+                            {
+                                arrangedRooms.Add(currentRoom);
+                            }
+                            //Increase current student number of room
+                            currentRoom.CurrentNumberOfStudent++;
+                            //add student to arrangedStudentList to save to database 
+                            arrangedStudents.Add(new ImportStudentAndRequest() { Student = student, RoomBooking = roomBooking });
+                            //add room Id into room booking request;
+                            roomBooking.RoomId = currentRoom.RoomId;
+                            //Pend creating roomBooking
+                            _repoWrapper.RoomBooking.CreateWithoutSave(roomBooking);
+                            //Add arranged student to list of pending database update
+                            await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+                            //If room is full after adding the student
+                            if (currentRoom.Capacity == currentRoom.CurrentNumberOfStudent)
+                            {
+                                //Remove full current room from available room list so we won't have to check this room again
+                                availableRooms.RemoveAt(j);
+                                //Add room to pending changes to database
+                                await _repoWrapper.Room.UpdateAsyncWithoutSave(currentRoom, currentRoom.RoomId);
+                            }
+                            //Break loop and move on to next request and go through list of available room again
+                            break;
+                        }
+
+                        //if at the end of available room list and hasn't found a suitable room yet, add current student to unArrangedStudents list
+                        if (j == availableRooms.Count - 1)
+                        {
+                            //Add current student to unArrangedStudentList
+                            unArrangedStudents.Add(student);
+                        }
+                    }
+                }
+            }
+
+            //Save all students, rooms and requests at once, roll back everything if something went wrong
+            await _repoWrapper.Save();
+
+            //If save is successful, preparing response message
+            return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents, unArrangedStudents, arrangedRooms);
         }
     }
 }
