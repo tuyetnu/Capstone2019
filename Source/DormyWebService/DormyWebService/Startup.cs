@@ -111,6 +111,11 @@ namespace DormyWebService
                     };
                 });
 
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options => {
+                options.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
             //Dependency Injection for Sieve for pagination, sorting, filtering
             services.AddScoped<ISieveProcessor,SieveProcessor>();
 

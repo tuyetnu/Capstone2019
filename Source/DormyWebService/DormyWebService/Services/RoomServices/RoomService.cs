@@ -326,6 +326,13 @@ namespace DormyWebService.Services.RoomServices
             return (await _repoWrapper.RoomsAndEquipmentTypes.FindAllAsync()).ToList();   
         }
 
+        public async Task<Building> GetBuildingById(int buildingId)
+        {
+            var building = await _repoWrapper.Building.FindByIdAsync(buildingId);
+            building.Rooms = await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.BuildingId == buildingId);
+            return building;
+        }
+
         //
         //        private List<Room> SplitRoomByGender(List<Room> src, bool gender)
         //        {
