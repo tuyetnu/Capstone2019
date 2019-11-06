@@ -22,5 +22,6 @@ namespace DormyWebService.Services.RoomServices
         Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo();
         Task<List<Building>> GetAllBuilding();
         Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom();
+        Task<Building> GetBuildingById(int buildingId);
     }
 }

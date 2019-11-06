@@ -98,6 +98,13 @@ namespace DormyWebService.Controllers
             return await _room.GetAllBuilding();
         }
 
+        //[Authorize(Roles = Role.Admin)]
+        [HttpGet("BuildingById")]
+        public async Task<Building> GetBuildingById(int buildingId)
+        {
+            return await _room.GetBuildingById(buildingId);
+        }
+
         [Authorize(Roles = Role.Admin)]
         [HttpGet("MissingEquipmentRoom")]
         public async Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom()
