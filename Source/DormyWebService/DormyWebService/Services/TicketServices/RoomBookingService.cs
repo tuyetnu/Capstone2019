@@ -166,6 +166,7 @@ namespace DormyWebService.Services.TicketServices
 
             //Attach room's id to student
             student.RoomId = room.RoomId;
+            student.IsHold = true;
             room.CurrentNumberOfStudent++;
             roomBooking.Status = RequestStatus.Approved;
             var maxDayForCompleteRoomBooking = await _paramService.FindById(GlobalParams.MaxDayForCompleteRoomBooking);
@@ -239,6 +240,7 @@ namespace DormyWebService.Services.TicketServices
             //Update images to student profile and 
             var student = await _studentService.FindById(roomBooking.StudentId);
             student.PriorityType = roomBooking.PriorityType;
+            student.IsHold = false;
             if (roomBooking.IdentityCardImageUrl != null)
             {
                 student.IdentityCardImageUrl = roomBooking.IdentityCardImageUrl;

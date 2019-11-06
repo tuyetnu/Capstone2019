@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    [Migration("20191105044956_1")]
+    [Migration("20191106094858_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -701,6 +701,8 @@ namespace DormyWebService.Migrations
                     b.Property<int>("StudentId");
 
                     b.Property<int>("TargetRoomType");
+
+                    b.Property<DateTime>("TransferDate");
 
                     b.HasKey("RoomTransferRequestFormId");
 

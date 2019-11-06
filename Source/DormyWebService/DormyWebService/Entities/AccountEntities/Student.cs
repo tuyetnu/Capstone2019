@@ -77,6 +77,10 @@ namespace DormyWebService.Entities.AccountEntities
 
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
+        public bool IsHold { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
         public bool Gender { get; set; }
 
         //Địa chỉ

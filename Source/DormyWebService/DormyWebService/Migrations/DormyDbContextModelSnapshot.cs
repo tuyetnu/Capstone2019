@@ -78,6 +78,8 @@ namespace DormyWebService.Migrations
                         .IsRequired()
                         .HasMaxLength(12);
 
+                    b.Property<bool>("IsHold");
+
                     b.Property<bool>("IsRoomLeader");
 
                     b.Property<string>("Name")
