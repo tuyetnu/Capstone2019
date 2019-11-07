@@ -169,6 +169,7 @@ namespace DormyWebService.Services.TicketServices
             student.IsHold = true;
             room.CurrentNumberOfStudent++;
             roomBooking.Status = RequestStatus.Approved;
+            roomBooking.RoomId = student.RoomId;
             var maxDayForCompleteRoomBooking = await _paramService.FindById(GlobalParams.MaxDayForCompleteRoomBooking);
             if (maxDayForCompleteRoomBooking?.Value == null)
             {
