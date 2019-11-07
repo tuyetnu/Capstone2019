@@ -17,7 +17,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
         [Required]
         public string Description { get; set; }
 
-        internal static RoomTransferRequestForm NewEntityFromRequest(SendRoomTransferRequest request, int maxDayForApproveRoomTransfer)
+        internal static RoomTransferRequestForm NewEntityFromRequest(SendRoomTransferRequest request, int maxDayForApproveRoomTransfer, int roomId)
         {
             var tempRejectDate =
                     DateTime.Now.AddHours(GlobalParams.TimeZone).AddDays(maxDayForApproveRoomTransfer);
@@ -34,6 +34,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTrans
                 RejectDate = rejectDate,
                 TransferDate = transferDate,
                 Status = RequestStatus.Pending,
+                RoomId = roomId
             };
         }
     }

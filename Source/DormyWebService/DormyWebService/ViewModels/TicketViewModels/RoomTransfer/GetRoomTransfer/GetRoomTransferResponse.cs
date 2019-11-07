@@ -34,6 +34,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
         public string StudentName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public string StudentCardNumber { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string StudentEmail { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -41,6 +44,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string TargetRoomTypeName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string FirstRoomTypeName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public int RoomId { get; set; }
@@ -57,6 +63,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
             {
                 StudentId = roomTransfer.StudentId,
                 StudentName = student.Name,
+                StudentCardNumber = student.StudentCardNumber,
                 StudentEmail = student.Email,
                 RoomId = roomTransfer.RoomId ?? -1,
                 RoomName = room?.Name ?? "null",
