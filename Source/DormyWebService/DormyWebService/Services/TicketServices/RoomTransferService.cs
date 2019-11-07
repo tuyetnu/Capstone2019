@@ -153,7 +153,7 @@ namespace DormyWebService.Services.TicketServices
             }
 
             //Create new room transfer from request
-            var result = SendRoomTransferRequest.NewEntityFromRequest(request, maxDayForApproveRoomTransfer.Value.Value);
+            var result = SendRoomTransferRequest.NewEntityFromRequest(request, maxDayForApproveRoomTransfer.Value.Value, student.RoomId.Value);
 
             //Create in database
             result = await _repoWrapper.RoomTransfer.CreateAsync(result);

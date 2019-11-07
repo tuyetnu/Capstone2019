@@ -48,8 +48,8 @@ namespace DormyWebService.Services.UserServices
         /// <returns></returns>
         public async Task<List<GetAllStudentResponse>> GetAllStudent()
         {
-            //Get all student in database
-            var students = await _repoWrapper.Student.FindAllAsync();
+            //Get all student in dorm (đã ở)
+            var students = await _repoWrapper.Student.FindAllAsyncWithCondition(s => s.RoomId != null && !s.IsHold);
 
             //If list is empty, throw exception
             if (!students.Any())
@@ -82,7 +82,12 @@ namespace DormyWebService.Services.UserServices
                 Filters = filters,
             };
 
-            var students = await _repoWrapper.Student.FindAllAsync();
+            var students = await _repoWrapper.Student.FindAllAsyncWithCondition( s => s.RoomId != null && !s.IsHold);
+         
+            foreach (var student in students)
+            {
+                var contract = await _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == student.StudentId);
+            }
 
             if (students == null || students.Any() == false)
             {
