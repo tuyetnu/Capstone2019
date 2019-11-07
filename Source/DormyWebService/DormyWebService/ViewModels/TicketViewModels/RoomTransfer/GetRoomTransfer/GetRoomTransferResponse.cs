@@ -46,7 +46,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
         public string TargetRoomTypeName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        public string FirstRoomTypeName { get; set; }
+        public string CurrentRoomTypeName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public int RoomId { get; set; }
@@ -59,6 +59,11 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
 
         public static GetRoomTransferResponse ResponseFromEntity(RoomTransferRequestForm roomTransfer, Student student, Room room, Entities.ParamEntities.Param roomType)
         {
+            var currentRoomType = "Standard Room";
+            if (roomTransfer.Room.RoomType == 12)
+            {
+                currentRoomType = "Service Room";
+            }
             return new GetRoomTransferResponse()
             {
                 StudentId = roomTransfer.StudentId,
@@ -67,6 +72,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
                 StudentEmail = student.Email,
                 RoomId = roomTransfer.RoomId ?? -1,
                 RoomName = room?.Name ?? "null",
+                CurrentRoomTypeName = currentRoomType,
                 Status = roomTransfer.Status,
                 CreatedDate = roomTransfer.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = roomTransfer.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
