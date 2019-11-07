@@ -6,6 +6,7 @@ using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
 using DormyWebService.ViewModels.UserModelViews.CheckStudentForRenewContract;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
+using DormyWebService.ViewModels.UserModelViews.GetStudentRequestedList;
 using DormyWebService.ViewModels.UserModelViews.ImportStudent;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 
@@ -21,6 +22,7 @@ namespace DormyWebService.Services.UserServices
         Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel);
         Task<UpdateStudentResponse> UpdateStudent(UpdateStudentRequest requestModel);
         Task<ChangeStudentStatusResponse> ChangeStudentStatus(int id, string status);
+        Task<List<StudentRequestResponse>> GetAllStudentRequestById(int studentId);
         Task<bool> HasARoom(int studentId);
         Task<bool> AutoResetEvaluationPoint();
         Task<bool> ResetEvaluationPoint();

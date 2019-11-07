@@ -3,6 +3,8 @@ using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer;
 using System.Threading.Tasks;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.ApproveRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransfer;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.RejectRoomTransfer;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransferDetail;
 
 namespace DormyWebService.Services.TicketServices
 {
@@ -13,6 +15,8 @@ namespace DormyWebService.Services.TicketServices
         Task<SendRoomTransferRespone> SendRequest(SendRoomTransferRequest request);
         //Task<bool> EditRoomRequest(EditRoomTransferRequest request);
         Task<ApproveRoomTransferResponse> ApproveRoomTransfer(int id);
+        Task<RoomTransferDetailResponse> GetRoomTransferDetail(int id);
+        Task<bool> RejectTransferRequest(RejectRoomTransferRequest request);
         Task<bool> AutoRejectRoomTransfer();
         Task<bool> AutoCompleteRoomTransfer();
     }

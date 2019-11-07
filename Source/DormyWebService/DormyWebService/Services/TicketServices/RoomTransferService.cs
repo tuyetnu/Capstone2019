@@ -16,6 +16,8 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.ApproveRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransfer;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransferDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.RejectRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer;
 using Hangfire;
 using Sieve.Models;
@@ -269,6 +271,60 @@ namespace DormyWebService.Services.TicketServices
             await _repoWrapper.Save();
 
             return true;
+        }
+
+        public async Task<bool> RejectTransferRequest(RejectRoomTransferRequest request)
+        {
+            var roomTransfer = await FindById(request.RoomTransferId);
+            if (roomTransfer == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Room transfer not found");
+            }
+
+            var student = await _repoWrapper.Student.FindByIdAsync(roomTransfer.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Student not found");
+            }
+            //switch (roomTransfer.Status)
+            //{
+            //    case RequestStatus.Complete:
+            //    case RequestStatus.Rejected:
+            //        return false;
+            //    case RequestStatus.Pending:
+            //        {
+            //            var student = await _studentService.FindById(roomTransfer.StudentId);
+            //            if (student.RoomId == null)
+            //            {
+            //                return false;
+            //            }
+            //
+            //            var room = await _repoWrapper.Room.FindByIdAsync(student.RoomId.Value);
+            //            student.RoomId = null;
+            //            room.CurrentNumberOfStudent--;
+            //            roomBooking.RoomId = null;
+            //            await _repoWrapper.Student.UpdateAsyncWithoutSave(student, student.StudentId);
+            //            await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
+            //            break;
+            //        }
+            //}
+
+            roomTransfer.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            roomTransfer.Status = RequestStatus.Rejected;
+            roomTransfer.Reason = request.Reason;
+            
+
+            await _repoWrapper.Save();
+
+            return true;
+        }
+
+        public async Task<RoomTransferDetailResponse> GetRoomTransferDetail(int id)
+        {
+            var roomTransfer = await FindById(id);
+            var roomType = await _paramService.FindById(roomTransfer.TargetRoomType);
+            RoomTransferDetailResponse response = new RoomTransferDetailResponse(roomTransfer, roomType);
+            return response;
         }
     }
 }

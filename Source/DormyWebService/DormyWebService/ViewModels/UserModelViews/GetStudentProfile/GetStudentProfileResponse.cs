@@ -23,6 +23,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
         public GetStudentProfileResponseRoom Room { get; set; }
         public bool IsRoomLeader { get; set; }
         public int EvaluationScore { get; set; }
+        public bool isHolding { get; set; }
 
         public static GetStudentProfileResponse MapFromStudent(Student student, Entities.ParamEntities.Param param, User user, Room room)
         {
@@ -48,7 +49,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
                     Id = room.RoomId,
                     Name = room.Name,
 
-                }: null,
+                } : null,
                 PriorityType = priorityType,
                 Gender = student.Gender,
                 Address = student.Address,
@@ -62,6 +63,7 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentProfile
                 StartedSchoolYear = student.StartedSchoolYear,
                 StudentCardNumber = student.StudentCardNumber,
                 Term = student.Term,
+                isHolding = student.IsHold,
             };
         }
     }
