@@ -16,6 +16,7 @@ using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
 using DormyWebService.ViewModels.UserModelViews.CheckStudentForRenewContract;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
+using DormyWebService.ViewModels.UserModelViews.GetStudentRequestedList;
 using DormyWebService.ViewModels.UserModelViews.ImportStudent;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 using Sieve.Models;
@@ -411,6 +412,40 @@ namespace DormyWebService.Services.UserServices
             }
 
             return true;
+        }
+
+        public async Task<List<StudentRequestResponse>> GetAllStudentRequestById(int studentId)
+        {
+            //throw new NotImplementedException();
+            var respone = new List<StudentRequestResponse>();
+            var bookRoomList = (await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(s => s.StudentId == studentId)).ToList();
+            if(bookRoomList != null)
+            {
+                foreach(RoomBookingRequestForm roomBooking in bookRoomList)
+                {
+                    respone.Add(new StudentRequestResponse("Booking", roomBooking.RoomBookingRequestFormId, roomBooking.Status, roomBooking.CreatedDate, roomBooking.LastUpdated));
+                }
+            }
+            var bookTransferList = (await _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(s => s.StudentId == studentId)).ToList();
+            if (bookTransferList != null)
+            {
+                foreach (RoomTransferRequestForm roomTransfer in bookTransferList)
+                {
+                    respone.Add(new StudentRequestResponse("Transfer", roomTransfer.RoomTransferRequestFormId, roomTransfer.Status, roomTransfer.CreatedDate, roomTransfer.LastUpdated));
+                }
+            }
+            respone.Sort((x, y) => x.createDate.CompareTo(y.createDate));
+
+            return respone;
+            //var cancelContractList = (await _repoWrapper.CancelContract.FindAllAsyncWithCondition(s => s.Student.StudentId == studentId)).ToList();
+            //if (cancelContractList != null)
+            //{
+            //    foreach (CancelContractForm cancelContract in cancelContractList)
+            //    {
+            //        respone.Add(new StudentRequestListResponse("Cancel", cancelContract.CancelContractFormId, cancelContract., cancelContract.CreatedDate, cancelContract.LastUpdated));
+            //    }
+            //}
+
         }
     }
 }

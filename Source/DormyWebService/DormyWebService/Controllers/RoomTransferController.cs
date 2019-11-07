@@ -6,6 +6,8 @@ using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.ApproveRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransfer;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransferDetail;
+using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.RejectRoomTransfer;
 using DormyWebService.ViewModels.TicketViewModels.RoomTransfer.SendRoomTransfer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -65,6 +67,25 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<ApproveRoomTransferResponse>> ApproveRoomTransfer(int id)
         {
             return await _roomTransferService.ApproveRoomTransfer(id);
+        }
+
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("RejectRoomTransfer")]
+        public async Task<ActionResult<bool>> RejectRoomTransfer(RejectRoomTransferRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return await _roomTransferService.RejectTransferRequest(request);
+        }
+
+
+        [HttpGet("GetDetail/{id}")]
+        public async Task<ActionResult<RoomTransferDetailResponse>> GetRoomBookingDetail(int id)
+        {
+            return await _roomTransferService.GetRoomTransferDetail(id);
         }
 
     }

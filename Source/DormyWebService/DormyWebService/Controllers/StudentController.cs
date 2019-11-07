@@ -10,6 +10,7 @@ using DormyWebService.ViewModels.UserModelViews.ChangeStudentStatus;
 using DormyWebService.ViewModels.UserModelViews.CheckStudentForRenewContract;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetStudentProfile;
+using DormyWebService.ViewModels.UserModelViews.GetStudentRequestedList;
 using DormyWebService.ViewModels.UserModelViews.ImportStudent;
 using DormyWebService.ViewModels.UserModelViews.UpdateStudent;
 using Microsoft.AspNetCore.Authorization;
@@ -131,6 +132,13 @@ namespace DormyWebService.Controllers
             }
 
             return await _studentService.ChangeStudentStatus(studentId, status);
+        }
+
+        [Authorize(Roles = Role.Admin + "," + Role.Staff + "," + Role.Student)]
+        [HttpGet("GetAllRequest/{studentId}")]
+        public async Task<ActionResult<List<StudentRequestResponse>>> GetAllStudentRequest(int studentId)
+        {
+            return await _studentService.GetAllStudentRequestById(studentId);
         }
     }
 }

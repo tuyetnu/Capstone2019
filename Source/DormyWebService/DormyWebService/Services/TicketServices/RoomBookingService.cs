@@ -232,6 +232,9 @@ namespace DormyWebService.Services.TicketServices
                     roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
                     roomBooking.Status = RequestStatus.Complete;
                     await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
+                    //PushNotificationToFirebase pushNotificationToFirebase = new PushNotificationToFirebase();
+                    //String[] diviceId = { "dheJKPHm0q4:APA91bGHc2HBrNtoXYb9kS3XcrWqy3SM8oSzGhJ6g0jHBFcA98unM9a3nCUETyPQktCgzQ2kt3PFn0jTtQ11Sy-FB0wqHDn1ao_SjO-5Cr0SaOYjrS4w3i7jBXrzLQsWenAVXW3zf-Ta" };
+                    //await pushNotificationToFirebase.PushNotification(diviceId, "Dormitory", "Yêu cầu của bạn đã được Complete");
                     break;
                 //If request status is not approved, return false
                 default:
