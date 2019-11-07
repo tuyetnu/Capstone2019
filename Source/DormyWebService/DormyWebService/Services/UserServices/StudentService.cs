@@ -422,13 +422,13 @@ namespace DormyWebService.Services.UserServices
         public async Task<List<StudentRequestResponse>> GetAllStudentRequestById(int studentId)
         {
             //throw new NotImplementedException();
-            var respone = new List<StudentRequestResponse>();
+            var temps = new List<StudentRequestResponseTemp>();
             var bookRoomList = (await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(s => s.StudentId == studentId)).ToList();
             if(bookRoomList != null)
             {
                 foreach(RoomBookingRequestForm roomBooking in bookRoomList)
                 {
-                    respone.Add(new StudentRequestResponse("Booking", roomBooking.RoomBookingRequestFormId, roomBooking.Status, roomBooking.CreatedDate, roomBooking.LastUpdated));
+                    temps.Add(new StudentRequestResponseTemp("Booking", roomBooking.RoomBookingRequestFormId, roomBooking.Status, roomBooking.CreatedDate, roomBooking.LastUpdated));
                 }
             }
             var bookTransferList = (await _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(s => s.StudentId == studentId)).ToList();
@@ -436,20 +436,17 @@ namespace DormyWebService.Services.UserServices
             {
                 foreach (RoomTransferRequestForm roomTransfer in bookTransferList)
                 {
-                    respone.Add(new StudentRequestResponse("Transfer", roomTransfer.RoomTransferRequestFormId, roomTransfer.Status, roomTransfer.CreatedDate, roomTransfer.LastUpdated));
+                    temps.Add(new StudentRequestResponseTemp("Transfer", roomTransfer.RoomTransferRequestFormId, roomTransfer.Status, roomTransfer.CreatedDate, roomTransfer.LastUpdated));
                 }
             }
-            respone.Sort((x, y) => x.createDate.CompareTo(y.createDate));
-
+            temps.Sort((x, y) => x.createDate.CompareTo(y.createDate));
+            var respone = new List<StudentRequestResponse>();
+            foreach (StudentRequestResponseTemp temp in temps)
+            {
+                var responeElement = new StudentRequestResponse(temp);
+                respone.Add(responeElement);
+            }
             return respone;
-            //var cancelContractList = (await _repoWrapper.CancelContract.FindAllAsyncWithCondition(s => s.Student.StudentId == studentId)).ToList();
-            //if (cancelContractList != null)
-            //{
-            //    foreach (CancelContractForm cancelContract in cancelContractList)
-            //    {
-            //        respone.Add(new StudentRequestListResponse("Cancel", cancelContract.CancelContractFormId, cancelContract., cancelContract.CreatedDate, cancelContract.LastUpdated));
-            //    }
-            //}
 
         }
     }
