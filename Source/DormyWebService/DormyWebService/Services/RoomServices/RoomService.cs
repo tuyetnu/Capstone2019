@@ -214,8 +214,11 @@ namespace DormyWebService.Services.RoomServices
 
         public async Task<Building> GetBuildingById(int buildingId)
         {
-            var building = await _repoWrapper.Building.FindByIdAsync(buildingId);
-            building.Rooms = await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.BuildingId == buildingId);
+            //foreach(Room room in building.Rooms)
+            //{
+            //    room.Students = await _repoWrapper.Student.FindAllAsyncWithCondition(s => s.RoomId == room.RoomId);
+            //}
+            var building = _repoWrapper.Building.GetAllIncludeRoomAndStudentById(buildingId); 
             return building;
         }
 

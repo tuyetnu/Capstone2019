@@ -10,6 +10,8 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
         public int StudentId { get; set; }
         public string Name { get; set; }
         public string IdentityCardNumber { get; set; }
+        public string StudentCardNumber { get; set; }
+        public string BirthDay { get; set; }
         public bool Gender { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
@@ -41,6 +43,8 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 Term = student.Term,
                 PriorityTypeId = priorityType.ParamId,
                 Name = student.Name,
+                StudentCardNumber = student.StudentCardNumber,
+                BirthDay = student.BirthDay.ToString(GlobalParams.BirthDayFormat),
                 Gender = student.Gender,
                 Month = roomBooking.Month,
                 PriorityType = priorityType.Name,
