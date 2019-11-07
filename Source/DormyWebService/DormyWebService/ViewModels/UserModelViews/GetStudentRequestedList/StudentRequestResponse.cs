@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DormyWebService.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,17 +14,17 @@ namespace DormyWebService.ViewModels.UserModelViews.GetStudentRequestedList
 
         public string status { get; set; }
 
-        public DateTime createDate { get; set; }
+        public string createDate { get; set; }
 
-        public DateTime lasteUpdate { get; set; }
+        public string lasteUpdate { get; set; }
 
-        public StudentRequestResponse(string requestType, int requestId, string status, DateTime createDate, DateTime lasteUpdate)
+        public StudentRequestResponse(StudentRequestResponseTemp temp)
         {
-            this.requestType = requestType;
-            this.requestId = requestId;
-            this.status = status;
-            this.createDate = createDate;
-            this.lasteUpdate = lasteUpdate;
+            this.requestType = temp.requestType;
+            this.requestId = temp.requestId;
+            this.status = temp.status;
+            this.createDate = temp.createDate.ToString(GlobalParams.DateTimeResponseFormat);
+            this.lasteUpdate = temp.createDate.ToString(GlobalParams.DateTimeResponseFormat);
         }
     }
 }
