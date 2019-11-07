@@ -439,7 +439,7 @@ namespace DormyWebService.Services.UserServices
                     temps.Add(new StudentRequestResponseTemp("Transfer", roomTransfer.RoomTransferRequestFormId, roomTransfer.Status, roomTransfer.CreatedDate, roomTransfer.LastUpdated));
                 }
             }
-            temps.Sort((x, y) => x.createDate.CompareTo(y.createDate));
+            temps.Sort((x, y) => y.createDate.CompareTo(x.createDate));
             var respone = new List<StudentRequestResponse>();
             foreach (StudentRequestResponseTemp temp in temps)
             {

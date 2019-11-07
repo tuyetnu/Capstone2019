@@ -293,7 +293,7 @@ namespace DormyWebService.Services.TicketServices
             //Get all RoomBookings
             var roomBookings = (List<RoomBookingRequestForm>) await _repoWrapper.RoomBooking.FindAllAsync();
 
-            if (roomBookings == null || roomBookings.Any() == false)
+            if (roomBookings == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomBookingService: No Request is found");
             }

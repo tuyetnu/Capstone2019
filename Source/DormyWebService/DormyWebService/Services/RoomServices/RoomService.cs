@@ -4,27 +4,19 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
-using DormyWebService.Entities.AccountEntities;
-using DormyWebService.Entities.ContractEntities;
+using DormyWebService.Entities;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.RoomEntities;
-using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
-using DormyWebService.Services.EquipmentServices;
 using DormyWebService.Services.ParamServices;
-using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
-using DormyWebService.ViewModels.RoomViewModels;
-using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
 using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
-using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using Microsoft.EntityFrameworkCore.Internal;
 using Sieve.Models;
 using Sieve.Services;
-using Enumerable = System.Linq.Enumerable;
 
 namespace DormyWebService.Services.RoomServices
 {
@@ -214,11 +206,14 @@ namespace DormyWebService.Services.RoomServices
 
         public async Task<Building> GetBuildingById(int buildingId)
         {
-            //foreach(Room room in building.Rooms)
-            //{
-            //    room.Students = await _repoWrapper.Student.FindAllAsyncWithCondition(s => s.RoomId == room.RoomId);
-            //}
-            var building = _repoWrapper.Building.GetAllIncludeRoomAndStudentById(buildingId); 
+            var building = _repoWrapper.Building.GetAllIncludeRoomAndStudentById(buildingId);
+            foreach (Room room in building.Rooms)
+            {
+                if (room.CurrentNumberOfStudent > 0)
+                {
+                    room.Students = await _repoWrapper.Student.FindAllAsyncWithCondition(s => s.RoomId == room.RoomId);
+                }
+            }
             return building;
         }
 
