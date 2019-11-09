@@ -14,17 +14,11 @@ namespace DormyWebService.Repositories.RoomRepositories
 
         public Building GetAllIncludeRoomAndStudentById(int buildingId)
         {
-            try
-            {
-                var result = Context.Buildings
+            var result = Context.Buildings
                 .Where(b => b.BuildingId == buildingId)
                 .Include(r => r.Rooms)
                 .Single(x => x.BuildingId == buildingId);
-                return result;
-            } catch(Exception ex)
-            {
-                return null;
-            }
+            return result;
         }
     }
 }

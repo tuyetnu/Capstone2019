@@ -4,6 +4,7 @@ using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.EquipmentServices
 {
@@ -13,7 +14,7 @@ namespace DormyWebService.Services.EquipmentServices
         Task<CreateEquipmentResponse> CreateEquipment(CreateEquipmentRequest requestModel);
         Task<bool> UpdateEquipment(UpdateEquipmentRequest requestModel);
         Task<List<GetEquipmentResponse>> GetEquipmentOfStudent(int studentId);
-
         Task<AdvancedGetEquipmentResponse> AdvancedGetEquipments(string sorts, string filters, int? page, int? pageSize);
+        Task<List<EquipmentAvailableResponse>> GetEquipmentAvailable();
     }
 }

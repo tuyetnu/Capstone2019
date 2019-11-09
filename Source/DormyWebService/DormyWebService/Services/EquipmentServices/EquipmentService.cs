@@ -15,6 +15,7 @@ using DormyWebService.ViewModels.EquipmentViewModels.CreateEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.EquipmentViewModels.UpdateEquipment;
 using DormyWebService.ViewModels.NewsViewModels.UpdateNews;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -176,6 +177,23 @@ namespace DormyWebService.Services.EquipmentServices
 
             //Return List of result
             return response;
+        }
+
+        public async Task<List<EquipmentAvailableResponse>> GetEquipmentAvailable()
+        {
+            var param = (await _repoWrapper.Param.FindAllAsyncWithCondition(p => p.ParamType.Name == "EquipmentType")).Select(p => p.ParamId).ToList();
+            var equipments = (await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => param.Contains(e.EquipmentTypeId))).ToList();
+            var listCount = equipments.GroupBy(e => e.EquipmentTypeId);
+            List<EquipmentAvailableResponse> result = new List<EquipmentAvailableResponse>();
+            foreach(var count in listCount)
+            {
+                result.Add(new EquipmentAvailableResponse
+                {
+                    id = count.Key,
+                    quantity = count.Count(),
+                });
+            }
+            return result;
         }
     }
 }
