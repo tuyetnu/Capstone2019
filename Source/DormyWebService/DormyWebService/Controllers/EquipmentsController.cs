@@ -53,6 +53,13 @@ namespace DormyWebService.Controllers
             return await _equipmentService.AdvancedGetEquipments(sorts,filters,page,pageSize);
         }
 
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [HttpGet("GetEquipmentAvailable")]
+        public async Task<List<EquipmentAvailableResponse>> GetEquipmentAvailable()
+        {
+            return await _equipmentService.GetEquipmentAvailable();
+        }
+
         /// <summary>
         /// Create new Equipment for Admin
         /// </summary>
