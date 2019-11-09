@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
+using Sieve.Attributes;
 
 namespace DormyWebService.Entities.TicketEntities
 {
@@ -19,8 +21,14 @@ namespace DormyWebService.Entities.TicketEntities
         public DateTime CancelationDate { get; set; }
 
         [Required]
+        [ForeignKey("Student")]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public int StudentId { get; set; }
         public Student Student { get; set; }
 
+        [ForeignKey("Staff")]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public int? StaffId { get; set; }
         public Staff Staff { get; set; }
 
         [Required]
@@ -30,6 +38,6 @@ namespace DormyWebService.Entities.TicketEntities
 
         //Param
         [Required]
-        public int Status { get; set; }
+        public string Status { get; set; }
     }
 }
