@@ -10,7 +10,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelC
     {
         public int ContractCancellFormId { get; set; }
 
-        public SendCancelContractFormResponse ResponseFromEntity(CancelContractForm cancelContractForm)
+        public static SendCancelContractFormResponse ResponseFromEntity(CancelContractForm cancelContractForm)
         {
             return new SendCancelContractFormResponse()
             {

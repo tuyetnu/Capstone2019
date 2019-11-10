@@ -6,6 +6,7 @@ namespace DormyWebService.Services.TicketServices
 {
     public interface ICancelContractService
     {
-        Task<ActionResult<SendCancelContractFormResponse>> SendRenewContract(SendCancelContractFormRequest request);
+        
+        Task<ActionResult<SendCancelContractFormResponse>> SendCancelContract(SendCancelContractFormRequest request);
     }
 }

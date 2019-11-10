@@ -22,13 +22,12 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelC
         {
             return new CancelContractForm()
             {
-                //Month = request.Month,
                 StudentId = request.StudentId,
-                //ContractId = contract.ContractId,
+                CancelationDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1),
                 CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
+                Reason = request.Reason,
                 Status = RequestStatus.Pending,
-
             };
         }
     }

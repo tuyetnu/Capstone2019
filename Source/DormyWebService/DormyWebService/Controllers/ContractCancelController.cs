@@ -20,7 +20,6 @@ namespace DormyWebService.Controllers
             _contractService = contractService;
         }
 
-        [Authorize(Roles = Role.Student)]
         [HttpPost]
         public async Task<ActionResult<SendCancelContractFormResponse>> SendRenewContract(SendCancelContractFormRequest request)
         {
@@ -29,7 +28,7 @@ namespace DormyWebService.Controllers
                 return BadRequest(ModelState);
             }
 
-            return await _contractService.SendRenewContract(request);
+            return await _contractService.SendCancelContract(request);
         }
     }
 }

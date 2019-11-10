@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -29,9 +30,9 @@ namespace DormyWebService.Services.TicketServices
             _paramService = paramService;
             _staffService = staffService;
         }
-        public async Task<ActionResult<SendCancelContractFormResponse>> SendRenewContract(SendCancelContractFormRequest request)
+
+        public async Task<ActionResult<SendCancelContractFormResponse>> SendCancelContract(SendCancelContractFormRequest request)
         {
-            throw new System.NotImplementedException();
             var student = await _studentService.FindById(request.StudentId);
             if (student.RoomId == null)
             {
@@ -41,9 +42,14 @@ namespace DormyWebService.Services.TicketServices
                 await _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == student.StudentId && c.Status == ContractStatus.Active);
             if (contracts == null || !contracts.Any())
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RenewContractService: Student doesn't have any active contract'");
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "CancelContractService: Student doesn't have any active contract'");
             }
-            //var cancelContract = SendCancelContractFormRequest
+            var cancelContract = SendCancelContractFormRequest.EntityFromRequest(request, contracts[0]);
+
+            cancelContract = await _repoWrapper.CancelContract.CreateAsync(cancelContract);
+            return SendCancelContractFormResponse.ResponseFromEntity(cancelContract);
+
+
         }
     }
 }
