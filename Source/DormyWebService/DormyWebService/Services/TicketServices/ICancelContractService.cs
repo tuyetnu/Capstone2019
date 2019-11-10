@@ -1,7 +1,12 @@
-﻿namespace DormyWebService.Services.TicketServices
+﻿using System.Threading.Tasks;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelContractRequest;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DormyWebService.Services.TicketServices
 {
     public interface ICancelContractService
     {
         
+        Task<ActionResult<SendCancelContractFormResponse>> SendCancelContract(SendCancelContractFormRequest request);
     }
 }

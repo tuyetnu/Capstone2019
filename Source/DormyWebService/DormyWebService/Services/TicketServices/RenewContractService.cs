@@ -11,8 +11,10 @@ using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -119,6 +121,11 @@ namespace DormyWebService.Services.TicketServices
 
             //Return List of result
             return response;
+        }
+
+        public Task<ActionResult<ApproveRenewContractResponse>> ApproveContractRenewal(int contractId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

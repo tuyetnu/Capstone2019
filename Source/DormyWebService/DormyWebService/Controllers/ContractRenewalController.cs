@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.TicketServices;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
 using Microsoft.AspNetCore.Authorization;
@@ -55,5 +56,13 @@ namespace DormyWebService.Controllers
 
             return await _contractService.SendRenewContract(request);
         }
+
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ApproveContractRenewal/{contractId}")]
+        public async Task<ActionResult<ApproveRenewContractResponse>> ApproveRoomTransfer(int contractId)
+        {
+            return await _contractService.ApproveContractRenewal(contractId);
+        }
+
     }
 }
