@@ -12,6 +12,9 @@ namespace DormyWebService.Entities.TicketEntities
         public int CancelContractFormId { get; set; }
 
         [Required]
+        public string Description { get; set; }
+
+        [Required]
         public DateTime CreatedDate { get; set; }
 
         [Required]
