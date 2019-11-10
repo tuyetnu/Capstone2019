@@ -70,6 +70,14 @@ namespace DormyWebService.Services.RoomServices
                 {
                     List<Equipment> equipments= (await _repoWrapper.Equipment.FindAllAsyncWithCondition(x => x.EquipmentTypeId == roomTypesAndEquipmentType.EquipmentTypeId && x.RoomId == null)).Take(roomTypesAndEquipmentType.Amount).ToList();
                     room.Equipments = equipments;
+                    RoomsAndEquipmentTypes roomsAndEquipmentTypes = new RoomsAndEquipmentTypes
+                    {
+                        Room = room,
+                        EquipmentTypeId = roomTypesAndEquipmentType.EquipmentTypeId,
+                        Quantity = roomTypesAndEquipmentType.Amount,
+                        RealQuantity = equipments.Count
+                    };
+                    await _repoWrapper.RoomsAndEquipmentTypes.CreateAsync(roomsAndEquipmentTypes);
                 }
                 rooms.Add(room);
             }

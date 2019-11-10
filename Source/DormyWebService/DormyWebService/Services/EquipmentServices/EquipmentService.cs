@@ -136,7 +136,7 @@ namespace DormyWebService.Services.EquipmentServices
 
             var equipments = await _repoWrapper.Equipment.FindAllAsync();
 
-            if (equipments == null || equipments.Any() == false)
+            if (equipments == null)
             {
                 //return null if no equipment is found
                 return new AdvancedGetEquipmentResponse()
@@ -181,16 +181,21 @@ namespace DormyWebService.Services.EquipmentServices
 
         public async Task<List<EquipmentAvailableResponse>> GetEquipmentAvailable()
         {
-            var param = (await _repoWrapper.Param.FindAllAsyncWithCondition(p => p.ParamType.Name == "EquipmentType")).Select(p => p.ParamId).ToList();
-            var equipments = (await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => param.Contains(e.EquipmentTypeId))).ToList();
-            var listCount = equipments.GroupBy(e => e.EquipmentTypeId);
+            var param = (await _repoWrapper.Param.FindAllAsyncWithCondition(p => p.ParamType.Name == "EquipmentType"));
+            var parames = param.ToList();
+            var paramIds = param.Select(p => p.ParamId).ToList();
+            var equipments = (await _repoWrapper.Equipment.FindAllAsyncWithCondition(e => paramIds.Contains(e.EquipmentTypeId))).ToList();
+            var groupEquiment = equipments.GroupBy(e => e.EquipmentTypeId);
             List<EquipmentAvailableResponse> result = new List<EquipmentAvailableResponse>();
-            foreach(var count in listCount)
+            foreach(var group in groupEquiment)
             {
+                var id = group.Key;
+                var equipmentName = parames.Find(p => p.ParamId == id).Name;
                 result.Add(new EquipmentAvailableResponse
                 {
-                    id = count.Key,
-                    quantity = count.Count(),
+                    id = id,
+                    equipmentName = equipmentName,
+                    quantity = group.Count()
                 });
             }
             return result;
