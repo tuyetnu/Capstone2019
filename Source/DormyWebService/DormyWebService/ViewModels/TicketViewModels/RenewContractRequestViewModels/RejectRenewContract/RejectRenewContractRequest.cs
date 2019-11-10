@@ -7,8 +7,8 @@ namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewMo
 {
     public class RejectRenewContractRequest
     {
-        public int contractId { get; set; }
-        public int staffId { get; set; }
-        public string reason { get; set; }
+        public int RenewContractFormId { get; set; }
+        public int StaffId { get; set; }
+        public string Reason { get; set; }
     }
 }

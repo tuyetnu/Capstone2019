@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.TicketServices;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract.ApproveCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelContract;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract.RejectCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelContractRequest;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +43,28 @@ namespace DormyWebService.Controllers
             }
 
             return await _contractService.SendCancelContract(request);
+        }
+        /// <summary>
+        /// Approve cancel contract for Staff
+        /// </summary>
+        /// <param name="approveCancel"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ApproveCancelContract")]
+        public async Task<ActionResult<ApproveCancelContractResponse>> ApproveCancleContract(ApproveCancelContractRequest approveCancel)
+        {
+            return await _contractService.ApproveContractCancel(approveCancel);
+        }
+        /// <summary>
+        /// Reject cancel contract for Staff
+        /// </summary>
+        /// <param name="rejectCancel"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("RejectContractCancel")]
+        public async Task<ActionResult<RejectCancelContractRespone>> RejectCancelContract(RejectCancelContractRequest rejectCancel)
+        {
+            return await _contractService.RejectCancelContract(rejectCancel);
         }
     }
 }

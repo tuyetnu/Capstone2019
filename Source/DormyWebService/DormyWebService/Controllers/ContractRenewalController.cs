@@ -68,7 +68,11 @@ namespace DormyWebService.Controllers
         {
             return await _contractService.ApproveContractRenewal(approveRenew);
         }
-
+        /// <summary>
+        /// Reject renew contract request for Staff
+        /// </summary>
+        /// <param name="rejectRenew"></param>
+        /// <returns></returns>
         [Authorize(Roles = Role.Staff)]
         [HttpPut("RejectContractRenewal")]
         public async Task<ActionResult<RejectRenewContractResponse>> RejectRenewContract(RejectRenewContractRequest rejectRenew)

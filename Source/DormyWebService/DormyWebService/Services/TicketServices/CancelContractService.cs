@@ -5,11 +5,14 @@ using System.Net;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ContractEntities;
+using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract.ApproveCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelContract;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract.RejectCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelContractRequest;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
@@ -36,30 +39,113 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<ActionResult<AdvancedGetCancelContractResponse>> AdvancedGetCancelContract(string sorts, string filters, int? page, int? pageSize)
         {
-            throw new NotImplementedException();
-            //var sieveModel = new SieveModel()
-            //{
-            //    PageSize = pageSize,
-            //    Sorts = sorts,
-            //    Page = page,
-            //    Filters = filters
-            //};
-            //
-            //var cancelContracts = await _repoWrapper.CancelContract.FindAllAsync();
-            //var resultResponses = new List<CancelContractResponse>();
-            //foreach (var cancelContractForm in cancelContracts)
-            //{
-            //    var student = await _studentService.FindById(cancelContractForm.StudentId);
-            //    Staff staff = null;
-            //    if (cancelContractForm.StaffId != null)
-            //    {
-            //        staff = await _staffService.FindById(cancelContractForm.StaffId.Value);
-            //    }
-            //    var contracts = await _repoWrapper.Contract.FindByAsync(c => c.StudentId == student.StudentId && c.Status == ContractStatus.Active);
-            //    
-            //
-            //    resultResponses.Add(CancelContractResponse.ResponseFromEntity(cancelContractForm, student, staff, contract, student.Room));
-            //}
+            //throw new NotImplementedException();
+            var sieveModel = new SieveModel()
+            {
+                PageSize = pageSize,
+                Sorts = sorts,
+                Page = page,
+                Filters = filters
+            };
+            
+            var cancelContracts = await _repoWrapper.CancelContract.FindAllAsync();
+            var resultResponses = new List<CancelContractResponse>();
+            foreach (var cancelContractForm in cancelContracts)
+            {
+                var student = await _studentService.FindById(cancelContractForm.StudentId);
+                Staff staff = null;
+                if (cancelContractForm.StaffId != null)
+                {
+                    staff = await _staffService.FindById(cancelContractForm.StaffId.Value);
+                }
+                var contracts = await _repoWrapper.Contract.FindByAsync(c => c.StudentId == student.StudentId && c.Status == ContractStatus.Active);
+                
+            
+                resultResponses.Add(CancelContractResponse.ResponseFromEntity(cancelContractForm, student, staff, student.Room));
+            }
+            var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable(), applyPagination: false).ToList();
+
+            var response = new AdvancedGetCancelContractResponse()
+            {
+                CurrentPage = page ?? 1,
+                TotalPage = (int)Math.Ceiling((double)result.Count / pageSize ?? 1),
+                //Apply pagination
+                ResultList = _sieveProcessor
+                    .Apply(sieveModel, result.AsQueryable(), applyFiltering: false, applySorting: false).ToList()
+            };
+
+            //Return List of result
+            return response;
+        }
+
+        public async Task<ActionResult<ApproveCancelContractResponse>> ApproveContractCancel(ApproveCancelContractRequest approveCancel)
+        {
+            var cancelContract = await _repoWrapper.CancelContract.FindByIdAsync(approveCancel.cancelContractFormId);
+            if (cancelContract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ApproveContractCancel: Contract cancel form not found");
+            }
+            if (cancelContract.Status != RequestStatus.Pending)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ApproveContractCancel: Contract cancel form status is not Pending");
+            }
+            var student = await _repoWrapper.Student.FindByIdAsync(cancelContract.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ApproveContractCancel: Student not found");
+            }
+            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            
+            var contract = await _repoWrapper.Contract.FindAsync(s => s.StudentId == student.StudentId && s.Status == ContractStatus.Active);
+            if (contract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ApproveContractCancel: Contract not found");
+            }
+            cancelContract.Status = RequestStatus.Approved;
+            cancelContract.LastUpdated = now;
+            cancelContract.StaffId = approveCancel.staffId;
+            await _repoWrapper.CancelContract.UpdateAsync(cancelContract, cancelContract.CancelContractFormId);
+
+            contract.EndDate = cancelContract.CancelationDate;
+            contract.LastUpdate = now;
+            await _repoWrapper.Contract.UpdateAsync(contract, contract.ContractId);
+
+            return new ApproveCancelContractResponse(cancelContract.CancelContractFormId);
+        }
+
+        public async Task<ActionResult<RejectCancelContractRespone>> RejectCancelContract(RejectCancelContractRequest rejectCancel)
+        {
+            var cancelContract = await _repoWrapper.CancelContract.FindByIdAsync(rejectCancel.CancelContractFormId);
+            if (cancelContract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RejectContractCancel: Contract cancel form not found");
+            }
+            if (cancelContract.Status != RequestStatus.Pending)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RejectContractCancel: Contract cancel form status is not Pending");
+            }
+            var student = await _repoWrapper.Student.FindByIdAsync(cancelContract.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RejectContractCancel: Student not found");
+            }
+            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+
+            var contract = await _repoWrapper.Contract.FindAsync(s => s.StudentId == student.StudentId && s.Status == ContractStatus.Active);
+            if (contract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RejectContractCancel: Contract not found");
+            }
+            cancelContract.Status = RequestStatus.Rejected;
+            cancelContract.LastUpdated = now;
+            cancelContract.StaffId = rejectCancel.StaffId;
+            cancelContract.Reason = rejectCancel.Reason;
+
+
+            await _repoWrapper.CancelContract.UpdateAsync(cancelContract, cancelContract.CancelContractFormId);
+
+            return new RejectCancelContractRespone(cancelContract.CancelContractFormId);
+
         }
 
         public async Task<ActionResult<SendCancelContractFormResponse>> SendCancelContract(SendCancelContractFormRequest request)
