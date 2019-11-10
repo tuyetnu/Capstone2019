@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract
+namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.RejectRenewContract
 {
-    public class ApproveRenewContractResponse
+    public class RejectRenewContractResponse
     {
         public int RenewContractFormId;
 
-        public ApproveRenewContractResponse(int renewContractFormId)
+        public RejectRenewContractResponse(int renewContractFormId)
         {
             RenewContractFormId = renewContractFormId;
         }

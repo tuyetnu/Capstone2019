@@ -7,6 +7,7 @@ using DormyWebService.Services.TicketServices;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.RejectRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -33,7 +34,7 @@ namespace DormyWebService.Controllers
         /// <param name="page"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        //[Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("AdvancedGet")]
         public async Task<ActionResult<AdvancedGetRenewContractResponse>> AdvancedGetRenewContract(string sorts, string filters, int? page, int? pageSize)
         {
@@ -56,12 +57,23 @@ namespace DormyWebService.Controllers
 
             return await _contractService.SendRenewContract(request);
         }
+        /// <summary>
+        /// Approve renew contract for Staff
+        /// </summary>
+        /// <param name="approveRenew"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("ApproveContractRenewal")]
+        public async Task<ActionResult<ApproveRenewContractResponse>> ApproveRenewContract(ApproveRenewContractRequest approveRenew)
+        {
+            return await _contractService.ApproveContractRenewal(approveRenew);
+        }
 
         [Authorize(Roles = Role.Staff)]
-        [HttpPut("ApproveContractRenewal/{contractId}")]
-        public async Task<ActionResult<ApproveRenewContractResponse>> ApproveRoomTransfer(int contractId)
+        [HttpPut("RejectContractRenewal")]
+        public async Task<ActionResult<RejectRenewContractResponse>> RejectRenewContract(RejectRenewContractRequest rejectRenew)
         {
-            return await _contractService.ApproveContractRenewal(contractId);
+            return await _contractService.RejectContractRenewal(rejectRenew);
         }
 
     }

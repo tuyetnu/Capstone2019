@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.RejectRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace DormyWebService.Services.TicketServices
     {
         Task<SendRenewContractRequestResponse> SendRenewContract(SendRenewContractRequestRequest request);
         Task<AdvancedGetRenewContractResponse> AdvancedGetRenewContract(string sorts, string filters, int? page, int? pageSize);
-        Task<ActionResult<ApproveRenewContractResponse>> ApproveContractRenewal(int contractId);
+        Task<ActionResult<ApproveRenewContractResponse>> ApproveContractRenewal(ApproveRenewContractRequest approveRenew);
+        Task<ActionResult<RejectRenewContractResponse>> RejectContractRenewal(RejectRenewContractRequest rejectRenew);
     }
 }
