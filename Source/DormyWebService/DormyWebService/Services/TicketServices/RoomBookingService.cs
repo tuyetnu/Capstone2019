@@ -541,6 +541,7 @@ namespace DormyWebService.Services.TicketServices
                         {
                             //add student to room
                             student.RoomId = currentRoom.RoomId;
+                            student.IsHold = true;
                             if (!arrangedRooms.Contains(currentRoom))
                             {
                                 arrangedRooms.Add(currentRoom);

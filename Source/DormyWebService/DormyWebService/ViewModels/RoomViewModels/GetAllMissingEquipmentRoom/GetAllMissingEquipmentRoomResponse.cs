@@ -16,14 +16,14 @@ namespace DormyWebService.ViewModels.RoomViewModels.GetAllMissingEquipmentRoom
         [Sieve(CanFilter = true, CanSort = true)]
         public int MissingQuantity { get; set; }
 
-        public static GetAllMissingEquipmentRoomResponse ResponseFromEntity(RoomsAndEquipmentTypes roomsAndEquipmentTypesRoom, Room room, Entities.ParamEntities.Param equipmentType)
+        public static GetAllMissingEquipmentRoomResponse ResponseFromEntity(RoomsAndEquipmentTypes roomsAndEquipmentTypesRoom)
         {
             return new GetAllMissingEquipmentRoomResponse()
             {
-                RoomId = room.RoomId,
-                RoomName = room.Name,
-                EquipmentTypeId = equipmentType.ParamId,
-                EquipmentTypeName = equipmentType.Name,
+                RoomId = roomsAndEquipmentTypesRoom.RoomId,
+                RoomName = roomsAndEquipmentTypesRoom.Room.Name,
+                EquipmentTypeId = roomsAndEquipmentTypesRoom.EquipmentTypeId,
+                EquipmentTypeName = roomsAndEquipmentTypesRoom.Param.Name,
                 MissingQuantity = roomsAndEquipmentTypesRoom.Quantity - roomsAndEquipmentTypesRoom.RealQuantity
             };
         }

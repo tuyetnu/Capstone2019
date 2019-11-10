@@ -27,33 +27,13 @@ namespace DormyWebService.Services.RoomServices
             _repoWrapper = repoWrapper;
         }
 
-        public async Task<AdvancedGetAllMissingEquipmentRoomResponse> GetAllMissingEquipmentRoom(string sorts, string filters, int? page, int? pageSize)
+        public AdvancedGetAllMissingEquipmentRoomResponse GetAllMissingEquipmentRoomByBuildingId(SieveModel sieveModel, int buildingId)
         {
-            var sieveModel = new SieveModel()
-            {
-                PageSize = pageSize,
-                Sorts = sorts,
-                Page = page,
-                Filters = filters
-            };
+            var resultResponses = _repoWrapper.RoomsAndEquipmentTypes.FindAllAndIncludeByBuildingId(buildingId);
 
-            var roomsAndEquipmentTypes = await _repoWrapper.RoomsAndEquipmentTypes.FindAllAsync();
-
-            if (roomsAndEquipmentTypes == null || roomsAndEquipmentTypes.Any() == false)
+            if (resultResponses == null)
             {
-                //Return null if no record is found
                 return null;
-            }
-
-            var resultResponses = new List<GetAllMissingEquipmentRoomResponse>();
-
-            foreach (var record in roomsAndEquipmentTypes)
-            {
-                var equipmentType = await _repoWrapper.Param.FindByIdAsync(record.EquipmentTypeId);
-
-                var room = await _repoWrapper.Room.FindByIdAsync(record.RoomId);
-
-                resultResponses.Add(GetAllMissingEquipmentRoomResponse.ResponseFromEntity(record, room, equipmentType));
             }
 
             //Apply filter, sort
@@ -61,14 +41,12 @@ namespace DormyWebService.Services.RoomServices
 
             var response = new AdvancedGetAllMissingEquipmentRoomResponse()
             {
-                CurrentPage = page ?? 1,
-                TotalPage = (int)Math.Ceiling((double)result.Count / pageSize ?? 1),
+                CurrentPage = sieveModel.Page ?? 1,
+                TotalPage = (int)Math.Ceiling((double)result.Count / sieveModel.PageSize ?? 1),
                 //Apply pagination
                 ResultList = _sieveProcessor
                     .Apply(sieveModel, result.AsQueryable(), applyFiltering: false, applySorting: false).ToList()
             };
-
-            //Return List of result
             return response;
         }
     }

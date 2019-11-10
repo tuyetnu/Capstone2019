@@ -207,11 +207,6 @@ namespace DormyWebService.Services.RoomServices
             return (await _repoWrapper.Building.FindAllAsync()).ToList();
         }
 
-        public async Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom()
-        {
-            return (await _repoWrapper.RoomsAndEquipmentTypes.FindAllAsync()).ToList();   
-        }
-
         public async Task<Building> GetBuildingById(int buildingId)
         {
             var building = _repoWrapper.Building.GetAllIncludeRoomAndStudentById(buildingId);

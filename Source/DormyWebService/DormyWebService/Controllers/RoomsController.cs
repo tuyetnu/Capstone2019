@@ -69,10 +69,17 @@ namespace DormyWebService.Controllers
         /// <returns></returns>
         [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpGet("GetAllMissingEquipmentRoom")]
-        public async Task<ActionResult<AdvancedGetAllMissingEquipmentRoomResponse>> GetAllMissingEquipmentRoom(
-            string sorts, string filters, int? page, int? pageSize)
+        public ActionResult<AdvancedGetAllMissingEquipmentRoomResponse> GetAllMissingEquipmentRoom(
+            string sorts, string filters, int? page, int? pageSize, int buildingId)
         {
-            return await _roomsAndEquipmentTypes.GetAllMissingEquipmentRoom(sorts, filters, page, pageSize);
+            var sieveModel = new SieveModel()
+            {
+                PageSize = pageSize,
+                Sorts = sorts,
+                Page = page,
+                Filters = filters
+            };
+            return _roomsAndEquipmentTypes.GetAllMissingEquipmentRoomByBuildingId(sieveModel, buildingId);
         }
 
         /// <summary>
@@ -98,18 +105,11 @@ namespace DormyWebService.Controllers
             return await _room.GetAllBuilding();
         }
 
-        //[Authorize(Roles = Role.Admin)]
+        [Authorize(Roles = Role.Admin)]
         [HttpGet("BuildingById")]
         public async Task<Building> GetBuildingById(int buildingId)
         {
             return await _room.GetBuildingById(buildingId);
-        }
-
-        [Authorize(Roles = Role.Admin)]
-        [HttpGet("MissingEquipmentRoom")]
-        public async Task<List<RoomsAndEquipmentTypes>> GetAllMissingEquipmentRoom()
-        {
-            return await _room.GetAllMissingEquipmentRoom();
         }
 
         /// <summary>
