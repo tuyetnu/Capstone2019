@@ -16,7 +16,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelC
         [Required]
         [MinLength(3)]
         [MaxLength(500)]
-        public string Reason { get; set; }
+        public string Description { get; set; }
 
         public static CancelContractForm EntityFromRequest(SendCancelContractFormRequest request, Contract contract)
         {
@@ -26,7 +26,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelC
                 CancelationDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1),
                 CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
-                Reason = request.Reason,
+                Description = request.Description,
                 Status = RequestStatus.Pending,
             };
         }

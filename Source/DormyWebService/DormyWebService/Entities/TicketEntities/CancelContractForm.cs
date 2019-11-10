@@ -37,7 +37,7 @@ namespace DormyWebService.Entities.TicketEntities
 
         [ForeignKey("Contract")]
         [Sieve(CanFilter = true, CanSort = true)]
-        public int? ContractId { get; set; }
+        public int ContractId { get; set; }
         public Contract Contract { get; set; }
 
         [Required]

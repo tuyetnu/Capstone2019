@@ -177,7 +177,7 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<ActionResult<RejectRenewContractResponse>> RejectContractRenewal(RejectRenewContractRequest rejectRenew)
         {
-            var renewContract = await _repoWrapper.RenewContract.FindByIdAsync(rejectRenew.contractId);
+            var renewContract = await _repoWrapper.RenewContract.FindByIdAsync(rejectRenew.RenewContractFormId);
             if (renewContract == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract renewal form not found");
@@ -208,7 +208,9 @@ namespace DormyWebService.Services.TicketServices
             }
             renewContract.Status = RequestStatus.Rejected;
             renewContract.LastUpdated = now;
-            renewContract.StaffId = rejectRenew.staffId;
+            renewContract.StaffId = rejectRenew.StaffId;
+            renewContract.Reason = rejectRenew.Reason;
+            
             
             await _repoWrapper.RenewContract.UpdateAsync(renewContract, renewContract.ContractRenewalFormId);
 
