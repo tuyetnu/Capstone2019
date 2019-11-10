@@ -1,19 +1,20 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using DormyWebService.Entities.AccountEntities;
+﻿using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Utilities;
 using Sieve.Attributes;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract
+namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelContract
 {
-    public class GetRenewContractResponse
+    public class CancelContractResponse
     {
         [Sieve(CanFilter = true, CanSort = true)]
-        public int ContractRenewalFormId { get; set; }
+        public int CancelContractFormId { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public int StudentId { get; set; }
@@ -35,37 +36,41 @@ namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewMo
         public string Status { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
-        public int Month { get; set; }
-
-        [Sieve(CanFilter = true, CanSort = true)]
         public string CreatedDate { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string LastUpdated { get; set; }
 
-        public string RoomName { get; set; }
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string CancelationDate { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public int RoomId { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string RoomName { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string StudentCode { get; set; }
 
-        public static GetRenewContractResponse ResponseFromEntity(ContractRenewalForm form, Student student, Staff staff, Room room)
+        public static CancelContractResponse ResponseFromEntity(CancelContractForm form, Student student, Staff staff, Contract contract, Room room)
         {
-            return new GetRenewContractResponse()
+            return new CancelContractResponse()
             {
                 StudentId = form.StudentId,
                 Status = form.Status,
                 CreatedDate = form.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = form.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
+                CancelationDate = form.CancelationDate.ToString(GlobalParams.DateTimeResponseFormat),
                 StaffId = staff?.StaffId ?? -1,
                 StaffName = staff?.Name ?? "null",
-                Month = form.Month,
                 StudentName = student.Name,
-                ContractId = form.ContractId,
-                ContractRenewalFormId = form.ContractRenewalFormId,
-                StudentEmail = student.Email,
                 StudentCode = student.StudentCardNumber,
-                RoomName = room.Name,
-                RoomId = room.RoomId
-               
+                ContractId = contract.ContractId,
+                CancelContractFormId = form.CancelContractFormId,
+                StudentEmail = student.Email,
+                RoomId = room.RoomId,
+                RoomName = room.Name
             };
         }
     }

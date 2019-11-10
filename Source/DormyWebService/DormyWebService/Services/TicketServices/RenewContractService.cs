@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ContractEntities;
 using DormyWebService.Entities.RoomEntities;
+using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
@@ -13,6 +14,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.RejectRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
@@ -27,6 +29,7 @@ namespace DormyWebService.Services.TicketServices
         private readonly ISieveProcessor _sieveProcessor;
         private readonly IParamService _paramService;
         private readonly IStaffService _staffService;
+        
 
         public RenewContractService(IRepositoryWrapper repoWrapper, IStudentService studentService, ISieveProcessor sieveProcessor, IParamService paramService, IStaffService staffService)
         {
@@ -88,12 +91,12 @@ namespace DormyWebService.Services.TicketServices
 
             var renewContract = await _repoWrapper.RenewContract.FindAllAsync();
 
-            if (renewContract == null || renewContract.Any() == false)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RenewContractService: No contract is found");
-            }
-
             var resultResponses = new List<GetRenewContractResponse>();
+
+            //if (renewContract == null || renewContract.Any() == false)
+            //{
+            //    throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RenewContractService: No contract is found");
+            //}
 
             foreach (var contractRenewalForm in renewContract)
             {
@@ -103,8 +106,9 @@ namespace DormyWebService.Services.TicketServices
                 {
                     staff = await _staffService.FindById(contractRenewalForm.StaffId.Value);
                 }
+                
 
-                resultResponses.Add(GetRenewContractResponse.ResponseFromEntity(contractRenewalForm, student, staff));
+                resultResponses.Add(GetRenewContractResponse.ResponseFromEntity(contractRenewalForm, student, staff, student.Room));
             }
 
             //Apply filter, sort
@@ -123,9 +127,92 @@ namespace DormyWebService.Services.TicketServices
             return response;
         }
 
-        public Task<ActionResult<ApproveRenewContractResponse>> ApproveContractRenewal(int contractId)
+        public async Task<ActionResult<ApproveRenewContractResponse>> ApproveContractRenewal(ApproveRenewContractRequest approveRenew)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            var renewContract = await _repoWrapper.RenewContract.FindByIdAsync(approveRenew.contractId);
+            if (renewContract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract renewal form not found");
+            }
+            if (renewContract.Status != RequestStatus.Pending)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract renewal form status is not Pending");
+            }
+            var student = await _repoWrapper.Student.FindByIdAsync(renewContract.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Student not found");
+            }
+            var maxYear = await _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
+            if (maxYear?.Value == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "ContractRenewal: MaxYear is not exist");
+            }
+            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            if ((now.AddMonths(renewContract.Month).Year - student.StartedSchoolYear) > maxYear.Value) 
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "ContractRenewal: Student's year stay at university is more than 5");
+            }
+            var contract = await _repoWrapper.Contract.FindAsync(s => s.StudentId == student.StudentId && s.Status == ContractStatus.Active);
+            if (contract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract not found");
+            }
+            renewContract.Status = RequestStatus.Approved;
+            renewContract.LastUpdated = now;
+            renewContract.StaffId = approveRenew.staffId;
+            await _repoWrapper.RenewContract.UpdateAsync(renewContract, renewContract.ContractRenewalFormId);
+
+            contract.EndDate = contract.EndDate.AddMonths(renewContract.Month);
+            contract.LastUpdate = now;
+            await _repoWrapper.Contract.UpdateAsync(contract, contract.ContractId);
+
+            return new ApproveRenewContractResponse(renewContract.ContractRenewalFormId);
+            
+            
+
+
+        }
+
+        public async Task<ActionResult<RejectRenewContractResponse>> RejectContractRenewal(RejectRenewContractRequest rejectRenew)
+        {
+            var renewContract = await _repoWrapper.RenewContract.FindByIdAsync(rejectRenew.contractId);
+            if (renewContract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract renewal form not found");
+            }
+            if (renewContract.Status != RequestStatus.Pending)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract renewal form status is not Pending");
+            }
+            var student = await _repoWrapper.Student.FindByIdAsync(renewContract.StudentId);
+            if (student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Student not found");
+            }
+            var maxYear = await _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
+            if (maxYear?.Value == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "ContractRenewal: MaxYear is not exist");
+            }
+            var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            if ((now.AddMonths(renewContract.Month).Year - student.StartedSchoolYear) > maxYear.Value)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "ContractRenewal: Student's year stay at university is more than 5");
+            }
+            var contract = await _repoWrapper.Contract.FindAsync(s => s.StudentId == student.StudentId && s.Status == ContractStatus.Active);
+            if (contract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Contract not found");
+            }
+            renewContract.Status = RequestStatus.Rejected;
+            renewContract.LastUpdated = now;
+            renewContract.StaffId = rejectRenew.staffId;
+            
+            await _repoWrapper.RenewContract.UpdateAsync(renewContract, renewContract.ContractRenewalFormId);
+
+            return new RejectRenewContractResponse(renewContract.ContractRenewalFormId);
         }
     }
 }
