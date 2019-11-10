@@ -66,10 +66,11 @@ namespace DormyWebService.Services.RoomServices
                 }
                 room.Price = param.DecimalValue.Value;
                 List<RoomTypesAndEquipmentTypes> roomTypesAndEquipmentTypes = (await _repoWrapper.RoomTypesAndEquipmentTypes.FindAllAsyncWithCondition(x => x.RoomTypeId == param.ParamId)).ToList();
-               foreach(RoomTypesAndEquipmentTypes roomTypesAndEquipmentType in roomTypesAndEquipmentTypes)
+                List<Equipment> allEquipmentInRoom = new List<Equipment>();
+                foreach (RoomTypesAndEquipmentTypes roomTypesAndEquipmentType in roomTypesAndEquipmentTypes)
                 {
                     List<Equipment> equipments= (await _repoWrapper.Equipment.FindAllAsyncWithCondition(x => x.EquipmentTypeId == roomTypesAndEquipmentType.EquipmentTypeId && x.RoomId == null)).Take(roomTypesAndEquipmentType.Amount).ToList();
-                    room.Equipments = equipments;
+                    allEquipmentInRoom.AddRange(equipments);
                     RoomsAndEquipmentTypes roomsAndEquipmentTypes = new RoomsAndEquipmentTypes
                     {
                         Room = room,
@@ -79,6 +80,7 @@ namespace DormyWebService.Services.RoomServices
                     };
                     await _repoWrapper.RoomsAndEquipmentTypes.CreateAsync(roomsAndEquipmentTypes);
                 }
+                room.Equipments = allEquipmentInRoom;
                 rooms.Add(room);
             }
             return rooms;

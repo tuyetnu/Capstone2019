@@ -11,6 +11,7 @@ namespace DormyWebService.Entities.RoomEntities
         public int RoomId { get; set; }
         public Room Room { get; set; }
 
+        [Key]
         [ForeignKey("Param")]
         public int EquipmentTypeId { get; set; }
         public Param Param { get; set; }
