@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DormyWebService.Entities.AccountEntities;
+using DormyWebService.Entities.ContractEntities;
 using Sieve.Attributes;
 
 namespace DormyWebService.Entities.TicketEntities
@@ -33,6 +34,11 @@ namespace DormyWebService.Entities.TicketEntities
         [Sieve(CanFilter = true, CanSort = true)]
         public int? StaffId { get; set; }
         public Staff Staff { get; set; }
+
+        [ForeignKey("Contract")]
+        [Sieve(CanFilter = true, CanSort = true)]
+        public int? ContractId { get; set; }
+        public Contract Contract { get; set; }
 
         [Required]
         [MinLength(3)]

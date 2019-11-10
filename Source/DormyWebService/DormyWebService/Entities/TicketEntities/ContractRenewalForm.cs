@@ -46,5 +46,8 @@ namespace DormyWebService.Entities.TicketEntities
         [Sieve(CanFilter = true, CanSort = true)]
         public DateTime LastUpdated { get; set; }
 
+        [Required]
+        public string Reason { get; set; }
+
     }
 }
