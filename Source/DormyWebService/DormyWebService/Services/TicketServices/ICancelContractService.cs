@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.ApproveCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.RejectCancelContract;
@@ -14,5 +15,6 @@ namespace DormyWebService.Services.TicketServices
         Task<ActionResult<AdvancedGetCancelContractResponse>> AdvancedGetCancelContract(string sorts, string filters, int? page, int? pageSize);
         Task<ActionResult<ApproveCancelContractResponse>> ApproveContractCancel(ApproveCancelContractRequest approveCancel);
         Task<ActionResult<RejectCancelContractRespone>> RejectCancelContract(RejectCancelContractRequest rejectCancel);
+        Task<ActionResult<GetCancelContractDetail>> GetCancelContractDetail(int id);
     }
 }

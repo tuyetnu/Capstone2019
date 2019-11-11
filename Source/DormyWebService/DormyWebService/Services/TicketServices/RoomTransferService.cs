@@ -323,6 +323,7 @@ namespace DormyWebService.Services.TicketServices
         {
             var roomTransfer = await FindById(id);
             var roomType = await _paramService.FindById(roomTransfer.TargetRoomType);
+
             RoomTransferDetailResponse response = new RoomTransferDetailResponse(roomTransfer, roomType);
             return response;
         }

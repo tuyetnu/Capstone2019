@@ -7,6 +7,7 @@ using DormyWebService.Services.TicketServices;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContractDetail;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.RejectRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
 using Microsoft.AspNetCore.Authorization;
@@ -80,5 +81,15 @@ namespace DormyWebService.Controllers
             return await _contractService.RejectContractRenewal(rejectRenew);
         }
 
+        /// <summary>
+        /// get detail of renew contract, for Authorized User
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("GetDetail/{id}")]
+        public async Task<ActionResult<RenewContractDetailResponse>> GetRoomBookingDetail(int id)
+        {
+            return await _contractService.GetRenewContractDetail(id);
+        }
     }
 }
