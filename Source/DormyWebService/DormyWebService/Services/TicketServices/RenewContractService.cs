@@ -14,6 +14,7 @@ using DormyWebService.Utilities;
 using DormyWebService.ViewModels.EquipmentViewModels.GetEquipment;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.ApproveRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContract;
+using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.GetRenewContractDetail;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.RejectRenewContract;
 using DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewModels.SendRenewContractRequest;
 using Microsoft.AspNetCore.Mvc;
@@ -215,6 +216,16 @@ namespace DormyWebService.Services.TicketServices
             await _repoWrapper.RenewContract.UpdateAsync(renewContract, renewContract.ContractRenewalFormId);
 
             return new RejectRenewContractResponse(renewContract.ContractRenewalFormId);
+        }
+
+        public async Task<ActionResult<RenewContractDetailResponse>> GetRenewContractDetail(int id)
+        {
+            var renewContract = await _repoWrapper.RenewContract.FindByIdAsync(id);
+            if (renewContract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RenewContract: Renew contract request not found");
+            }
+            return new RenewContractDetailResponse(renewContract);
         }
     }
 }

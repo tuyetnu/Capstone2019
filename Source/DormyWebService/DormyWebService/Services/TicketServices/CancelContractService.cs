@@ -10,6 +10,7 @@ using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Services.UserServices;
 using DormyWebService.Utilities;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.ApproveCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.RejectCancelContract;
@@ -111,6 +112,16 @@ namespace DormyWebService.Services.TicketServices
             await _repoWrapper.Contract.UpdateAsync(contract, contract.ContractId);
 
             return new ApproveCancelContractResponse(cancelContract.CancelContractFormId);
+        }
+
+        public async Task<ActionResult<GetCancelContractDetail>> GetCancelContractDetail(int id)
+        {
+            var cancelContract = await _repoWrapper.CancelContract.FindByIdAsync(id);
+            if(cancelContract == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "CancelContract: Renew contract request not found");
+            }
+            return new GetCancelContractDetail(cancelContract);
         }
 
         public async Task<ActionResult<RejectCancelContractRespone>> RejectCancelContract(RejectCancelContractRequest rejectCancel)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.TicketServices;
+using DormyWebService.ViewModels.TicketViewModels.CancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.ApproveCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelContract;
 using DormyWebService.ViewModels.TicketViewModels.CancelContract.RejectCancelContract;
@@ -65,6 +66,16 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<RejectCancelContractRespone>> RejectCancelContract(RejectCancelContractRequest rejectCancel)
         {
             return await _contractService.RejectCancelContract(rejectCancel);
+        }
+        /// <summary>
+        /// get cancel contract detail for Authorized user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("GetDetail/{id}")]
+        public async Task<ActionResult<GetCancelContractDetail>> GetRoomBookingDetail(int id)
+        {
+            return await _contractService.GetCancelContractDetail(id);
         }
     }
 }
