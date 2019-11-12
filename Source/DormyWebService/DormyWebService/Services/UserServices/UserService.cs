@@ -17,6 +17,7 @@ using DormyWebService.ViewModels.UserModelViews.CheckToken;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
+using DormyWebService.ViewModels.UserModelViews.SendFCMDeviceToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -146,7 +147,9 @@ namespace DormyWebService.Services.UserServices
                     SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-
+            //logged in true
+            user.IsLoggedIn = true;
+            await _repoWrapper.User.UpdateAsync(user, user.Email = email);
 
             return new LoginSuccessUser()
             {
@@ -202,6 +205,30 @@ namespace DormyWebService.Services.UserServices
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "User not found");
             }
             return new CheckTokenResponse(user);
+        }
+
+        public async Task<ActionResult<string>> Logout(int userId)
+        {
+            var user = await _repoWrapper.User.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "User not found");
+            }
+            user.IsLoggedIn = false;
+            await _repoWrapper.User.UpdateAsync(user, user.UserId = userId);
+            return "Logged out";
+        }
+
+        public async Task<ActionResult<string>> SendFCMDeviceTokenToServer(SendFCMDeviceTokenRequest request)
+        {
+            var user = await _repoWrapper.User.FindByIdAsync(request.UserId);
+            if (user == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "User not found");
+            }
+            user.DeviceToken = request.FCMDeviceToken;
+            await _repoWrapper.User.UpdateAsync(user, user.UserId = request.UserId);
+            return "Sent device token successfully";
         }
     }
 }

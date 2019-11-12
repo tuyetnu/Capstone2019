@@ -161,8 +161,14 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Suitable Room not found");
             }
-
             var room = rooms[0];
+
+            //Get user for device Token
+            var user = await _repoWrapper.User.FindByIdAsync(student.StudentId);
+            if (user == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: User not found");
+            }
 
             //Attach room's id to student
             student.RoomId = room.RoomId;
@@ -182,6 +188,20 @@ namespace DormyWebService.Services.TicketServices
             await _repoWrapper.Room.UpdateAsyncWithoutSave(room, room.RoomId);
             await _repoWrapper.RoomBooking.UpdateAsyncWithoutSave(roomBooking, roomBooking.RoomBookingRequestFormId);
             await _repoWrapper.Save();
+
+            //send notification
+            
+            if(user.IsLoggedIn == true && user.DeviceToken!= null && user.DeviceToken.Length>0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                DateTime nextMonth = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(1);
+                string dateComplete = new DateTime(nextMonth.Year, nextMonth.Month, 5).ToString(GlobalParams.BirthDayFormat);
+                string body = "Yêu cầu đặt phòng của bạn đã được duyệt. Vui lòng đem theo thẻ sinh viên, bản sao CMND, bản sao giấy xác nhận đối tượng ưu tiên có công chứng đến ký túc xá vào ngày 01-" + dateComplete + " để hoàn tất thủ tục và nhận phòng.";
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
+            //TODO: store notification to db
 
             return ArrangeRoomResponseStudent.ResponseFromEntity(student, room, roomBooking);
         }

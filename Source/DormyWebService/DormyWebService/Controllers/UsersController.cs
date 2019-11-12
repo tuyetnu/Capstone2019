@@ -16,6 +16,7 @@ using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Authorization;
 using DormyWebService.ViewModels.UserModelViews.CheckToken;
+using DormyWebService.ViewModels.UserModelViews.SendFCMDeviceToken;
 
 namespace DormyWebService.Controllers
 {
@@ -105,7 +106,7 @@ namespace DormyWebService.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpPost]
+        [HttpGet]
         [Route("CheckToken/{userId}")]
         public async Task<ActionResult<CheckTokenResponse>> checkToken(int userId)
         {
@@ -115,5 +116,30 @@ namespace DormyWebService.Controllers
             }
             return await _userService.CheckTokenAsync(userId);
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("Logout/{userId}")]
+        public async Task<ActionResult<string>> Logout(int userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            return await _userService.Logout(userId);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("SendFMCDeviceTokenToServer/{userId}")]
+        public async Task<ActionResult<string>> SendFCMDeviceTokenToServer(SendFCMDeviceTokenRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            return await _userService.SendFCMDeviceTokenToServer(request);
+        }
+
     }
 }
