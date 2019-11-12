@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.TicketEntities;
@@ -30,18 +31,23 @@ namespace DormyWebService.Services.HomeService
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "HomeService: Student not found");
             }
-
             var roomBookings =await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.StudentId == studentId && (r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved));
+            var roomTransfer = await _repoWrapper.RoomTransfer.FindAllAsyncWithCondition(r => r.StudentId == studentId && (r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved));
+            var renewContract = await _repoWrapper.RenewContract.FindAllAsyncWithCondition(r => r.StudentId == studentId && (r.Status == RequestStatus.Pending || r.Status == RequestStatus.Approved));
+            var cancelContract = await _repoWrapper.CancelContract.FindAllAsyncWithCondition(r => r.StudentId == studentId && (r.Status == RequestStatus.Pending));
 
             return new HomeResponse()
             {
+                StudentId = student.StudentId,
+                StudentName = student.Name,
                 IsHaveRoom = student.RoomId != null,
                 NumberOfUnseenNotification = 0,
-                IsHaveRequestRenew = false,
+                IsHaveRequestRenew = renewContract.Any(),
                 IsHaveRequestBooking = roomBookings.Any() ,
-                IsHaveRequestCancel = false,
-                IsHaveRequestTransfer = false,
-                IsHavePayment = false
+                IsHaveRequestCancel = cancelContract.Any(),
+                IsHaveRequestTransfer = roomTransfer.Any(),
+                IsHavePayment = false,
+                SystemDate = DateTime.Now.AddHours(GlobalParams.TimeZone).ToString(GlobalParams.BirthDayFormat),
             };
 
         }

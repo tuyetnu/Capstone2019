@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities;
+using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.EquipmentEntities;
 using DormyWebService.Entities.ParamEntities;
 using DormyWebService.Entities.RoomEntities;
@@ -12,8 +13,10 @@ using DormyWebService.Repositories;
 using DormyWebService.Services.ParamServices;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
+using DormyWebService.ViewModels.RoomViewModels.GetRoomInfoOfAStudent;
 using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Sieve.Models;
 using Sieve.Services;
@@ -196,7 +199,7 @@ namespace DormyWebService.Services.RoomServices
                 }
                 else
                 {
-                    var resultRoomType = result.Find(t => t.RoomTypeId == room.RoomType);
+                    var resultRoomType = result.Find(t => t.RoomTypeId == room.RoomType && t.Gender == room.Gender);
                     resultRoomType.RoomTypeVacancy += (room.Capacity - room.CurrentNumberOfStudent);
                 }
             }
@@ -220,6 +223,23 @@ namespace DormyWebService.Services.RoomServices
                 }
             }
             return building;
+        }
+
+        public async Task<ActionResult<StudentRoomInfoResponse>> getRoomInfoOfAStudent(int studentId)
+        {
+            var student = await _repoWrapper.Student.FindByIdAsync(studentId);
+            if(student == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Student not found");
+            }
+            var roomMates = await _repoWrapper.Student.FindAllAsyncWithCondition(r => r.RoomId == student.RoomId);
+            List<Roomate> roomateList = new List<Roomate>();
+            foreach(Student roomMate in roomMates)
+            {
+                var roomMateElement = new Roomate(roomMate);
+                roomateList.Add(roomMateElement);
+            }
+            return new StudentRoomInfoResponse(student, roomateList);
         }
 
         //

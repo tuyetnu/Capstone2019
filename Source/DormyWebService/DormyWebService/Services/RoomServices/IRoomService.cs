@@ -4,9 +4,11 @@ using DormyWebService.Entities.RoomEntities;
 using DormyWebService.ViewModels.RoomViewModels;
 using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
+using DormyWebService.ViewModels.RoomViewModels.GetRoomInfoOfAStudent;
 using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 
 namespace DormyWebService.Services.RoomServices
@@ -22,5 +24,6 @@ namespace DormyWebService.Services.RoomServices
         Task<List<GetRoomTypeInfoResponse>> GetRoomTypeInfo();
         Task<List<Building>> GetAllBuilding();
         Task<Building> GetBuildingById(int buildingId);
+        Task<ActionResult<StudentRoomInfoResponse>> getRoomInfoOfAStudent(int studentId);
     }
 }

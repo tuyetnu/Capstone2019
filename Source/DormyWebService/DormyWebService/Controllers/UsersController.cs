@@ -15,6 +15,7 @@ using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Authorization;
+using DormyWebService.ViewModels.UserModelViews.CheckToken;
 
 namespace DormyWebService.Controllers
 {
@@ -97,6 +98,22 @@ namespace DormyWebService.Controllers
             }
 
             return await _userService.ChangeUserRole(userId, role);
+        }
+        /// <summary>
+        /// check token for keep logged in, for Authorized user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPost]
+        [Route("CheckToken/{userId}")]
+        public async Task<ActionResult<CheckTokenResponse>> checkToken(int userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            return await _userService.CheckTokenAsync(userId);
         }
     }
 }

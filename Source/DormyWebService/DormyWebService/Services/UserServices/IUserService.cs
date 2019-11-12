@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.ViewModels.Debug.ChangeUserRole;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.CheckToken;
 using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
 using Microsoft.AspNetCore.Mvc;
@@ -18,5 +19,6 @@ namespace DormyWebService.Services.UserServices
         Task<LoginSuccessUser> Authenticate(string idToken, string email);
         Task<User> ChangeStatus(int id,string status);
         Task<DebugChangeUserRoleResponse> ChangeUserRole(int id, string role);
+        Task<ActionResult<CheckTokenResponse>> CheckTokenAsync(int userId);
     }
 }

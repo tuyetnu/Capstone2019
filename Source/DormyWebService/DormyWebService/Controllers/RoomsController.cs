@@ -10,6 +10,7 @@ using DormyWebService.ViewModels.RoomViewModels;
 using DormyWebService.ViewModels.RoomViewModels.ArrangeRoom;
 using DormyWebService.ViewModels.RoomViewModels.CreateRoom;
 using DormyWebService.ViewModels.RoomViewModels.GetAllMissingEquipmentRoom;
+using DormyWebService.ViewModels.RoomViewModels.GetRoomInfoOfAStudent;
 using DormyWebService.ViewModels.RoomViewModels.GetRoomTypeInfo;
 using DormyWebService.ViewModels.RoomViewModels.UpdateRoom;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
@@ -133,7 +134,16 @@ namespace DormyWebService.Controllers
 
             return await _room.UpdateRoom(request);
         }
-
-        
+        /// <summary>
+        /// get Room Info of a Student, for Authorized User
+        /// </summary>
+        /// <param name="studentId"></param>
+        /// <returns></returns>
+        [HttpGet("GetRoomInfoOfAStudent/{studentId}")]
+        [Authorize]
+        public async Task<ActionResult<StudentRoomInfoResponse>> getRoomInfoOfAStudent(int studentId)
+        {
+            return await _room.getRoomInfoOfAStudent(studentId);
+        }
     }
 }
