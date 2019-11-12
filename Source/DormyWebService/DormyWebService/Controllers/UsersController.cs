@@ -106,8 +106,7 @@ namespace DormyWebService.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
-        [HttpGet]
-        [Route("CheckToken/{userId}")]
+        [HttpGet("CheckToken/{userId}")]
         public async Task<ActionResult<CheckTokenResponse>> checkToken(int userId)
         {
             if (!ModelState.IsValid)
@@ -118,8 +117,7 @@ namespace DormyWebService.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [Route("Logout/{userId}")]
+        [HttpGet("Logout/{userId}")]
         public async Task<ActionResult<string>> Logout(int userId)
         {
             if (!ModelState.IsValid)
