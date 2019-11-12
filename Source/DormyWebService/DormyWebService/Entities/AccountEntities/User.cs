@@ -22,6 +22,13 @@ namespace DormyWebService.Entities.AccountEntities
 
         [Required]
         [Sieve(CanFilter = true, CanSort = true)]
+        public bool IsLoggedIn { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string DeviceToken { get; set; }
+
+        [Required]
+        [Sieve(CanFilter = true, CanSort = true)]
         public string Role { get; set; }
     }
 }
