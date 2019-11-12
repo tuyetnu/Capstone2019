@@ -13,6 +13,7 @@ using DormyWebService.Repositories;
 using DormyWebService.Utilities;
 using DormyWebService.ViewModels.Debug.ChangeUserRole;
 using DormyWebService.ViewModels.UserModelViews;
+using DormyWebService.ViewModels.UserModelViews.CheckToken;
 using DormyWebService.ViewModels.UserModelViews.GetAllStudent;
 using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
@@ -191,6 +192,16 @@ namespace DormyWebService.Services.UserServices
                 Role = user.Role,
                 UserId = user.UserId
             };
+        }
+        
+        public async Task<ActionResult<CheckTokenResponse>> CheckTokenAsync(int userId)
+        {
+            var user = await _repoWrapper.User.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "User not found");
+            }
+            return new CheckTokenResponse(user);
         }
     }
 }
