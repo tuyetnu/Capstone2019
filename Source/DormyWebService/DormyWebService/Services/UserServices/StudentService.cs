@@ -89,7 +89,7 @@ namespace DormyWebService.Services.UserServices
                 var contract = await _repoWrapper.Contract.FindAllAsyncWithCondition(c => c.StudentId == student.StudentId);
             }
 
-            if (students == null || students.Any() == false)
+            if (students == null)
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "StudentService: No student is found");
             }
@@ -240,12 +240,6 @@ namespace DormyWebService.Services.UserServices
         /// <returns></returns>
         public async Task<List<ImportStudentResponse>> ImportStudent(List<ImportStudentRequest> requestModel)
         {
-            //check if request is empty
-            if (!requestModel.Any())
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "StudentService: request is empty");
-            }
-
             //Check records in requestModel for duplicate email
             CheckImportStudentRecords(requestModel);
 
@@ -261,8 +255,7 @@ namespace DormyWebService.Services.UserServices
                 {
                     //clear pending changes
                     _repoWrapper.DeleteChanges();
-                    throw new HttpStatusCodeException(HttpStatusCode.NotFound,
-                        "StudentService: Email: " + s.Email + " Already Existed");
+                    throw new Exception("Email: " + s.Email + " đã tồn tại");
                 }
 
                 var defaultEvaluationPoint = (await _paramService.FindById(GlobalParams.ParamDefaultEvaluationPoint))?.Value ?? GlobalParams.DefaultEvaluationPoint;
@@ -280,8 +273,9 @@ namespace DormyWebService.Services.UserServices
             {
                 //clear pending changes if fail
                 _repoWrapper.DeleteChanges();
-                throw new HttpStatusCodeException(HttpStatusCode.InternalServerError,
-                    "StudentService: Could not create new student");
+                //throw new HttpStatusCodeException(HttpStatusCode.InternalServerError,
+                //    "StudentService: Could not create new student");
+                throw new Exception("500");
             }
 
             return students.Select(ImportStudentResponse.CreateFromStudent).ToList();

@@ -88,13 +88,26 @@ namespace DormyWebService.Controllers
         public async Task<ActionResult<List<ImportStudentResponse>>> UpdateStudent(
             List<ImportStudentRequest> requestModel)
         {
-            //Check form
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            return await _studentService.ImportStudent(requestModel);
+                return await _studentService.ImportStudent(requestModel);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "500")
+                {
+                    return StatusCode(500);
+                } else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            
         }
 
         /// <summary>
