@@ -6,6 +6,7 @@ using DormyWebService.ViewModels.UserModelViews;
 using DormyWebService.ViewModels.UserModelViews.CheckToken;
 using DormyWebService.ViewModels.UserModelViews.GetUser;
 using DormyWebService.ViewModels.UserModelViews.Login;
+using DormyWebService.ViewModels.UserModelViews.SendFCMDeviceToken;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.UserServices
@@ -20,5 +21,7 @@ namespace DormyWebService.Services.UserServices
         Task<User> ChangeStatus(int id,string status);
         Task<DebugChangeUserRoleResponse> ChangeUserRole(int id, string role);
         Task<ActionResult<CheckTokenResponse>> CheckTokenAsync(int userId);
+        Task<ActionResult<string>> Logout(int userId);
+        Task<ActionResult<string>> SendFCMDeviceTokenToServer(SendFCMDeviceTokenRequest request);
     }
 }

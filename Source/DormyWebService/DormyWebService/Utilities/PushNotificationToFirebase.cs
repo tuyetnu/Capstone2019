@@ -11,15 +11,17 @@ namespace DormyWebService.Utilities
 {
     public class PushNotificationToFirebase
     {
-        private static String FCMUrl = "https://fcm.googleapis.com/fcm/send";
-        private static String ServerKey = "AAAAB1xRTjQ:APA91bE7LXpG2yfYqANa4Gmstutq1z7UD7I8698GPBj5hqb9ggFGRBVprnmLLlnpMpo_Rv12RNkrg137RLwVIMo3xOra29JXQYXeNxIPZWXgk1VHyePAcP635TRbVRpNhHOc9KpsPzdn";
-        public async Task PushNotification(string[] diviceTokens, string title, string body)
+        private static string FCMUrl = "https://fcm.googleapis.com/fcm/send";
+        private static string ServerKey = "AAAAB1xRTjQ:APA91bE7LXpG2yfYqANa4Gmstutq1z7UD7I8698GPBj5hqb9ggFGRBVprnmLLlnpMpo_Rv12RNkrg137RLwVIMo3xOra29JXQYXeNxIPZWXgk1VHyePAcP635TRbVRpNhHOc9KpsPzdn";
+
+        //public static string ApproveBookingBody = "Yêu cầu của bạn đã được duyệt, ";
+        public async Task PushNotification(string[] diviceTokens, string body)
         {
             var fcmNotification = new FCMNotification()
             {
                 notification = new Notification()
                 {
-                    title = title,
+                    title = "Dormitory",
                     text = body
                 },
                 registration_ids = diviceTokens
