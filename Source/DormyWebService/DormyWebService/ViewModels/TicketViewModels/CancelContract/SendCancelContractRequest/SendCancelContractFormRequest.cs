@@ -28,6 +28,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.SendCancelC
                 LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
                 Description = request.Description,
                 Status = RequestStatus.Pending,
+                ContractId = contract.ContractId
             };
         }
     }
