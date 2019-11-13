@@ -12,16 +12,9 @@ namespace DormyWebService.Entities.MoneyEntities
         public int RoomMonthlyBillId { get; set; }
 
         [Required]
+        [ForeignKey("Room")]
+        public int RoomId { get; set; }
         public Room Room { get; set; }
-
-        [Required]
-        public bool IsPaid { get; set; }
-
-        [Required]
-        public int TargetMonth { get; set; }
-
-        [Required]
-        public int TargetYear { get; set; }
 
         [Required]
         public DateTime CreatedDate { get; set; }
@@ -36,7 +29,9 @@ namespace DormyWebService.Entities.MoneyEntities
         public int NewWaterNumber { get; set; }
 
         [Required]
-        public decimal WaterBill { get; set; }
+        public int PricePerWaterId { get; set; }
+        [Required]
+        public Decimal WaterBill { get; set; }
 
         [Required]
         public int PreviousElectricityNumber { get; set; }
@@ -45,14 +40,18 @@ namespace DormyWebService.Entities.MoneyEntities
         public int NewElectricityNumber { get; set; }
 
         [Required]
-        public decimal ElectricityBill { get; set; }
+        public int PricePerElectricityId { get; set; }
+        [Required]
+        public Decimal ElectricityBill { get; set; }
 
         [Required]
-        public decimal TotalRoomFee { get; set; }
+        public int PricePerRoomId { get; set; }
+        [Required]
+        public Decimal RoomBill { get; set; }
 
         [Required]
         public decimal TotalAmount { get; set; }
 
-        public virtual ICollection<StudentMonthlyBill>  StudentMonthlyBill { get; set; }
+        public virtual ICollection<StudentMonthlyBill> StudentMonthlyBill { get; set; }
     }
 }

@@ -4,14 +4,16 @@ using DormyWebService.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DormyWebService.Migrations
 {
     [DbContext(typeof(DormyDbContext))]
-    partial class DormyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191113133057_12")]
+    partial class _12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,6 +257,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<decimal>("ElectricityBill");
 
+                    b.Property<bool>("IsPaid");
+
                     b.Property<DateTime>("LastUpdated");
 
                     b.Property<int>("NewElectricityNumber");
@@ -265,17 +269,15 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("PreviousWaterNumber");
 
-                    b.Property<int>("PricePerElectricityId");
-
-                    b.Property<int>("PricePerRoomId");
-
-                    b.Property<int>("PricePerWaterId");
-
-                    b.Property<decimal>("RoomBill");
-
                     b.Property<int>("RoomId");
 
+                    b.Property<int>("TargetMonth");
+
+                    b.Property<int>("TargetYear");
+
                     b.Property<decimal>("TotalAmount");
+
+                    b.Property<decimal>("TotalRoomFee");
 
                     b.Property<decimal>("WaterBill");
 
@@ -294,15 +296,25 @@ namespace DormyWebService.Migrations
 
                     b.Property<bool>("IsPaid");
 
-                    b.Property<DateTime>("PaidDate");
+                    b.Property<decimal>("Percentage");
+
+                    b.Property<decimal>("RoomFee");
 
                     b.Property<int>("RoomId");
 
                     b.Property<int>("RoomMonthlyBillId");
 
+                    b.Property<decimal>("RoomUtilityFee");
+
                     b.Property<int>("StudentId");
 
+                    b.Property<DateTime>("TargetMonth");
+
+                    b.Property<DateTime>("TargetYear");
+
                     b.Property<decimal>("Total");
+
+                    b.Property<decimal>("UtilityFee");
 
                     b.HasKey("StudentMonthlyBillId");
 
@@ -588,7 +600,8 @@ namespace DormyWebService.Migrations
 
                     b.Property<int>("Month");
 
-                    b.Property<string>("Reason");
+                    b.Property<string>("Reason")
+                        .IsRequired();
 
                     b.Property<int?>("StaffId");
 

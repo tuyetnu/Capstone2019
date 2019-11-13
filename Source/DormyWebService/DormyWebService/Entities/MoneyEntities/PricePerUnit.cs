@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DormyWebService.Entities.ParamEntities;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,15 +17,14 @@ namespace DormyWebService.Entities.MoneyEntities
         public DateTime LastUpdated { get; set; }
 
         [Required]
-        public int TargetMonth { get; set; }
+        [ForeignKey("Param")]
+        public int TypeId { get; set; }
+        public Param Param { get; set; }
 
         [Required]
-        public int TargetYear { get; set; }
+        public Decimal Price { get; set; }
 
         [Required]
-        public Decimal WaterPricePerUnit { get; set; }
-
-        [Required]
-        public Decimal ElectricityPricePerUnit { get; set; }
+        public bool Status { get; set; }
     }
 }

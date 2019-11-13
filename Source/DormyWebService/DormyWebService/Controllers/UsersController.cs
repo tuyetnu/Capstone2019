@@ -129,7 +129,7 @@ namespace DormyWebService.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("SendFMCDeviceTokenToServer/{userId}")]
+        [Route("SendFMCDeviceTokenToServer")]
         public async Task<ActionResult<string>> SendFCMDeviceTokenToServer(SendFCMDeviceTokenRequest request)
         {
             if (!ModelState.IsValid)

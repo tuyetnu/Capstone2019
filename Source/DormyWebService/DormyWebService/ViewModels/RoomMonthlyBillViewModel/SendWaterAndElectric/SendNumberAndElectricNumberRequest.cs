@@ -18,29 +18,5 @@ namespace DormyWebService.ViewModels.RoomMonthlyBillViewModel.SendWaterAndElectr
         [Required]
         public int ElectricNumber { get; set; }
 
-        public static RoomMonthlyBill EntityFormRequest(Room room, RoomMonthlyBill previousBill, PricePerUnit pricePerUnit,int waterNumber, int electricNumber)
-        {
-            decimal waterBill = (waterNumber - previousBill.NewWaterNumber) * pricePerUnit.WaterPricePerUnit;
-            decimal electricBill = (electricNumber - previousBill.NewElectricityNumber) * pricePerUnit.ElectricityPricePerUnit;
-            return new RoomMonthlyBill()
-            {
-                Room = room,
-                PreviousWaterNumber = previousBill.NewWaterNumber,
-                NewWaterNumber = waterNumber,
-                WaterBill = waterBill,
-                PreviousElectricityNumber = previousBill.NewWaterNumber,
-                NewElectricityNumber = electricNumber,
-                ElectricityBill = electricBill,
-                TargetMonth = DateTime.Now.Month,
-                TargetYear = DateTime.Now.Year,
-                CreatedDate = DateTime.Now.AddHours(GlobalParams.TimeZone),
-                LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone),
-                IsPaid = false,
-                //TODO
-
-
-            };
-        }
-
     }
 }

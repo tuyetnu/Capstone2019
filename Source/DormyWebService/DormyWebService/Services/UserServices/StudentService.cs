@@ -438,19 +438,19 @@ namespace DormyWebService.Services.UserServices
                 }
             }
             var renewRequestList = (await _repoWrapper.RenewContract.FindAllAsyncWithCondition(s => s.StudentId == studentId)).ToList();
-            if (bookTransferList != null)
+            if (renewRequestList != null)
             {
-                foreach (RoomTransferRequestForm roomTransfer in bookTransferList)
+                foreach (ContractRenewalForm renew in renewRequestList)
                 {
-                    temps.Add(new StudentRequestResponseTemp("Renew", roomTransfer.RoomTransferRequestFormId, roomTransfer.Status, roomTransfer.CreatedDate, roomTransfer.LastUpdated));
+                    temps.Add(new StudentRequestResponseTemp("Renew", renew.ContractRenewalFormId, renew.Status, renew.CreatedDate, renew.LastUpdated));
                 }
             }
             var cancelRequestList = (await _repoWrapper.CancelContract.FindAllAsyncWithCondition(s => s.StudentId == studentId)).ToList();
-            if (bookTransferList != null)
+            if (cancelRequestList != null)
             {
-                foreach (RoomTransferRequestForm roomTransfer in bookTransferList)
+                foreach (CancelContractForm cancel in cancelRequestList)
                 {
-                    temps.Add(new StudentRequestResponseTemp("Cancel", roomTransfer.RoomTransferRequestFormId, roomTransfer.Status, roomTransfer.CreatedDate, roomTransfer.LastUpdated));
+                    temps.Add(new StudentRequestResponseTemp("Cancel", cancel.CancelContractFormId, cancel.Status, cancel.CreatedDate, cancel.LastUpdated));
                 }
             }
             temps.Sort((x, y) => y.createDate.CompareTo(x.createDate));

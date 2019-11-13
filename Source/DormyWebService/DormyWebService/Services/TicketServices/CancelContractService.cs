@@ -48,34 +48,16 @@ namespace DormyWebService.Services.TicketServices
                 Page = page,
                 Filters = filters
             };
-            
-            var cancelContracts = await _repoWrapper.CancelContract.FindAllAsync();
-            var resultResponses = new List<CancelContractResponse>();
-            foreach (var cancelContractForm in cancelContracts)
-            {
-                var student = await _studentService.FindById(cancelContractForm.StudentId);
-                Staff staff = null;
-                if (cancelContractForm.StaffId != null)
-                {
-                    staff = await _staffService.FindById(cancelContractForm.StaffId.Value);
-                }
-                var contracts = await _repoWrapper.Contract.FindByAsync(c => c.StudentId == student.StudentId && c.Status == ContractStatus.Active);
-                
-            
-                resultResponses.Add(CancelContractResponse.ResponseFromEntity(cancelContractForm, student, staff, student.Room));
-            }
+            var resultResponses = _repoWrapper.CancelContract.GetAllIncludingResponse();
             var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable(), applyPagination: false).ToList();
 
             var response = new AdvancedGetCancelContractResponse()
             {
                 CurrentPage = page ?? 1,
                 TotalPage = (int)Math.Ceiling((double)result.Count / pageSize ?? 1),
-                //Apply pagination
                 ResultList = _sieveProcessor
                     .Apply(sieveModel, result.AsQueryable(), applyFiltering: false, applySorting: false).ToList()
             };
-
-            //Return List of result
             return response;
         }
 

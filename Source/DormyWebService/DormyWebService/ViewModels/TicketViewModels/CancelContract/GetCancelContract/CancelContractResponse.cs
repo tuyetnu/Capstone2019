@@ -42,6 +42,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelCo
         public string LastUpdated { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime LastUpdatedDate { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string CancelationDate { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -53,7 +56,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelCo
         [Sieve(CanFilter = true, CanSort = true)]
         public string StudentCode { get; set; }
 
-        public static CancelContractResponse ResponseFromEntity(CancelContractForm form, Student student, Staff staff,  Room room)
+        public static CancelContractResponse ResponseFromEntity(CancelContractForm form)
         {
             return new CancelContractResponse()
             {
@@ -61,16 +64,17 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelCo
                 Status = form.Status,
                 CreatedDate = form.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = form.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdatedDate = form.LastUpdated,
                 CancelationDate = form.CancelationDate.ToString(GlobalParams.DateTimeResponseFormat),
-                StaffId = staff?.StaffId ?? -1,
-                StaffName = staff?.Name ?? "null",
-                StudentName = student.Name,
-                StudentCode = student.StudentCardNumber,
+                StaffId = form.Staff?.StaffId ?? -1,
+                StaffName = form.Staff?.Name ?? "null",
+                StudentName = form.Student.Name,
+                StudentCode = form.Student.StudentCardNumber,
                 ContractId = form.ContractId,
                 CancelContractFormId = form.CancelContractFormId,
-                StudentEmail = student.Email,
-                RoomId = room.RoomId,
-                RoomName = room.Name
+                StudentEmail = form.Student.Email,
+                RoomId = form.Student.Room.RoomId,
+                RoomName = form.Student.Room.Name
             };
         }
     }

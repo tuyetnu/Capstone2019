@@ -15,40 +15,24 @@ namespace DormyWebService.Entities.MoneyEntities
         public bool IsPaid { get; set; }
 
         [Required]
+        public DateTime PaidDate { get; set; }
+
+        [Required]
+        [ForeignKey("Student")]
+        public int StudentId { get; set; }
         public Student Student { get; set; }
 
         [Required]
+        [ForeignKey("Room")]
+        public int RoomId { get; set; }
         public Room Room { get; set; }
 
+        [Required]
         [ForeignKey("RoomMonthlyBill")]
         public int RoomMonthlyBillId { get; set; }
-
-        [Required]
         public RoomMonthlyBill RoomMonthlyBill { get; set; }
-        
-        // WaterFee + Electricity
-        public Decimal RoomUtilityFee { get; set; }
 
-        //Phần trăm sau khi chia
-        [Required]
-        public Decimal Percentage { get; set; }
-
-        //RoomUtilityFee * Percentage
-        [Required]
-        public Decimal UtilityFee { get; set; }
-
-        [Required]
-        public Decimal RoomFee { get; set; }
-
-        // UtilityFee + RoomFee
         [Required] 
         public Decimal Total { get; set; }
-
-        [Required]
-        public DateTime TargetMonth { get; set; }
-
-        [Required]
-        public DateTime TargetYear { get; set; }
-
     }
 }
