@@ -32,6 +32,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewMo
         public int ContractId { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime DateEndContract { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string Status { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -44,10 +47,11 @@ namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewMo
         public string LastUpdated { get; set; }
 
         public string RoomName { get; set; }
+        public int RoomType { get; set; }
         public int RoomId { get; set; }
         public string StudentCode { get; set; }
 
-        public static GetRenewContractResponse ResponseFromEntity(ContractRenewalForm form, Student student, Staff staff, Room room)
+        public static GetRenewContractResponse ResponseFromEntity(ContractRenewalForm form)
         {
             return new GetRenewContractResponse()
             {
@@ -55,17 +59,19 @@ namespace DormyWebService.ViewModels.TicketViewModels.RenewContractRequestViewMo
                 Status = form.Status,
                 CreatedDate = form.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = form.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
-                StaffId = staff?.StaffId ?? -1,
-                StaffName = staff?.Name ?? "null",
+                StaffId = form.Staff?.StaffId ?? -1,
+                StaffName = form.Staff?.Name ?? "null",
                 Month = form.Month,
-                StudentName = student.Name,
+                StudentName = form.Student.Name,
                 ContractId = form.ContractId,
                 ContractRenewalFormId = form.ContractRenewalFormId,
-                StudentEmail = student.Email,
-                StudentCode = student.StudentCardNumber,
-                RoomName = room.Name,
-                RoomId = room.RoomId
-               
+                StudentEmail = form.Student.Email,
+                StudentCode = form.Student.StudentCardNumber,
+                RoomName = form.Student.Room.Name,
+                RoomId = form.Student.Room.RoomId,
+                DateEndContract = form.Contract.EndDate,
+                RoomType = form.Student.Room.RoomType
+
             };
         }
     }

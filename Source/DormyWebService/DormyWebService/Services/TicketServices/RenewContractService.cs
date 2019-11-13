@@ -90,27 +90,7 @@ namespace DormyWebService.Services.TicketServices
                 Filters = filters
             };
 
-            var renewContract = await _repoWrapper.RenewContract.FindAllAsync();
-
-            var resultResponses = new List<GetRenewContractResponse>();
-
-            //if (renewContract == null || renewContract.Any() == false)
-            //{
-            //    throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RenewContractService: No contract is found");
-            //}
-
-            foreach (var contractRenewalForm in renewContract)
-            {
-                var student = await _studentService.FindById(contractRenewalForm.StudentId);
-                Staff staff = null;
-                if (contractRenewalForm.StaffId != null)
-                {
-                    staff = await _staffService.FindById(contractRenewalForm.StaffId.Value);
-                }
-                
-
-                resultResponses.Add(GetRenewContractResponse.ResponseFromEntity(contractRenewalForm, student, staff, student.Room));
-            }
+            var resultResponses = _repoWrapper.RenewContract.FindAllIncluding();
 
             //Apply filter, sort
             var result = _sieveProcessor.Apply(sieveModel, resultResponses.AsQueryable(), applyPagination: false).ToList();

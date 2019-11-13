@@ -54,7 +54,12 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelCo
         public string RoomName { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public int RoomType { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string StudentCode { get; set; }
+
+        public string Description { get; set; }
 
         public static CancelContractResponse ResponseFromEntity(CancelContractForm form)
         {
@@ -74,7 +79,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.CancelContract.GetCancelCo
                 CancelContractFormId = form.CancelContractFormId,
                 StudentEmail = form.Student.Email,
                 RoomId = form.Student.Room.RoomId,
-                RoomName = form.Student.Room.Name
+                RoomName = form.Student.Room.Name,
+                RoomType = form.Student.Room.RoomType,
+                Description = form.Description
             };
         }
     }
