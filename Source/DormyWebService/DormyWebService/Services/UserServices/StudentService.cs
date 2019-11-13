@@ -107,15 +107,19 @@ namespace DormyWebService.Services.UserServices
         public async Task<CheckStudentForRenewContractResponse> CheckStudentForRenewContract(int id)
         {
             //Find Student, including checking if student is found or not
-            var student = await FindById(id);
-
-            return new CheckStudentForRenewContractResponse()
-            {
-                HasInValidTrainingPoint = await CheckEvaluationScoreForRenewContract(student),
-                HasStayedMoreThanPermittedYear = await CheckMaxYearForStayingForRenewContract(student),
-                ContractIsActiveNextMonth = await CheckContractNextMonthForRenewContract(student),
-                NumberOfRoomTransferRequest = await GetNumberOfRoomTransferRequest(student)
-            };
+            var student = _repoWrapper.Student.FindWithRoomBydId(id);
+            var contracts = (await _repoWrapper.Contract.FindByAsync(c=> c.StudentId == id && c.Status == ContractStatus.Active)).FirstOrDefault();
+                return new CheckStudentForRenewContractResponse
+                {
+                    HasInValidTrainingPoint = await CheckEvaluationScoreForRenewContract(student),
+                    HasStayedMoreThanPermittedYear = await CheckMaxYearForStayingForRenewContract(student),
+                    ContractIsActiveNextMonth = await CheckContractNextMonthForRenewContract(student),
+                    NumberOfRoomTransferRequest = await GetNumberOfRoomTransferRequest(student),
+                    SystemDate = DateTime.Now.AddHours(GlobalParams.TimeZone).ToString(GlobalParams.BirthDayFormat),
+                    RoomName = student.Room.Name,
+                    RoomType = student.Room.RoomType,
+                    ContractEndDate = contracts.EndDate.ToString(GlobalParams.BirthDayFormat),
+                };
         }
 
         private async Task<int> GetNumberOfRoomTransferRequest(Student student)

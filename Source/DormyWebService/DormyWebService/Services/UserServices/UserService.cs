@@ -73,7 +73,7 @@ namespace DormyWebService.Services.UserServices
 
         public async Task<List<User>> DebugFindAll()
         {
-            return (List<User>) await _repoWrapper.User.FindAllAsync();
+            return (List<User>)await _repoWrapper.User.FindAllAsync();
         }
 
         public async Task<User> FindById(int id)
@@ -149,8 +149,7 @@ namespace DormyWebService.Services.UserServices
             var token = tokenHandler.CreateToken(tokenDescriptor);
             //logged in true
             user.IsLoggedIn = true;
-            await _repoWrapper.User.UpdateAsync(user, user.Email = email);
-
+            await _repoWrapper.User.UpdateAsync(user, user.UserId);
             return new LoginSuccessUser()
             {
                 Role = user.Role,
@@ -196,7 +195,7 @@ namespace DormyWebService.Services.UserServices
                 UserId = user.UserId
             };
         }
-        
+
         public async Task<ActionResult<CheckTokenResponse>> CheckTokenAsync(int userId)
         {
             var user = await _repoWrapper.User.FindByIdAsync(userId);

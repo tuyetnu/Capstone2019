@@ -60,6 +60,10 @@ namespace DormyWebService.Entities.AccountEntities
         [Sieve(CanFilter = true, CanSort = true)]
         public int Term { get; set; }
 
+        //Ngành học
+        [Sieve(CanFilter = true, CanSort = true)]
+        public string Industry { get; set; }
+
         //Viện ưu tiên
         //Param
         [Required]

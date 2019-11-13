@@ -24,6 +24,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
         [Sieve(CanFilter = true, CanSort = true)]
         public string LastUpdated { get; set; }
 
+        [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime LastUpdatedDate { get; set; }
+
         //Month
         [Sieve(CanFilter = true, CanSort = true)]
         public int Month { get; set; }
@@ -69,6 +72,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 Name = student.Name,
                 CreatedDate = roomBooking.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = roomBooking.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdatedDate = roomBooking.LastUpdated,
                 Email = student.Email,
                 TargetRoomType = roomBooking.TargetRoomType,
                 RoomBookingRequestFormId = roomBooking.RoomBookingRequestFormId,

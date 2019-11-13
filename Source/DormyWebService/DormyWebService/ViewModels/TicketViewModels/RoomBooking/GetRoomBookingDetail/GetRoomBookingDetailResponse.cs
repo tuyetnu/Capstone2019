@@ -16,6 +16,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public int Term { get; set; }
+        public string Industry { get; set; }
         public int PriorityTypeId { get; set; }
         public string PriorityType { get; set; }
         public int RoomTypeId { get; set; }
@@ -41,6 +42,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 RoomType = roomType.Name,
                 LastUpdated = roomBooking.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
                 Term = student.Term,
+                Industry = student.Industry,
                 PriorityTypeId = priorityType.ParamId,
                 Name = student.Name,
                 StudentCardNumber = student.StudentCardNumber,

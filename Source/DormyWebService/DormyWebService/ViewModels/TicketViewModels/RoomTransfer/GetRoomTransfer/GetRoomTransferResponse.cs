@@ -21,6 +21,9 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
         public string LastUpdated { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
+        public DateTime LastUpdatedDate { get; set; }
+
+        [Sieve(CanFilter = true, CanSort = true)]
         public string RejectDate { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
@@ -76,6 +79,7 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomTransfer.GetRoomTransf
                 Status = roomTransfer.Status,
                 CreatedDate = roomTransfer.CreatedDate.ToString(GlobalParams.DateTimeResponseFormat),
                 LastUpdated = roomTransfer.LastUpdated.ToString(GlobalParams.DateTimeResponseFormat),
+                LastUpdatedDate = roomTransfer.LastUpdated,
                 RejectDate = roomTransfer.RejectDate.ToString(GlobalParams.DateTimeResponseFormat),
                 TransferDate = roomTransfer.TransferDate.ToString(GlobalParams.DateTimeResponseFormat),
                 TargetRoomType = roomTransfer.TargetRoomType,
