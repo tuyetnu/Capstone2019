@@ -8,6 +8,8 @@ using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDeta
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.UpdateRoomBookingImage;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DormyWebService.Services.TicketServices
 {
@@ -33,5 +35,7 @@ namespace DormyWebService.Services.TicketServices
         Task<bool> AutoRejectRoomBooking();
 
         Task<ArrangeRoomResponse> ImportRoomBookingRequests(List<ImportRoomBookingRequest> requests);
+        Task<ActionResult<GetRoomBookingDetailResponse>> GetApprovedRoomBookingByStudentCardNumber(string studentCardNumber);
+        Task<ActionResult<bool>> UpdateRoomBookingImage(UpdateRoomBookingImageRequest request);
     }
 }
