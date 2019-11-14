@@ -48,6 +48,10 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
 
         [Sieve(CanFilter = true, CanSort = true)]
         public string StudentCardNumber { get; set; }
+        public string StudentCardImageUrl { get; set; }
+        public string IdentityCardImageUrl { get; set; }
+        public string PriorityImageUrl { get; set; }
+         public int PriorityType { get; set; }
 
         [Sieve(CanFilter = true, CanSort = true)]
         public int TargetRoomType { get; set; }
@@ -78,6 +82,10 @@ namespace DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBooking
                 RoomBookingRequestFormId = roomBooking.RoomBookingRequestFormId,
                 Month = roomBooking.Month,
                 StudentCardNumber = student.StudentCardNumber,
+                StudentCardImageUrl = roomBooking.StudentCardImageUrl,
+                IdentityCardImageUrl = roomBooking.IdentityCardImageUrl,
+                PriorityImageUrl = roomBooking.PriorityImageUrl,
+                PriorityType = roomBooking.PriorityType,
                 TargetRoomTypeName = roomType.Name,
                 RoomId = room?.RoomId ?? -1,
                 RoomName = room?.Name ?? "null",
