@@ -155,7 +155,7 @@ namespace DormyWebService.Controllers
         /// <param name="studentCardNumber"></param>
         /// <returns></returns>
         [Authorize(Roles = Role.Staff)]
-        [HttpPost("GetApprovedRoomBookingByStudentCardNumber/{studentCardNumber}")]
+        [HttpGet("GetApprovedRoomBookingByStudentCardNumber/{studentCardNumber}")]
         public async Task<ActionResult<GetRoomBookingDetailResponse>> GetApprovedRoomBookingByStudentCardNumber(string studentCardNumber)
         {
             return await _roomBookingService.GetApprovedRoomBookingByStudentCardNumber(studentCardNumber);
