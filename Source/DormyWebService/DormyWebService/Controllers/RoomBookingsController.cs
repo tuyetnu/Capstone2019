@@ -14,6 +14,7 @@ using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDeta
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.UpdateRoomBookingImage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -141,11 +142,40 @@ namespace DormyWebService.Controllers
         /// Import list of roomBooking and arrange room for students, for staff and admin
         /// </summary>
         /// <returns></returns>
-//        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
+        [Authorize(Roles = Role.Admin + "," + Role.Staff)]
         [HttpPost("ImportRoomBooking")]
         public async Task<ActionResult<ArrangeRoomResponse>> ImportRoomBooking(List<ImportRoomBookingRequest> requests)
         {
             return await _roomBookingService.ImportRoomBookingRequests(requests);
+        }
+
+        /// <summary>
+        /// get student room booking information for update image, for Staff
+        /// </summary>
+        /// <param name="studentCardNumber"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPost("GetApprovedRoomBookingByStudentCardNumber/{studentCardNumber}")]
+        public async Task<ActionResult<GetRoomBookingDetailResponse>> GetApprovedRoomBookingByStudentCardNumber(string studentCardNumber)
+        {
+            return await _roomBookingService.GetApprovedRoomBookingByStudentCardNumber(studentCardNumber);
+        }
+
+        /// <summary>
+        /// update room booking image for Staff
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [Authorize(Roles = Role.Staff)]
+        [HttpPut("UpdateRoomBookingImage")]
+        public async Task<ActionResult<bool>> UpdateRoomBookingImage(UpdateRoomBookingImageRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                BadRequest(ModelState);
+            }
+
+            return await _roomBookingService.UpdateRoomBookingImage(request);
         }
     }
 }

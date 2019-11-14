@@ -20,7 +20,9 @@ using DormyWebService.ViewModels.TicketViewModels.RoomBooking.GetRoomBookingDeta
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.ImportRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.RejectRoomBooking;
 using DormyWebService.ViewModels.TicketViewModels.RoomBooking.SendRoomBooking;
+using DormyWebService.ViewModels.TicketViewModels.RoomBooking.UpdateRoomBookingImage;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -603,6 +605,48 @@ namespace DormyWebService.Services.TicketServices
 
             //If save is successful, preparing response message
             return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents, unArrangedStudents, arrangedRooms);
+        }
+
+        public async Task<ActionResult<GetRoomBookingDetailResponse>> GetApprovedRoomBookingByStudentCardNumber(string studentCardNumber)
+        {
+            try
+            {
+                var students = (await _repoWrapper.Student.FindByAsync(s => s.StudentCardNumber == studentCardNumber)).ToList();
+                var student = students[0];
+                var roomBookings = (await _repoWrapper.RoomBooking.FindAllAsyncWithCondition(r => r.StudentId == student.StudentId && r.Status == RequestStatus.Approved)).ToList();
+                var roomBooking = roomBookings[0];
+
+                var priorityType = await _paramService.FindById(roomBooking.PriorityType);
+
+                var roomType = await _paramService.FindById(roomBooking.TargetRoomType);
+
+                Room room = null;
+
+                if (roomBooking.RoomId != null)
+                {
+                    room = await _repoWrapper.Room.FindByIdAsync(roomBooking.RoomId.Value);
+                }
+                return GetRoomBookingDetailResponse.ResponseFromEntity(roomBooking, student, roomType, priorityType, room);
+            }
+            catch (Exception e)
+            {
+                return new GetRoomBookingDetailResponse();
+            }
+            
+
+            
+        }
+
+        public async Task<ActionResult<bool>> UpdateRoomBookingImage(UpdateRoomBookingImageRequest request)
+        {
+            var roomBooking = await FindById(request.RoomBookingFormId);
+            if(roomBooking == null)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: Room booking request not found.");
+            }
+            roomBooking = UpdateRoomBookingImageRequest.UpdateFromRequest(roomBooking, request);
+            await _repoWrapper.RoomBooking.UpdateAsync(roomBooking, roomBooking.RoomBookingRequestFormId);
+            return true;
         }
     }
 }
