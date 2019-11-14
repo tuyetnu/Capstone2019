@@ -30,6 +30,8 @@ namespace DormyWebService.Entities.MoneyEntities
 
         [Required]
         public int PricePerWaterId { get; set; }
+        public PricePerUnit PricePerWarter { get; set; }
+
         [Required]
         public Decimal WaterBill { get; set; }
 
@@ -41,16 +43,26 @@ namespace DormyWebService.Entities.MoneyEntities
 
         [Required]
         public int PricePerElectricityId { get; set; }
+        public PricePerUnit PricePerElectricity { get; set; }
+
         [Required]
         public Decimal ElectricityBill { get; set; }
 
         [Required]
         public int PricePerRoomId { get; set; }
+        public PricePerUnit PricePerRoom { get; set; }
+
         [Required]
         public Decimal RoomBill { get; set; }
 
         [Required]
         public decimal TotalAmount { get; set; }
+
+        [Required]
+        public int TargetMonth { get; set; }
+
+        [Required]
+        public int TargetYear { get; set; }
 
         public virtual ICollection<StudentMonthlyBill> StudentMonthlyBill { get; set; }
     }

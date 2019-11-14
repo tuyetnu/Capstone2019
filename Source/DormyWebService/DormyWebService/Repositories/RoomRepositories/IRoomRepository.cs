@@ -9,5 +9,6 @@ namespace DormyWebService.Repositories.RoomRepositories
         Task<List<Room>> GetAllActiveRoomSortedByVacancy();
         Task<List<Room>> GetAllActiveRoomWithSpecificGenderSortedByVacancy(bool gender);
         Task<List<Room>> GetAllActiveRoomWithSpecificGenderAndRoomTypeSortedByVacancy(bool gender, int roomType);
+        Room FindOneById(int id);
     }
 }

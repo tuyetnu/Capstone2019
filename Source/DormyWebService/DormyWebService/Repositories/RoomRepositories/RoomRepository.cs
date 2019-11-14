@@ -40,5 +40,10 @@ namespace DormyWebService.Repositories.RoomRepositories
 
             return await rooms.AsNoTracking().ToListAsync();
         }
+
+        public Room FindOneById(int id)
+        {
+            return Context.Rooms.FirstOrDefault(r => r.RoomId == id);
+        }
     }
 }
