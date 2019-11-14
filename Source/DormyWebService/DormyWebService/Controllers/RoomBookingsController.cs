@@ -145,7 +145,14 @@ namespace DormyWebService.Controllers
         [HttpPost("ImportRoomBooking")]
         public async Task<ActionResult<ArrangeRoomResponse>> ImportRoomBooking(List<ImportRoomBookingRequest> requests)
         {
-            return await _roomBookingService.ImportRoomBookingRequests(requests);
+            try
+            {
+                return await _roomBookingService.ImportRoomBookingRequests(requests);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
     }
 }

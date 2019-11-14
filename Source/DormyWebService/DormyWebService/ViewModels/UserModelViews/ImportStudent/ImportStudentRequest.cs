@@ -29,7 +29,9 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
         //MSSV
         [Required]
         public string StudentCardNumber { get; set; }
-
+        [Required]
+        //Ngành
+        public string Industry { get; set; }
         [Required]
         //Khóa học
         public int Term { get; set; }
@@ -60,6 +62,7 @@ namespace DormyWebService.ViewModels.UserModelViews.ImportStudent
                 Name = request.Name,
                 Address = request.Address,
                 StartedSchoolYear = request.StartedSchoolYear,
+                Industry = request.Industry,
                 Term = request.Term,
                 IdentityNumber = request.IdentityNumber,
                 StudentCardNumber = request.StudentCardNumber,
