@@ -81,7 +81,7 @@ namespace DormyWebService.Services.RoomServices
                         Quantity = roomTypesAndEquipmentType.Amount,
                         RealQuantity = equipments.Count
                     };
-                    await _repoWrapper.RoomsAndEquipmentTypes.CreateAsync(roomsAndEquipmentTypes);
+                    _repoWrapper.RoomsAndEquipmentTypes.CreateWithoutSave(roomsAndEquipmentTypes);
                 }
                 room.Equipments = allEquipmentInRoom;
                 rooms.Add(room);
@@ -91,22 +91,14 @@ namespace DormyWebService.Services.RoomServices
 
         public async Task<BuildingResponse> CreateBuilding(CreateBuildingRequest requestModel)
         {
-            try
-            {
                 Building building = CreateBuildingRequest.NewBuildingAndRoomsFromRequest(requestModel);
                 building.Rooms = await ParseRoomAsync(requestModel.CreateRoomRequests);
-                var result = await _repoWrapper.Building.CreateAsync(building);
+                var result = _repoWrapper.Building.CreateWithoutSave(building);
                 await _repoWrapper.Save();
                 return new BuildingResponse()
                 {
                     BuildingId = result.BuildingId
                 };
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return null;
-            }
         }
 
         public async Task<List<Room>> AdvancedGetRooms(string sorts, string filters, int? page, int? pageSize)

@@ -488,23 +488,13 @@ namespace DormyWebService.Services.TicketServices
 
         public async Task<ArrangeRoomResponse> ImportRoomBookingRequests(List<ImportRoomBookingRequest> requests)
         {
-            //Get all students from email in request
             var students =
                 (List<Student>)await _repoWrapper.Student.FindAllAsyncWithCondition(s =>
                    requests.Exists(r => r.Email == s.Email));
-            if (students == null || !students.Any())
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No student is found");
-            }
-
-            if (students.Count != requests.Count)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomService: Some Student does not exist in database");
-            }
 
             if (students.Find(s => s.RoomId != null) != null)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "RoomService: Some Student already has a room");
+                throw new Exception("Có sinh viên đã đăng kí hocó phòng");
             }
 
             //Get max day to create new room booking
@@ -525,12 +515,6 @@ namespace DormyWebService.Services.TicketServices
 
             //Get list of available room
             var availableRooms = (List<Room>)await _repoWrapper.Room.FindAllAsyncWithCondition(r => r.CurrentNumberOfStudent < r.Capacity);
-
-            //Check if there are rooms available
-            if (availableRooms == null || !availableRooms.Any())
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomService: No Room is Available");
-            }
 
             //Sort room list sorted by available spot
             availableRooms.Sort((x, y) => (x.Capacity - x.CurrentNumberOfStudent).CompareTo(y.Capacity - y.CurrentNumberOfStudent));
