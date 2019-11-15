@@ -14,7 +14,6 @@ namespace DormyWebService.Entities.MoneyEntities
         [Required]
         public bool IsPaid { get; set; }
 
-        [Required]
         public DateTime PaidDate { get; set; }
 
         [Required]
@@ -34,5 +33,11 @@ namespace DormyWebService.Entities.MoneyEntities
 
         [Required] 
         public Decimal Total { get; set; }
+
+        [Required]
+        public int TargetMonth { get; set; }
+
+        [Required]
+        public int TargetYear { get; set; }
     }
 }

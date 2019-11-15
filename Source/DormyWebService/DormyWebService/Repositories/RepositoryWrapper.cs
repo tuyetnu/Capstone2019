@@ -42,6 +42,8 @@ namespace DormyWebService.Repositories
         private IRoomMonthlyBillRepository _roomMonthlyBill;
         private IStudentMonthlyBillRepository _studentMonthlyBill;
         private INotificationRepository _notification;
+        private IPricePerUnitRepository _pricePerUnit;
+        
         public RepositoryWrapper(DormyDbContext context)
         {
             Context = context;
@@ -90,5 +92,6 @@ namespace DormyWebService.Repositories
         public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(Context));
         public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(Context));
         public INotificationRepository Notification => _notification ?? (_notification = new NotificationRepository(Context));
+        public IPricePerUnitRepository PricePerUnit => _pricePerUnit ?? (_pricePerUnit = new PricePerUnitRepository(Context));
     }
 }

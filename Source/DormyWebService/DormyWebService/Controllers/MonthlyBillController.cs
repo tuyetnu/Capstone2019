@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Services.MoneyServices;
+using DormyWebService.ViewModels.PaymentModels;
 using DormyWebService.ViewModels.RoomMonthlyBillViewModel.SendWaterAndElectric;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +23,81 @@ namespace DormyWebService.Controllers
         }
 
         [Authorize(Roles = Role.Staff)]
-        [HttpPost]
-        public async Task<ActionResult<SendNumberAndElectricNumberResponse>> SendWaterAndElectricNumber(SendNumberAndElectricNumberRequest request)
+        [HttpPost("SendWaterAndElectricNumber")]
+        public async Task<ActionResult> SendWaterAndElectricNumber(SendNumberAndElectricNumberRequest request)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                await _monthlyBillService.SendWaterAndElectricNumber(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            return await _monthlyBillService.SendWaterAndElectricNumber(request);
         }
+
+        //For Test
+        [HttpGet("GenerateStudentBill")]
+        public async Task<ActionResult> GenerateStudentBill()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                await _monthlyBillService.GenerateStudentBill();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [Authorize(Roles = Role.Staff)]
+        [HttpGet("GetRoomAndPreviousNumber")]
+        public async Task<ActionResult<List<RoomAndCurrentNumber>>> GetRoomAndPreviousNumber()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                return await _monthlyBillService.GetRoomAndPreviousNumber();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        //[Authorize(Roles = Role.Staff)]
+        //[HttpGet("GetStudentBill")]
+        //public async Task<ActionResult<StudentBillResponse>> GetStudentBill(StudentBillRequest studentBillRequest)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+        //        return _monthlyBillService.GetStudentBill(studentBillRequest);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+
+        //}
     }
 }

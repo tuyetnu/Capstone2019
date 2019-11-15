@@ -13,6 +13,10 @@ namespace DormyWebService.Entities
 {
     public sealed class DormyDbContext:DbContext
     {
+        public DormyDbContext()
+        {
+        }
+
         public DormyDbContext(DbContextOptions options) : base(options)
         {
             Database.Migrate();

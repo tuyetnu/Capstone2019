@@ -505,7 +505,7 @@ namespace DormyWebService.Services.TicketServices
 
             if (students.Find(s => s.RoomId != null) != null)
             {
-                throw new Exception("Có sinh viên đã đăng kí hocó phòng");
+                throw new Exception("Có sinh viên đã đăng ký hoặc đã có phòng");
             }
 
             //Get max day to create new room booking

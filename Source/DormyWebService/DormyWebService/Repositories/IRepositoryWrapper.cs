@@ -60,5 +60,7 @@ namespace DormyWebService.Repositories
         IStudentMonthlyBillRepository StudentMonthlyBill { get; }
 
         INotificationRepository Notification { get; }
+      
+        IPricePerUnitRepository PricePerUnit { get; }
     }
 }

@@ -128,7 +128,6 @@ namespace DormyWebService
             services.AddScoped<INewsServices, NewsService>();
             services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IRoomGroupService, RoomGroupService>();
             services.AddScoped<IRoomTypesAndEquipmentTypesService, RoomTypesAndEquipmentTypesService>();
             services.AddScoped<IRoomGroupsAndStaffService, RoomGroupsAndStaffService>();
