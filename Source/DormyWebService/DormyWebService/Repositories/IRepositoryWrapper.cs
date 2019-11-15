@@ -5,6 +5,7 @@ using DormyWebService.Repositories.ContractRepositories;
 using DormyWebService.Repositories.EquipmentRepositories;
 using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
+using DormyWebService.Repositories.NotificationRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
 using DormyWebService.Repositories.StaffRepositories;
@@ -58,6 +59,8 @@ namespace DormyWebService.Repositories
 
         IStudentMonthlyBillRepository StudentMonthlyBill { get; }
 
+        INotificationRepository Notification { get; }
+      
         IPricePerUnitRepository PricePerUnit { get; }
     }
 }

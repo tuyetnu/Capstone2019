@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DormyWebService.Entities.AccountEntities;
 using DormyWebService.Entities.ContractEntities;
+using DormyWebService.Entities.NotificationEntities;
 using DormyWebService.Entities.RoomEntities;
 using DormyWebService.Entities.TicketEntities;
 using DormyWebService.Repositories;
@@ -211,7 +212,7 @@ namespace DormyWebService.Services.TicketServices
         public async Task<bool> RejectRoomBookingRequest(RejectRoomBookingRequest request)
         {
             var roomBooking = await FindById(request.RoomBookingId);
-
+            var user = await _repoWrapper.User.FindByIdAsync(roomBooking.StudentId);
             switch (roomBooking.Status)
             {
                 case RequestStatus.Complete:
@@ -238,6 +239,16 @@ namespace DormyWebService.Services.TicketServices
             roomBooking.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
             roomBooking.Status = RequestStatus.Rejected;
             roomBooking.Reason = request.Reason;
+
+            //send notification
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                string body = "Yêu cầu đặt phòng của bạn đã bị từ chối vì:" + request.Reason;
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
 
             await _repoWrapper.Save();
 
@@ -584,8 +595,52 @@ namespace DormyWebService.Services.TicketServices
                 }
             }
 
-            //Save all students, rooms and requests at once, roll back everything if something went wrong
+            
+
+            //Store notification
+            
+            PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+            DateTime nextMonth = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(1);
+            string dateComplete = new DateTime(nextMonth.Year, nextMonth.Month, 5).ToString(GlobalParams.BirthDayFormat);
+            string body = "Yêu cầu đặt phòng của bạn đã được duyệt. Vui lòng đem theo thẻ sinh viên, bản sao CMND, bản sao giấy xác nhận đối tượng ưu tiên có công chứng đến ký túc xá vào ngày 01-" + dateComplete + " để hoàn tất thủ tục và nhận phòng.";
+            //Notification notification = null;
+            //notification.Date = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            //notification.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
+            //notification.Type = 1;
+            //notification.Description = body;
+            //notification.Status = 0;
+            List<int> userIds = new List<int>();
+            foreach(var student in arrangedStudents)
+            {
+                userIds.Add(student.Student.StudentId);
+            }
+            
+            var users = (List<User>) await _repoWrapper.User.FindAllAsyncWithCondition(u => userIds.Contains(u.UserId));
+            //
+            //for (int i = 0; i<users.Count; i++)
+            //{
+            //    notification.Owner = users[i];
+            //    _repoWrapper.Notification.CreateWithoutSave(notification);
+            //}
+            List<User> loggedInUsers = new List<User>();
+            foreach (var user in users)
+            {
+                if (user.IsLoggedIn && user.DeviceToken!=null)
+                {
+                    loggedInUsers.Add(user);
+                }
+            }
+            string[] deviceTokens = new string[loggedInUsers.Count];
+            for(int i =0; i< loggedInUsers.Count; i++)
+            {
+                deviceTokens[i] = loggedInUsers[i].DeviceToken;
+            }
+
+
+            //Save all students, rooms, notifications and requests at once, roll back everything if something went wrong
             await _repoWrapper.Save();
+            //Push notify
+            await pushNotification.PushNotification(deviceTokens, body);
 
             //If save is successful, preparing response message
             return ArrangeRoomResponse.ArrangeRoomListFromEntities(arrangedStudents, unArrangedStudents, arrangedRooms);

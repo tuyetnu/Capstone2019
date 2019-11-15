@@ -125,6 +125,7 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Student not found");
             }
+            var user = await _repoWrapper.User.FindByIdAsync(student.StudentId);
             var maxYear = await _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
             if (maxYear?.Value == null)
             {
@@ -147,6 +148,18 @@ namespace DormyWebService.Services.TicketServices
 
             contract.EndDate = contract.EndDate.AddMonths(renewContract.Month);
             contract.LastUpdate = now;
+
+            //send notification
+
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                string body = "Yêu cầu gia hạn hợp đồng của bạn đã được duyệt, ngày hết hạn hợp đã được gia hạn đến: "+ contract.EndDate.AddMonths(renewContract.Month).ToString(GlobalParams.BirthDayFormat);
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
+
             await _repoWrapper.Contract.UpdateAsync(contract, contract.ContractId);
 
             return new ApproveRenewContractResponse(renewContract.ContractRenewalFormId);
@@ -172,6 +185,8 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ContractRenewal: Student not found");
             }
+            var user = await _repoWrapper.User.FindByIdAsync(student.StudentId);
+
             var maxYear = await _paramService.FindById(GlobalParams.ParamMaxYearForStaying);
             if (maxYear?.Value == null)
             {
@@ -191,8 +206,18 @@ namespace DormyWebService.Services.TicketServices
             renewContract.LastUpdated = now;
             renewContract.StaffId = rejectRenew.StaffId;
             renewContract.Reason = rejectRenew.Reason;
-            
-            
+
+            //send notification
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                string body = "Yêu cầu gia hạn hợp đồng của bạn đã bị từ chối vì:" + rejectRenew.Reason;
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
+
+
             await _repoWrapper.RenewContract.UpdateAsync(renewContract, renewContract.ContractRenewalFormId);
 
             return new RejectRenewContractResponse(renewContract.ContractRenewalFormId);

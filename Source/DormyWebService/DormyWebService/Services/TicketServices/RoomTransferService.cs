@@ -176,7 +176,7 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Student not found");
             }
-
+            var user = await _repoWrapper.User.FindByIdAsync(roomTransfer.StudentId);
             //Find Suitable room: not full, active, same room type, same gender
             var rooms = await _repoWrapper.Room.GetAllActiveRoomWithSpecificGenderAndRoomTypeSortedByVacancy(
                     student.Gender, roomTransfer.TargetRoomType);
@@ -190,6 +190,19 @@ namespace DormyWebService.Services.TicketServices
             roomTransfer.LastUpdated = now;
             roomTransfer.Status = RequestStatus.Approved;
             roomTransfer.TransferDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 17, 59, 0);
+
+            //send noti
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                DateTime nextMonth = DateTime.Now.AddHours(GlobalParams.TimeZone).AddMonths(1);
+                string dateComplete = new DateTime(nextMonth.Year, nextMonth.Month, 1).ToString(GlobalParams.BirthDayFormat);
+                string body = "Yêu cầu chuyển phòng của bạn đã được duyệt. Bạn sẽ được chuyển phòng vào ngày: " + dateComplete + ".";
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
+
             await _repoWrapper.RoomTransfer.UpdateAsync(roomTransfer, roomTransfer.RoomTransferRequestFormId);
 
             return ApproveRoomTransferResponse.ResponseFromEntity(roomTransfer, student, rooms[0]);
@@ -286,6 +299,8 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RoomTransferService: Student not found");
             }
+
+            var user = await _repoWrapper.User.FindByIdAsync(roomTransfer.StudentId);
             //switch (roomTransfer.Status)
             //{
             //    case RequestStatus.Complete:
@@ -312,7 +327,17 @@ namespace DormyWebService.Services.TicketServices
             roomTransfer.LastUpdated = DateTime.Now.AddHours(GlobalParams.TimeZone);
             roomTransfer.Status = RequestStatus.Rejected;
             roomTransfer.Reason = request.Reason;
-            
+
+            //send noti
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                string body = "Yêu cầu chuyển phòng của bạn đã bị từ chối. Lí do: "+request.Reason;
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
+
 
             await _repoWrapper.Save();
 

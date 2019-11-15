@@ -5,6 +5,7 @@ using DormyWebService.Repositories.ContractRepositories;
 using DormyWebService.Repositories.EquipmentRepositories;
 using DormyWebService.Repositories.MoneyRepositories;
 using DormyWebService.Repositories.NewsRepositories;
+using DormyWebService.Repositories.NotificationRepositories;
 using DormyWebService.Repositories.ParamRepositories;
 using DormyWebService.Repositories.RoomRepositories;
 using DormyWebService.Repositories.StaffRepositories;
@@ -40,7 +41,9 @@ namespace DormyWebService.Repositories
         private IMoneyTransactionRepository _moneyTransaction;
         private IRoomMonthlyBillRepository _roomMonthlyBill;
         private IStudentMonthlyBillRepository _studentMonthlyBill;
+        private INotificationRepository _notification;
         private IPricePerUnitRepository _pricePerUnit;
+        
         public RepositoryWrapper(DormyDbContext context)
         {
             Context = context;
@@ -88,6 +91,7 @@ namespace DormyWebService.Repositories
         public IMoneyTransactionRepository MoneyTransaction => _moneyTransaction ?? (_moneyTransaction = new MoneyTransactionRepository(Context));
         public IRoomMonthlyBillRepository RoomMonthlyBill => _roomMonthlyBill ?? (_roomMonthlyBill = new RoomMonthlyBillRepository(Context));
         public IStudentMonthlyBillRepository StudentMonthlyBill => _studentMonthlyBill ?? (_studentMonthlyBill = new StudentMonthlyBillRepository(Context));
+        public INotificationRepository Notification => _notification ?? (_notification = new NotificationRepository(Context));
         public IPricePerUnitRepository PricePerUnit => _pricePerUnit ?? (_pricePerUnit = new PricePerUnitRepository(Context));
     }
 }
