@@ -146,7 +146,8 @@ namespace DormyWebService.Services.TicketServices
             renewContract.StaffId = approveRenew.staffId;
             await _repoWrapper.RenewContract.UpdateAsync(renewContract, renewContract.ContractRenewalFormId);
 
-            contract.EndDate = contract.EndDate.AddMonths(renewContract.Month);
+            var endDate = contract.EndDate.AddMonths(renewContract.Month);
+            contract.EndDate = new DateTime(endDate.Year, endDate.Month, DateTime.DaysInMonth(endDate.Year, endDate.Month),23,59,59);
             contract.LastUpdate = now;
 
             //send notification
