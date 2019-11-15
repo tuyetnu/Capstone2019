@@ -156,7 +156,7 @@ namespace DormyWebService.Services.TicketServices
                 string[] deviceTokens = new string[1];
                 deviceTokens[0] = user.DeviceToken;
                 PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
-                string body = "Yêu cầu gia hạn hợp đồng của bạn đã được duyệt, ngày hết hạn hợp đã được gia hạn đến: "+ contract.EndDate.AddMonths(renewContract.Month).ToString(GlobalParams.BirthDayFormat);
+                string body = "Yêu cầu gia hạn hợp đồng của bạn đã được duyệt, ngày hết hạn hợp đồng đã được gia hạn đến: "+ contract.EndDate.ToString(GlobalParams.BirthDayFormat);
                 await pushNotification.PushNotification(deviceTokens, body);
             }
 
