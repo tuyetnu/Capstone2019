@@ -77,6 +77,7 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "ApproveContractCancel: Student not found");
             }
+            var user = await _repoWrapper.User.FindByIdAsync(cancelContract.StudentId);
             var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
             
             var contract = await _repoWrapper.Contract.FindAsync(s => s.StudentId == student.StudentId && s.Status == ContractStatus.Active);
@@ -91,6 +92,18 @@ namespace DormyWebService.Services.TicketServices
 
             contract.EndDate = cancelContract.CancelationDate;
             contract.LastUpdate = now;
+
+            //send notification
+
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                string body = "Yêu cầu hủy hợp đồng của bạn đã được duyệt, ngày hết hạn hợp: " + cancelContract.CancelationDate.ToString(GlobalParams.BirthDayFormat);
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
+
             await _repoWrapper.Contract.UpdateAsync(contract, contract.ContractId);
 
             return new ApproveCancelContractResponse(cancelContract.CancelContractFormId);
@@ -122,6 +135,7 @@ namespace DormyWebService.Services.TicketServices
             {
                 throw new HttpStatusCodeException(HttpStatusCode.NotFound, "RejectContractCancel: Student not found");
             }
+            var user = await _repoWrapper.User.FindByIdAsync(cancelContract.StudentId);
             var now = DateTime.Now.AddHours(GlobalParams.TimeZone);
 
             var contract = await _repoWrapper.Contract.FindAsync(s => s.StudentId == student.StudentId && s.Status == ContractStatus.Active);
@@ -134,6 +148,15 @@ namespace DormyWebService.Services.TicketServices
             cancelContract.StaffId = rejectCancel.StaffId;
             cancelContract.Reason = rejectCancel.Reason;
 
+            //send notification
+            if (user.IsLoggedIn == true && user.DeviceToken != null && user.DeviceToken.Length > 0)
+            {
+                string[] deviceTokens = new string[1];
+                deviceTokens[0] = user.DeviceToken;
+                PushNotificationToFirebase pushNotification = new PushNotificationToFirebase();
+                string body = "Yêu cầu gia hạn hợp đồng của bạn đã bị từ chối vì:" + rejectCancel.Reason;
+                await pushNotification.PushNotification(deviceTokens, body);
+            }
 
             await _repoWrapper.CancelContract.UpdateAsync(cancelContract, cancelContract.CancelContractFormId);
 
